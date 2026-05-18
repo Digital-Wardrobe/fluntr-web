@@ -15,10 +15,17 @@ export default function WaitlistForm({ onSuccess }) {
   const validate = () => {
     const e = {}
     if (!name.trim()) e.name = true
-    if (!phone.trim()) e.phone = true
+    if (!phone.trim() || phone.length < 10) e.phone = true
     if (!struggle) e.struggle = true
     setErrors(e)
     return Object.keys(e).length === 0
+  }
+
+  // Only allow digits, max 10
+  const handlePhoneChange = (e) => {
+    const val = e.target.value.replace(/\D/g, '').slice(0, 10)
+    setPhone(val)
+    setErrors(p => ({ ...p, phone: false }))
   }
 
   const handleSubmit = async (e) => {
@@ -51,7 +58,7 @@ export default function WaitlistForm({ onSuccess }) {
           You're on the runway.
         </h3>
         <p className="text-xs leading-relaxed tracking-wide" style={{ color: 'rgba(255,255,255,0.4)' }}>
-          Welcome to Flauntr. Your closet's about to get its moment —<br />we'll be in touch soon.
+          Welcome to Fluntr. Your closet's about to get its moment —<br />we'll be in touch soon.
         </p>
       </div>
     )
@@ -59,6 +66,8 @@ export default function WaitlistForm({ onSuccess }) {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-3 w-full max-w-md mx-auto">
+
+      {/* Name */}
       <input
         className="gold-input"
         placeholder="Your Name"
@@ -67,15 +76,46 @@ export default function WaitlistForm({ onSuccess }) {
         style={errors.name ? { borderColor: 'rgba(201,168,76,0.8)' } : {}}
         autoComplete="off"
       />
-      <input
-        className="gold-input"
-        placeholder="Phone Number"
-        type="tel"
-        value={phone}
-        onChange={e => { setPhone(e.target.value); setErrors(p => ({ ...p, phone: false })) }}
-        style={errors.phone ? { borderColor: 'rgba(201,168,76,0.8)' } : {}}
-        autoComplete="off"
-      />
+      {errors.name && (
+        <p style={{ fontSize: '11px', color: '#C9A84C', marginTop: '-8px', letterSpacing: '0.05em' }}>
+          Please enter your name
+        </p>
+      )}
+
+      {/* Phone */}
+      <div style={{ position: 'relative' }}>
+        <input
+          className="gold-input"
+          placeholder="Phone Number (10 digits)"
+          type="tel"
+          inputMode="numeric"
+          value={phone}
+          onChange={handlePhoneChange}
+          style={errors.phone ? { borderColor: 'rgba(201,168,76,0.8)' } : {}}
+          autoComplete="off"
+          maxLength={10}
+        />
+        {/* digit counter */}
+        <span style={{
+          position: 'absolute',
+          right: '14px',
+          top: '50%',
+          transform: 'translateY(-50%)',
+          fontSize: '11px',
+          color: phone.length === 10 ? '#C9A84C' : 'rgba(255,255,255,0.22)',
+          letterSpacing: '0.05em',
+          pointerEvents: 'none',
+        }}>
+          {phone.length}/10
+        </span>
+      </div>
+      {errors.phone && (
+        <p style={{ fontSize: '11px', color: '#C9A84C', marginTop: '-8px', letterSpacing: '0.05em' }}>
+          Please enter a valid 10-digit phone number
+        </p>
+      )}
+
+      {/* Struggle */}
       <select
         className="gold-input"
         value={struggle}
@@ -93,13 +133,24 @@ export default function WaitlistForm({ onSuccess }) {
         <option value="Can't plan outfits for occasions">Can't plan outfits for occasions</option>
         <option value="My partner / friends never agree on my fits">My partner / friends never agree on my fits 😅</option>
       </select>
-      <button type="submit" disabled={loading} className="btn-gold mt-1 w-full"
-        style={{ opacity: loading ? 0.7 : 1 }}>
+      {errors.struggle && (
+        <p style={{ fontSize: '11px', color: '#C9A84C', marginTop: '-8px', letterSpacing: '0.05em' }}>
+          Please select an option
+        </p>
+      )}
+
+      <button
+        type="submit"
+        disabled={loading}
+        className="btn-gold mt-1 w-full"
+        style={{ opacity: loading ? 0.7 : 1 }}
+      >
         {loading ? 'Joining...' : 'Join the Waitlist ✦'}
       </button>
+
       <p className="text-center mt-2"
         style={{ fontSize: '10px', color: 'rgba(255,255,255,0.18)', letterSpacing: '0.06em' }}>
-        No spam. No noise. Just Flauntr.
+        No spam. No noise. Just Fluntr.
       </p>
     </form>
   )
