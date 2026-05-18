@@ -1,7 +1,7 @@
 const items = [
-  'Digital Wardrobe', 'Social Fashion', 'Outfit Polls', 'Shoppable Looks',
+  'Fluntr', 'Social Fashion', 'Outfit Polls', 'Shoppable Looks',
   'Vibes & Mirrors', 'Borrow from Friends', 'Auto Closet', 'Occasion Planning',
-  'Your Style. Your Stage.', 'Digital Wardrobe', 'Social Fashion', 'Outfit Polls',
+  'Your Style. Your Stage.', 'Fluntr', 'Social Fashion', 'Outfit Polls',
   'Shoppable Looks', 'Vibes & Mirrors', 'Borrow from Friends', 'Auto Closet',
   'Occasion Planning', 'Your Style. Your Stage.',
 ]
