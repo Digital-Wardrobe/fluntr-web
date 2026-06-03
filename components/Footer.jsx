@@ -18,7 +18,7 @@ export default function Footer() {
         {['Instagram', 'Twitter', 'Privacy'].map(link => (
           <a
             key={link}
-            href="#"
+            href="/privacy"
             className="no-underline transition-colors"
             style={{ fontSize: '10px', letterSpacing: '0.15em', color: 'rgba(255,255,255,0.25)', textTransform: 'uppercase' }}
             onMouseEnter={e => e.target.style.color = '#C9A84C'}
