@@ -38,5 +38,9 @@ Thumbs.db
 *.swp
 *.swo
 
-# Claude AI
+# AI tools & agent configs
 .claude/
+.agents/
+.codex/
+skills-lock.json
+
