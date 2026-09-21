@@ -1,0 +1,15 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["TEAMID.com.premwhoo.dwapp"],
+        "components": [
+          { "/": "/c/*", "comment": "Collection deep links" },
+          { "/": "/p/*", "comment": "Post deep links" },
+          { "/": "/v/*", "comment": "Vibe deep links" },
+          { "/": "/u/*", "comment": "Profile deep links" }
+        ]
+      }
+    ]
+  }
+}
