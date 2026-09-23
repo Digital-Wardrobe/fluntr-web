@@ -2,7 +2,7 @@
   "applinks": {
     "details": [
       {
-        "appIDs": ["TEAMID.com.premwhoo.dwapp"],
+        "appIDs": ["TEAMID.com.mtpl.fluntr"],
         "components": [
           { "/": "/c/*", "comment": "Collection deep links" },
           { "/": "/p/*", "comment": "Post deep links" },
