@@ -1,0 +1,33 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": [
+          "TEAMID.com.mtpl.fluntr"
+        ],
+        "components": [
+          {
+            "/": "/c/*",
+            "comment": "Collection deep links"
+          },
+          {
+            "/": "/post/*",
+            "comment": "Post share links (fluntr.com/post/<id>)"
+          },
+          {
+            "/": "/p/*",
+            "comment": "Post deep links"
+          },
+          {
+            "/": "/v/*",
+            "comment": "Vibe deep links"
+          },
+          {
+            "/": "/u/*",
+            "comment": "Profile deep links"
+          }
+        ]
+      }
+    ]
+  }
+}

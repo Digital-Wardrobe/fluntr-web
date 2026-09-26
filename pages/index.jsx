@@ -1,5 +1,6 @@
 // Drop this file into: flauntr-web/pages/index.jsx
 
+import Head from 'next/head'
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
@@ -28,6 +29,11 @@ function Reveal({ children, direction = 'up', delay = 0, className = '' }) {
       animate={inView ? { opacity: 1, y: 0, x: 0 } : hidden}
       transition={{ duration: 0.7, ease: 'easeOut', delay }}
     >
+    <Head>
+      <title>Fluntr — Your Wardrobe. Your Runway.</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <link rel="canonical" href="https://fluntr.com/" />
+    </Head>
       {children}
     </motion.div>
   )
