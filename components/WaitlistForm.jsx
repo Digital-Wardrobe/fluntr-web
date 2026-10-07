@@ -1,6 +1,6 @@
 'use client'
 import { useState } from 'react'
-import Sparkle from './Sparkle'
+import { Mark } from './Logo'
 
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzSQkxDshm3SigX4og7GHrz98ywQGmakHJy_yDKelY9fwMsn9lJ9Wco7y1XTU0HYynn9g/exec'
 
@@ -51,7 +51,7 @@ export default function WaitlistForm({ onSuccess }) {
   if (done) {
     return (
       <div className="glass flex flex-col items-center gap-3 p-10 text-center" style={{ borderRadius: 24 }}>
-        <Sparkle size={36} animate />
+        <Mark size={34} color="#15171B" />
         <h3 className="font-serif-display" style={{ fontSize: 34, color: '#15171B' }}>You&apos;re on the list.</h3>
         <p style={{ fontSize: 14, color: '#767A85' }}>We will tell you the day it opens.</p>
       </div>
@@ -86,7 +86,7 @@ export default function WaitlistForm({ onSuccess }) {
         />
         <span
           className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2"
-          style={{ fontSize: 12, color: phone.length === 10 ? '#0047FF' : '#9AA0A6', fontVariantNumeric: 'tabular-nums' }}
+          style={{ fontSize: 12, color: phone.length === 10 ? '#15171B' : '#9AA0A6', fontVariantNumeric: 'tabular-nums' }}
         >
           {phone.length}/10
         </span>

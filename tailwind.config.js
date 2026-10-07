@@ -13,8 +13,8 @@ module.exports = {
         'ink-2': '#3A3D45',
         muted: '#767A85',
         'muted-soft': '#9AA0A6',
+        accent: '#15171B',
         blue: '#0047FF',
-        'blue-deep': '#0036C2',
         pill: '#3A3A3C',
       },
       fontFamily: {

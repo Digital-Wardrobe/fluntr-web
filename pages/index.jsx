@@ -11,7 +11,8 @@ import Parallax from '../components/motion/Parallax'
 import TiltCard from '../components/motion/TiltCard'
 import DrawLine from '../components/motion/DrawLine'
 import PhoneLoop from '../components/motion/PhoneLoop'
-import JourneyStage from '../components/motion/JourneyStage'
+import Demo from '../components/motion/Demo'
+import Kween, { Bubble } from '../components/motion/Kween'
 import Orb from '../components/motion/Orb'
 
 /*
@@ -20,15 +21,17 @@ import Orb from '../components/motion/Orb'
  * The site now looks like the app: white, electric blue for anything you can
  * press, near-black ink. Panels are liquid glass over colour and photography.
  *
- * The spine is JourneyStage, a pinned, scroll-scrubbed sequence shot in first
- * person: you hold the phone, you tap once, and the photo turns itself into
- * your closet and then into an outfit. Everything above it sets that up and
- * everything below only makes sense once you have seen it.
+ * The spine is Demo: how it works as a demo you click through yourself, with
+ * Kween, the closet mascot, guiding each step. Nothing is pinned to the scroll
+ * any more; the page reads at normal length.
+ *
+ * Palette is the app's: white, grey surfaces, black for anything pressable.
+ * Blue survives only on links. Kween's tangerine felt is the one colour.
  */
 
 const INK = '#15171B'
 const MUTED = '#767A85'
-const BLUE = '#0047FF'
+const ACCENT = '#15171B'
 
 const H2 = { fontSize: 'clamp(34px,4.6vw,64px)', lineHeight: 1.04, color: INK }
 
@@ -47,7 +50,7 @@ function Hero() {
 
           <h1 className="font-serif-display" style={{ fontSize: 'clamp(44px,6.4vw,92px)', lineHeight: 0.98, letterSpacing: '-0.015em', color: INK }}>
             <MaskLine as="span" text="Your wardrobe is full." delay={0.15} className="block" />
-            <MaskLine as="span" text="You still have nothing to wear." delay={0.42} className="block" style={{ color: BLUE, fontStyle: 'italic' }} />
+            <MaskLine as="span" text="You still have nothing to wear." delay={0.42} className="block" style={{ color: ACCENT, fontStyle: 'italic', opacity: 0.55 }} />
           </h1>
 
           <Reveal delay={0.85} blur>
@@ -64,8 +67,19 @@ function Hero() {
           </Reveal>
         </div>
 
-        <div className="flex justify-center lg:justify-end">
-          <PhoneLoop width={300} />
+        <div className="relative flex justify-center lg:justify-end">
+          <div className="relative">
+            <PhoneLoop width={300} />
+            {/* Kween peeks out from behind the phone, the way she does in the app */}
+            <Reveal delay={1.3} from="up" className="pointer-events-none absolute bottom-0 right-[-8%] z-20 w-[34%] lg:left-[min(-30%,-110px)] lg:right-auto lg:w-[40%]">
+              <div className="relative" style={{ transform: 'rotate(-8deg)' }}>
+                <div className="pointer-events-auto"><Kween size="100%" /></div>
+                <div className="absolute bottom-[104%] right-[4%] lg:left-[4%] lg:right-auto" style={{ whiteSpace: 'nowrap' }}>
+                  <Bubble text="Hi, I'm Kween. I live in your closet." />
+                </div>
+              </div>
+            </Reveal>
+          </div>
         </div>
       </div>
     </section>
@@ -77,7 +91,7 @@ function Drift() {
   return (
     <section aria-hidden className="select-none" style={{ background: '#fff' }}>
       <Marquee items={['Wedding on Saturday', 'Nothing to wear', 'Bought it twice', 'Twenty minutes at the mirror', 'Forgot you owned it']} duration={40} tone="rgba(21,23,27,0.14)" />
-      <Marquee items={['See it', 'Plan it', 'Wear it', 'Share it', 'Borrow it']} reverse duration={30} tone={BLUE} />
+      <Marquee items={['See it', 'Plan it', 'Wear it', 'Share it', 'Borrow it']} reverse duration={30} tone="rgba(21,23,27,0.55)" />
     </section>
   )
 }
@@ -161,7 +175,7 @@ function Social() {
           </Reveal>
 
           <Reveal from="left" delay={0.14}>
-            <TiltCard className="group glass-blue relative h-full overflow-hidden p-8" style={card}>
+            <TiltCard className="group glass-ink relative h-full overflow-hidden p-8" style={card}>
               <h3 className="mb-3 text-[20px] font-medium tracking-tight">Borrow from friends</h3>
               <p className="text-[14.5px] leading-relaxed" style={{ color: 'rgba(255,255,255,0.8)' }}>Close friends can look through each other&apos;s closets and ask for a piece. Fluntr keeps track of who has what.</p>
             </TiltCard>
@@ -192,7 +206,7 @@ function Promise_() {
           <p className="text-eyebrow mb-5">The app</p>
           <h2 className="font-serif-display" style={H2}>
             <MaskLine as="span" text="Photograph it once." className="block" />
-            <MaskLine as="span" text="See it forever." delay={0.2} className="block" style={{ color: BLUE, fontStyle: 'italic' }} />
+            <MaskLine as="span" text="See it forever." delay={0.2} className="block" style={{ color: ACCENT, fontStyle: 'italic', opacity: 0.55 }} />
           </h2>
           <Reveal delay={0.3} blur>
             <p className="mt-6 max-w-md text-[17px] leading-relaxed" style={{ color: MUTED }}>
@@ -203,7 +217,7 @@ function Promise_() {
             {points.map((point, i) => (
               <Reveal key={point} from="right" delay={0.36 + i * 0.1}>
                 <li className="glass flex items-center gap-3 px-5 py-3.5 text-[15px]" style={{ borderRadius: 999, color: INK }}>
-                  <span aria-hidden className="flex h-5 w-5 items-center justify-center rounded-full" style={{ background: BLUE, color: '#fff', fontSize: 11 }}>✓</span>
+                  <span aria-hidden className="flex h-5 w-5 items-center justify-center rounded-full" style={{ background: ACCENT, color: '#fff', fontSize: 11 }}>✓</span>
                   {point}
                 </li>
               </Reveal>
@@ -222,7 +236,7 @@ function WhoFor() {
       <div className="mx-auto max-w-3xl text-center">
         <h2 className="font-serif-display" style={{ fontSize: 'clamp(32px,4.4vw,60px)', lineHeight: 1.08, color: INK }}>
           <MaskLine as="span" text="For people who own plenty" className="block" />
-          <MaskLine as="span" text="and wear a fraction of it." delay={0.2} className="block" style={{ color: BLUE, fontStyle: 'italic' }} />
+          <MaskLine as="span" text="and wear a fraction of it." delay={0.2} className="block" style={{ color: ACCENT, fontStyle: 'italic', opacity: 0.55 }} />
         </h2>
         <Reveal delay={0.35} blur>
           <p className="mx-auto mt-7 max-w-lg text-[17px] leading-relaxed" style={{ color: MUTED }}>
@@ -239,7 +253,7 @@ function Waitlist() {
   return (
     <section id="waitlist" className="relative overflow-hidden px-6 py-28 md:py-36">
       <Orb left="50%" top="50%" size={900} pulse />
-      <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: 'radial-gradient(60% 50% at 20% 100%, rgba(0,71,255,0.08), transparent 60%)' }} />
+      <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: 'radial-gradient(60% 50% at 20% 100%, rgba(21,23,27,0.05), transparent 60%)' }} />
       <div className="relative z-10 mx-auto max-w-lg">
         <Reveal>
           <div className="glass px-7 py-10 text-center md:px-12 md:py-14" style={{ borderRadius: 32 }}>
@@ -274,7 +288,7 @@ export default function Home() {
         <Hero />
         <Drift />
         <Problem />
-        <JourneyStage />
+        <Demo />
         <Social />
         <Promise_ />
         <WhoFor />

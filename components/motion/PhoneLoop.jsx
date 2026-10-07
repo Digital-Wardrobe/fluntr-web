@@ -69,7 +69,7 @@ export default function PhoneLoop({ width = 288 }) {
         className="pointer-events-none absolute"
         style={{
           inset: '-18%',
-          background: 'radial-gradient(circle, rgba(0,71,255,0.16) 0%, transparent 62%)',
+          background: 'radial-gradient(circle, rgba(21,23,27,0.08) 0%, transparent 62%)',
         }}
       />
 

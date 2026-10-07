@@ -36,7 +36,7 @@ export default function Marquee({ items, reverse = false, duration = 34, tone = 
             style={{ fontSize: 'clamp(22px,3.4vw,46px)', color: tone, fontStyle: 'italic', lineHeight: 1 }}
           >
             {item}
-            <span aria-hidden className="not-italic" style={{ color: 'rgba(0,71,255,0.45)', margin: '0 0 0 2.2rem' }}>
+            <span aria-hidden className="not-italic" style={{ color: 'rgba(21,23,27,0.3)', margin: '0 0 0 2.2rem' }}>
               &bull;
             </span>
           </span>

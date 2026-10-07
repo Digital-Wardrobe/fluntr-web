@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
-import Sparkle from './Sparkle'
+import Logo from './Logo'
 
 /** Floating glass bar. Hides on scroll-down, returns on scroll-up. */
 export default function Nav() {
@@ -35,14 +35,13 @@ export default function Nav() {
         className={`${scrolled ? 'glass' : ''} flex w-full max-w-6xl items-center justify-between px-5 py-2.5 md:px-6`}
         style={{ borderRadius: 999, pointerEvents: 'auto', transition: 'background 0.3s' }}
       >
-        <Link href="/" className="flex items-center gap-2.5 no-underline">
-          <Sparkle size={20} />
-          <span className="text-[17px] font-semibold tracking-tight" style={{ color: '#15171B' }}>fluntr</span>
+        <Link href="/" className="flex items-center no-underline">
+          <Logo size={20} />
         </Link>
 
         <div className="hidden items-center gap-7 md:flex">
           {[['#features', 'Features'], ['#how', 'How it works'], ['#app', 'The app']].map(([href, label]) => (
-            <Link key={href} href={href} className="text-[13.5px] font-medium no-underline transition-colors hover:text-[#0047FF]" style={{ color: '#3A3D45' }}>
+            <Link key={href} href={href} className="text-[13.5px] font-medium no-underline transition-colors hover:text-[#15171B]" style={{ color: '#3A3D45' }}>
               {label}
             </Link>
           ))}

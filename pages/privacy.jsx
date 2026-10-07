@@ -167,7 +167,7 @@ export default function PrivacyPolicy() {
                 }}>
                     <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }}>
                         <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" width={20} height={20}>
-                            <path d="M30 4 L33.5 26.5 L56 30 L33.5 33.5 L30 56 L26.5 33.5 L4 30 L26.5 26.5 Z" fill="#0047FF" />
+                            <path d="M30 4 L33.5 26.5 L56 30 L33.5 33.5 L30 56 L26.5 33.5 L4 30 L26.5 26.5 Z" fill="#15171B" />
                         </svg>
                         <span style={{ fontFamily: "'Instrument Serif', serif", fontSize: '18px', letterSpacing: '0', color: '#15171B', fontWeight: 600 }}>
                             fluntr
@@ -185,7 +185,7 @@ export default function PrivacyPolicy() {
                     margin: '0 auto',
                     borderBottom: '1px solid rgba(21,23,27,0.08)',
                 }}>
-                    <p style={{ fontSize: '10px', letterSpacing: '0.3em', color: '#0047FF', textTransform: 'uppercase', marginBottom: '16px', fontWeight: 400 }}>
+                    <p style={{ fontSize: '10px', letterSpacing: '0.3em', color: '#15171B', textTransform: 'uppercase', marginBottom: '16px', fontWeight: 400 }}>
                         Legal
                     </p>
                     <h1 style={{
@@ -210,8 +210,8 @@ export default function PrivacyPolicy() {
                     <div style={{
                         marginTop: '28px',
                         padding: '20px 24px',
-                        background: 'rgba(0,71,255,0.06)',
-                        border: '1px solid rgba(0,71,255,0.18)',
+                        background: '#F4F5F7',
+                        border: '1px solid rgba(21,23,27,0.1)',
                         borderRadius: '16px',
                         display: 'flex',
                         alignItems: 'center',
@@ -229,7 +229,7 @@ export default function PrivacyPolicy() {
                             rel="noopener noreferrer"
                             style={{
                                 padding: '10px 24px',
-                                background: '#0047FF',
+                                background: '#15171B',
                                 color: '#fff',
                                 borderRadius: 999,
                                 fontSize: '11px',
@@ -259,7 +259,7 @@ export default function PrivacyPolicy() {
                                 <span style={{
                                     fontFamily: "'Instrument Serif', serif",
                                     fontSize: '13px',
-                                    color: 'rgba(0,71,255,0.6)',
+                                    color: 'rgba(21,23,27,0.45)',
                                     letterSpacing: '0.1em',
                                     flexShrink: 0,
                                     paddingTop: '4px',
@@ -283,7 +283,7 @@ export default function PrivacyPolicy() {
                                                 <p style={{
                                                     fontSize: '12px',
                                                     letterSpacing: '0.1em',
-                                                    color: '#0047FF',
+                                                    color: '#15171B',
                                                     textTransform: 'uppercase',
                                                     marginBottom: '6px',
                                                     fontWeight: 400,
@@ -307,7 +307,7 @@ export default function PrivacyPolicy() {
                                                             display: 'inline-block',
                                                             marginTop: '10px',
                                                             fontSize: '13px',
-                                                            color: '#0047FF',
+                                                            color: '#15171B',
                                                             textDecoration: 'underline',
                                                             letterSpacing: '0.02em',
                                                         }}

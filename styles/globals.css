@@ -21,10 +21,14 @@
   --muted-soft: #9AA0A6;
   --line: rgba(21, 23, 27, 0.08);
   --line-strong: rgba(21, 23, 27, 0.14);
+  /* The app's one accent is black: its pills, buttons and tab bar are near-black
+     on white. Blue exists in the app only for links and a few secondary
+     actions, so it stays here for links only. */
+  --accent: #15171B;
+  --accent-deep: #000000;
   --blue: #0047FF;
-  --blue-deep: #0036C2;
   --blue-soft: rgba(0, 71, 255, 0.08);
-  --pill: #3A3A3C;
+  --pill: #2E2E30;
 }
 
 * {
@@ -53,7 +57,7 @@ body {
 }
 
 ::selection {
-  background: var(--blue);
+  background: var(--ink);
   color: #fff;
 }
 
@@ -73,7 +77,7 @@ body {
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--blue);
+  color: var(--muted);
 }
 
 @layer components {
@@ -145,16 +149,16 @@ body {
   color: #fff;
 }
 
-.glass-blue {
+.glass-ink {
   position: relative;
-  background: rgba(0, 71, 255, 0.82);
-  -webkit-backdrop-filter: blur(20px) saturate(1.8);
-  backdrop-filter: blur(20px) saturate(1.8);
-  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(21, 23, 27, 0.92);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  backdrop-filter: blur(20px) saturate(1.4);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.55),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.18),
-    0 14px 40px rgba(0, 71, 255, 0.28);
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+    0 14px 40px rgba(21, 23, 27, 0.28);
   color: #fff;
 }
 
@@ -163,7 +167,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  background: var(--blue);
+  background: var(--accent);
   color: #fff;
   font-family: 'Inter', system-ui, sans-serif;
   font-size: 14px;
@@ -175,9 +179,9 @@ body {
   cursor: pointer;
   text-decoration: none;
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.35),
-    0 1px 2px rgba(0, 71, 255, 0.3),
-    0 10px 28px rgba(0, 71, 255, 0.28);
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 1px 2px rgba(21, 23, 27, 0.3),
+    0 10px 28px rgba(21, 23, 27, 0.22);
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s, background 0.3s;
   position: relative;
   overflow: hidden;
@@ -185,12 +189,12 @@ body {
 }
 
 .btn-primary:hover {
-  background: var(--blue-deep);
+  background: var(--accent-deep);
   transform: translateY(-2px);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.35),
-    0 2px 4px rgba(0, 71, 255, 0.3),
-    0 16px 36px rgba(0, 71, 255, 0.34);
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 2px 4px rgba(21, 23, 27, 0.3),
+    0 16px 36px rgba(21, 23, 27, 0.28);
 }
 
 .btn-primary::after {
@@ -247,8 +251,8 @@ body {
 }
 
 .field:focus {
-  border-color: var(--blue);
-  box-shadow: 0 0 0 4px var(--blue-soft);
+  border-color: var(--ink);
+  box-shadow: 0 0 0 4px rgba(21, 23, 27, 0.08);
   background: #fff;
 }
 
