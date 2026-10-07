@@ -1,347 +1,387 @@
-// Drop this file into: flauntr-web/pages/index.jsx
-
 import Head from 'next/head'
-import { useState } from 'react'
-import { motion } from 'framer-motion'
-import { useInView } from 'react-intersection-observer'
 import Nav from '../components/Nav'
-import HeroSection from '../components/HeroSection'
-import CinematicScroll from '../components/CinematicScroll'
-import Sparkle from '../components/Sparkle'
-import Marquee from '../components/Marquee'
-import PhoneMockup from '../components/PhoneMockup'
-import WaitlistForm from '../components/WaitlistForm'
 import Footer from '../components/Footer'
+import WaitlistForm from '../components/WaitlistForm'
+import Reveal from '../components/Reveal'
+import Shot from '../components/Shot'
+import Photo from '../components/Photo'
 
-// ── Reveal wrapper ──────────────────────────────────────────────────────────
-function Reveal({ children, direction = 'up', delay = 0, className = '' }) {
-  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 })
-  const hidden = {
-    opacity: 0,
-    y: direction === 'up' ? 28 : 0,
-    x: direction === 'left' ? -28 : direction === 'right' ? 28 : 0,
-  }
+/*
+ * Fluntr homepage.
+ *
+ * Brief: a visitor should know within seconds why they need this.
+ *
+ * The previous version opened on "Your Wardrobe. Your Runway." over a mood and
+ * buried the line that actually lands, "I have nothing to wear", five screens
+ * down. It also carried three testimonials from people who do not exist. This
+ * version leads with the problem, answers it with the real product, and claims
+ * nothing that has not shipped.
+ */
+
+const GOLD = '#C9A84C'
+const GOLD_LIGHT = '#E2C97E'
+const MUTED = 'rgba(255,255,255,0.62)'
+const FAINT = 'rgba(255,255,255,0.45)'
+
+// ── 1. HERO ───────────────────────────────────────────── split, asset right ──
+function Hero() {
   return (
-    <motion.div
-      ref={ref}
-      className={className}
-      initial={hidden}
-      animate={inView ? { opacity: 1, y: 0, x: 0 } : hidden}
-      transition={{ duration: 0.7, ease: 'easeOut', delay }}
+    <section
+      className="relative flex items-center overflow-hidden px-6 pb-16 pt-20 md:px-12 md:pb-20 md:pt-24 lg:px-16"
+      style={{ minHeight: '100dvh' }}
     >
-    <Head>
-      <title>Fluntr — Your Wardrobe. Your Runway.</title>
-      <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <link rel="canonical" href="https://fluntr.com/" />
-    </Head>
-      {children}
-    </motion.div>
+      <div
+        aria-hidden
+        className="pointer-events-none absolute"
+        style={{
+          top: '46%', left: '28%', transform: 'translate(-50%,-50%)',
+          width: 780, height: 780,
+          background: 'radial-gradient(circle, rgba(201,168,76,.06) 0%, transparent 66%)',
+        }}
+      />
+
+      <div className="relative z-10 mx-auto grid w-full max-w-7xl items-center gap-10 md:gap-14 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
+        <div>
+          <Reveal y={0}>
+            <p className="mb-5 text-[10.5px] uppercase md:mb-7 md:text-[11px]" style={{ color: GOLD, letterSpacing: '0.3em' }}>
+              Your closet, on your phone
+            </p>
+          </Reveal>
+
+          <Reveal delay={0.08}>
+            <h1
+              className="font-cormorant"
+              style={{ fontSize: 'clamp(29px,4.3vw,58px)', fontWeight: 400, lineHeight: 1.12, letterSpacing: '-0.4px' }}
+            >
+              Your wardrobe is full.
+              <br />
+              <em style={{ color: GOLD_LIGHT, fontStyle: 'italic', lineHeight: 1.15 }} className="inline-block pb-1">
+                You still have nothing to wear.
+              </em>
+            </h1>
+          </Reveal>
+
+          <Reveal delay={0.16}>
+            <p className="mt-5 max-w-[30rem] text-[14.5px] leading-relaxed md:mt-7 md:text-[15px]" style={{ color: MUTED }}>
+              Fluntr puts every piece you own on your phone, so you can see it,
+              plan it, and wear it.
+            </p>
+          </Reveal>
+
+          <Reveal delay={0.24}>
+            <div className="mt-7 flex flex-wrap gap-3 md:mt-10 md:gap-4">
+              <a href="#waitlist" className="btn-gold">Join the waitlist</a>
+              <a href="#how" className="btn-outline">See how it works</a>
+            </div>
+          </Reveal>
+        </div>
+
+        <Reveal delay={0.2} className="flex justify-center lg:justify-end">
+          <Shot src="app-feed" alt="The Fluntr feed, showing outfit posts from people you follow" width={288} priority />
+        </Reveal>
+      </div>
+    </section>
   )
 }
 
-// ── Gold divider ─────────────────────────────────────────────────────────────
-function GoldDivider() {
+// ── 2. THE PROBLEM ──────────────────── full-bleed photo band + typographic list ──
+function Problem() {
+  const moments = [
+    ['Wedding on Saturday.', 'Remembered on Friday night.'],
+    ['Two of you, one mirror.', 'Twenty minutes gone, nobody happy.'],
+    ['You bought it twice', 'because you forgot you owned the first one.'],
+  ]
   return (
-    <div className="flex items-center gap-5 px-16 max-md:px-6">
-      <div className="flex-1" style={{ height: '0.5px', background: 'rgba(201,168,76,0.1)' }} />
-      <span style={{ color: 'rgba(201,168,76,0.35)', fontSize: '14px' }}>✦</span>
-      <div className="flex-1" style={{ height: '0.5px', background: 'rgba(201,168,76,0.1)' }} />
-    </div>
-  )
-}
-
-// ── Feature row ──────────────────────────────────────────────────────────────
-function FeatureRow({ num, tag, title, desc, points, screen, reverse = false }) {
-  return (
-    <div className={`flex items-center gap-20 max-md:flex-col max-md:gap-10 ${reverse ? 'flex-row-reverse' : ''}`}>
-      <Reveal direction={reverse ? 'right' : 'left'} className="flex-1">
-        <span
-          className="font-cormorant block"
-          style={{ fontSize: '72px', fontWeight: 300, color: 'rgba(201,168,76,0.07)', lineHeight: 1, marginBottom: '-16px' }}
-        >
-          {num}
-        </span>
-        <p className="text-xs tracking-widest uppercase mb-4" style={{ color: '#C9A84C' }}>{tag}</p>
-        <h3
-          className="font-cormorant font-normal leading-tight mb-5"
-          style={{ fontSize: 'clamp(28px,3vw,44px)', letterSpacing: '-0.3px' }}
-          dangerouslySetInnerHTML={{ __html: title }}
+    <section>
+      <div className="relative h-[46vh] min-h-[320px] w-full overflow-hidden">
+        <Photo
+          src="full"
+          alt="A wardrobe packed with shirts, sorted by colour"
+          w={1900} h={1266}
+          className="h-full w-full object-cover"
+          style={{ filter: 'grayscale(0.35) brightness(0.52)' }}
         />
-        <p className="text-sm leading-relaxed mb-8" style={{ color: 'rgba(255,255,255,0.58)', letterSpacing: '0.02em' }}>
-          {desc}
-        </p>
-        <ul className="flex flex-col gap-3">
-          {points.map((p, i) => (
-            <li key={i} className="flex items-start gap-3 text-sm" style={{ color: 'rgba(255,255,255,0.5)', lineHeight: 1.6 }}>
-              <span style={{ color: '#C9A84C', fontSize: '8px', marginTop: '5px', flexShrink: 0 }}>✦</span>
-              {p}
-            </li>
-          ))}
-        </ul>
-      </Reveal>
+        <div
+          aria-hidden
+          className="absolute inset-0"
+          style={{ background: 'linear-gradient(180deg, rgba(9,9,11,0.6) 0%, rgba(9,9,11,0.25) 45%, #09090b 100%)' }}
+        />
+        <div className="absolute inset-0 flex items-center px-6 md:px-12 lg:px-16">
+          <Reveal>
+            <h2
+              className="font-cormorant mx-auto max-w-5xl"
+              style={{ fontSize: 'clamp(28px,4.2vw,56px)', fontWeight: 400, lineHeight: 1.15 }}
+            >
+              You already own enough.
+            </h2>
+          </Reveal>
+        </div>
+      </div>
 
-      <Reveal direction={reverse ? 'left' : 'right'} className="flex-1 flex justify-center">
-        <PhoneMockup screen={screen} />
-      </Reveal>
-    </div>
+      <div className="px-6 pb-24 pt-16 md:px-12 md:pb-32 lg:px-16">
+        <div className="mx-auto max-w-5xl">
+          {moments.map(([a, b], i) => (
+            <Reveal key={a} delay={i * 0.08}>
+              <div className="py-8 md:py-10" style={{ borderTop: '0.5px solid rgba(255,255,255,0.09)' }}>
+                <p
+                  className="font-cormorant"
+                  style={{ fontSize: 'clamp(22px,3vw,38px)', fontWeight: 400, lineHeight: 1.3 }}
+                >
+                  {a} <span style={{ color: FAINT }}>{b}</span>
+                </p>
+              </div>
+            </Reveal>
+          ))}
+          <Reveal delay={0.2}>
+            <p className="mt-12 max-w-xl text-[15px] leading-relaxed" style={{ color: MUTED }}>
+              None of this is a shopping problem. You just cannot see everything
+              you have in one place.
+            </p>
+          </Reveal>
+        </div>
+      </div>
+    </section>
   )
 }
 
-// ── Main page ─────────────────────────────────────────────────────────────────
-export default function Home() {
-  const [waitlistCount, setWaitlistCount] = useState(127)
-
+// ── 3. THE ANSWER ──────────────────────────────────── split, photo left ──
+function Answer() {
   return (
-    <>
-      <Nav />
-
-      {/* ── HERO ── */}
-      <HeroSection waitlistCount={waitlistCount} />
-
-      {/* ── MARQUEE ── */}
-      <Marquee />
-
-      {/* ── CINEMATIC SCROLL ── */}
-      <CinematicScroll />
-
-      {/* ── FEATURES ── */}
-      <section id="features" className="py-28 max-w-screen-xl mx-auto px-16 max-md:px-6">
+    <section className="px-6 py-24 md:px-12 md:py-28 lg:px-16" style={{ background: '#111113' }}>
+      <div className="mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-2 lg:gap-20">
         <Reveal>
-          <div className="text-center mb-24">
-            <p className="text-xs tracking-widest uppercase mb-5" style={{ color: '#C9A84C' }}>What Fluntr Does</p>
-            <h2 className="font-cormorant font-light" style={{ fontSize: 'clamp(36px,5vw,64px)', letterSpacing: '-0.5px' }}>
-              Three pillars.<br /><em style={{ color: '#E2C97E' }}>One runway.</em>
-            </h2>
+          <div className="overflow-hidden" style={{ border: '0.5px solid rgba(201,168,76,0.16)' }}>
+            <Photo
+              src="rail"
+              alt="A curated clothing rail in neutral tones"
+              w={1100} h={825}
+              className="w-full"
+              style={{ height: 'auto' }}
+            />
           </div>
         </Reveal>
 
-        <div className="flex flex-col gap-28 max-md:gap-16">
-          <FeatureRow
-            num="01" tag="The Wardrobe"
-            title="Your entire closet.<br/><em style='color:#E2C97E'>Finally visible.</em>"
-            desc="Upload your clothes and AI removes the background instantly. Organise by occasion — beach, wedding, night out. Build collections, toggle public or private, and never forget what you own."
-            points={[
-              'AI background removal — instant, zero effort',
-              'Occasion-based collections — beach, wedding, night out',
-              'Everyone / Followers / Friends / Only me privacy controls',
-              'Auto-Closet — buy in-app, it appears when delivered',
-            ]}
-            screen="closet"
-          />
-          <FeatureRow
-            num="02" tag="The Stage"
-            title="Post Vibes.<br/><em style='color:#E2C97E'>Run Polls. Get Hyped.</em>"
-            desc="Step out of your private closet onto a social runway. Post outfit content, share 24-hour mirror selfies, and run real-time A/B polls. Fashion is social — Fluntr is built for it."
-            points={[
-              'Vibes — short-form vertical outfit videos',
-              'Mirrors — 24-hour disappearing outfit stories',
-              'Polls — let followers vote on your look',
-              'Lookbooks — curated shoppable carousels',
-            ]}
-            screen="home"
-            reverse
-          />
-          <FeatureRow
-            num="03" tag="The Commerce"
-            title="Every look.<br/><em style='color:#E2C97E'>Instantly shoppable.</em>"
-            desc="Tag every item in your post with a floating buy button. Followers tap and shop directly. Add any outfit to your closet in one tap. No more gatekeeping — your style is your earning engine."
-            points={[
-              'Floating shoppable tags on every post',
-              'Add to closet from the home feed in one tap',
-              'Sell directly from your digital closet',
-              'Peer-to-peer marketplace with wallet payouts',
-            ]}
-            screen="addcloset"
-          />
-        </div>
-      </section>
-
-      <GoldDivider />
-
-      {/* ── APP SHOWCASE ── */}
-      <section className="py-24 px-16 max-md:px-6" style={{ background: '#111113' }}>
-        <div className="max-w-screen-lg mx-auto">
-          <Reveal>
-            <div className="text-center mb-16">
-              <p className="text-xs tracking-widest uppercase mb-5" style={{ color: '#C9A84C' }}>Inside the App</p>
-              <h2 className="font-cormorant font-light" style={{ fontSize: 'clamp(34px,5vw,60px)', letterSpacing: '-0.5px' }}>
-                See it. <em style={{ color: '#E2C97E' }}>Feel it.</em>
-              </h2>
-              <p className="text-sm mt-4 max-w-md mx-auto" style={{ color: 'rgba(255,255,255,0.58)', lineHeight: 1.9 }}>
-                Every screen designed to be invisible — so your clothes and style take centre stage.
-              </p>
-            </div>
-          </Reveal>
-
-          {/* Staggered phone row */}
-          <Reveal>
-            <div className="flex justify-center items-end gap-5 flex-wrap">
-              {[
-                { screen: 'splash', label: 'Splash', offset: 0 },
-                { screen: 'login', label: 'Login', offset: -20 },
-                { screen: 'home', label: 'Home Feed', offset: -40 },
-                { screen: 'posts', label: 'Profile', offset: -20 },
-                { screen: 'closet', label: 'Closet', offset: 0 },
-              ].map(({ screen, label, offset }) => (
-                <div key={screen} className="flex flex-col items-center gap-3" style={{ transform: `translateY(${offset}px)` }}>
-                  <PhoneMockup screen={screen} width={160} />
-                  <span className="text-xs uppercase tracking-widest" style={{ color: 'rgba(255,255,255,0.28)', fontSize: '9px' }}>{label}</span>
-                </div>
-              ))}
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      <GoldDivider />
-
-      {/* ── WHY FLUNTR EXISTS ── */}
-      <section className="py-28 px-16 max-md:px-6">
-        <div className="max-w-screen-lg mx-auto grid grid-cols-2 gap-20 items-start max-md:grid-cols-1 max-md:gap-12">
-
-          <Reveal direction="left">
-            <p className="text-xs tracking-widest uppercase mb-5" style={{ color: '#C9A84C' }}>Why Fluntr Exists</p>
-            <h2 className="font-cormorant font-light leading-tight mb-5" style={{ fontSize: 'clamp(32px,4vw,52px)', letterSpacing: '-0.5px' }}>
-              Built for every time<br />you said <em style={{ color: '#E2C97E' }}>"I have nothing to wear."</em>
-            </h2>
-            <p className="leading-relaxed mb-10" style={{ fontSize: '15px' }} style={{ color: 'rgba(255,255,255,0.58)' }}>
-              Fluntr was born from a real frustration — the daily battle of deciding what to wear. We built the app we always wished existed.
-            </p>
-            <div className="p-8" style={{ border: '0.5px solid rgba(201,168,76,0.15)', background: 'rgba(201,168,76,0.03)' }}>
-              <p className="font-cormorant text-xl italic leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>
-                "Born from one too many couple fights about what to wear — we built Fluntr so you never have to fight again."
-              </p>
-              <p className="text-xs uppercase tracking-widest mt-4" style={{ color: '#C9A84C' }}>— The Fluntr Team</p>
-            </div>
-          </Reveal>
-
-          <Reveal direction="right">
-            <div style={{ border: '0.5px solid rgba(201,168,76,0.12)' }}>
-              {[
-                { title: 'The "Nothing to Wear" Paradox', desc: '100 pieces of clothing, zero visibility. Fluntr puts your entire wardrobe in front of you — clean, categorised, always accessible.' },
-                { title: 'The Couple / Friends Fight', desc: '"What should I wear?" shouldn\'t start an argument. Plan looks in advance, share, get a vote — before the fight begins.' },
-                { title: 'Occasion Panic', desc: 'Wedding Saturday. Remembered Friday night. With occasion collections, you plan weeks in advance with what you already own.' },
-                { title: 'Fashion Gatekeeping', desc: 'Every outfit on Fluntr is tagged, linked, shoppable. See it, love it, own it. One tap. No more "where is that from?"' },
-              ].map((item, i) => (
-                <div
-                  key={i}
-                  className="flex gap-5 items-start p-8 transition-colors hover:bg-white/5"
-                  style={{ borderBottom: i < 3 ? '0.5px solid rgba(201,168,76,0.08)' : 'none' }}
-                >
-                  <div className="flex-shrink-0 w-9 h-9 flex items-center justify-center text-xs"
-                    style={{ border: '0.5px solid rgba(201,168,76,0.3)', color: '#C9A84C' }}>✦</div>
-                  <div>
-                    <h4 className="font-cormorant text-lg font-normal mb-2">{item.title}</h4>
-                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.58)' }}>{item.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ── HOW IT WORKS ── */}
-      <section id="how" className="py-28 px-16 max-md:px-6" style={{ background: '#111113', borderTop: '0.5px solid rgba(201,168,76,0.08)' }}>
-        <div className="max-w-4xl mx-auto">
-          <Reveal>
-            <div className="text-center mb-20">
-              <p className="text-xs tracking-widest uppercase mb-5" style={{ color: '#C9A84C' }}>How It Works</p>
-              <h2 className="font-cormorant font-light" style={{ fontSize: 'clamp(36px,5vw,64px)', letterSpacing: '-0.5px' }}>
-                From your wardrobe<br /><em style={{ color: '#E2C97E' }}>to the world.</em>
-              </h2>
-            </div>
-          </Reveal>
-          <div className="grid grid-cols-4 max-md:grid-cols-2 max-sm:grid-cols-1" style={{ border: '0.5px solid rgba(201,168,76,0.1)' }}>
-            {[
-              { num: '01', title: 'Snap & Digitise', desc: 'Photograph your clothes. AI removes backgrounds and categorises each item into your digital closet.' },
-              { num: '02', title: 'Curate Collections', desc: 'Build occasion-based collections. Plan outfits for beach trips, weddings, date nights — weeks in advance.' },
-              { num: '03', title: 'Post & Go Viral', desc: 'Share Vibes, Mirrors, Lookbooks. Run polls, get feedback, and build your style audience.' },
-              { num: '04', title: 'Earn from Every Look', desc: 'Tag items as shoppable. Followers buy directly. Earn straight to your Fluntr wallet.' },
-            ].map((step, i) => (
-              <Reveal key={i} delay={i * 0.1}>
-                <div className="p-10 transition-colors hover:bg-white/5 h-full"
-                  style={{ borderRight: i < 3 ? '0.5px solid rgba(201,168,76,0.1)' : 'none' }}>
-                  <div className="font-cormorant mb-4" style={{ fontSize: '44px', fontWeight: 300, color: 'rgba(201,168,76,0.12)', lineHeight: 1 }}>{step.num}</div>
-                  <h3 className="font-cormorant text-xl font-normal mb-3">{step.title}</h3>
-                  <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.58)' }}>{step.desc}</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── BORROW ── */}
-      <section className="py-28 px-16 max-md:px-6 text-center">
-        <div className="max-w-screen-lg mx-auto">
-          <Reveal>
-            <div className="relative overflow-hidden p-20 max-md:p-10" style={{ border: '0.5px solid rgba(201,168,76,0.15)' }}>
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
-                style={{ width: '500px', height: '500px', background: 'radial-gradient(circle,rgba(201,168,76,.06) 0%,transparent 70%)' }} />
-              <p className="text-xs tracking-widest uppercase mb-6" style={{ color: '#C9A84C' }}>✦ &nbsp; Exclusive Feature &nbsp; ✦</p>
-              <h2 className="font-cormorant font-light leading-tight mb-6" style={{ fontSize: 'clamp(32px,5vw,68px)' }}>
-                Your bestie's wardrobe<br />is now <em style={{ color: '#E2C97E' }}>your</em> wardrobe.
-              </h2>
-              <p className="text-sm leading-relaxed max-w-lg mx-auto mb-12" style={{ color: 'rgba(255,255,255,0.58)' }}>
-                Fluntr's Close Friends feature lets mutual friends browse each other's digital closets and request to borrow real items. The app tracks what's borrowed and when it's back. Fashion, shared.
-              </p>
-              <a href="#waitlist" className="btn-gold">Get Early Access ✦</a>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      <GoldDivider />
-
-      {/* ── TESTIMONIALS ── */}
-      <section className="py-28 px-16 max-md:px-6" style={{ background: '#111113', borderTop: '0.5px solid rgba(201,168,76,0.08)', borderBottom: '0.5px solid rgba(201,168,76,0.08)' }}>
-        <div className="max-w-screen-lg mx-auto">
-          <Reveal>
-            <div className="text-center mb-20">
-              <p className="text-xs tracking-widest uppercase mb-5" style={{ color: '#C9A84C' }}>Early Reactions</p>
-              <h2 className="font-cormorant font-light" style={{ fontSize: 'clamp(36px,5vw,64px)', letterSpacing: '-0.5px' }}>
-                What people are<br /><em style={{ color: '#E2C97E' }}>already saying.</em>
-              </h2>
-            </div>
-          </Reveal>
-          <div className="grid grid-cols-3 max-md:grid-cols-1" style={{ background: 'rgba(201,168,76,0.08)', gap: '1px' }}>
-            {[
-              { q: "Finally an app that gets the 'full wardrobe, nothing to wear' problem. This is literally what I needed.", name: 'Priya S.', handle: '@priyastyles · Mumbai' },
-              { q: "The poll feature is everything. My followers literally helped me pick my outfit for my cousin's wedding.", name: 'Ananya K.', handle: '@ananyaootd · Delhi' },
-              { q: "My boyfriend and I used to fight every time we went out. I showed him this app and he actually got excited.", name: 'Rhea M.', handle: '@rheafashion · Bangalore' },
-            ].map((card, i) => (
-              <Reveal key={i} delay={i * 0.1}>
-                <div className="p-10 transition-colors hover:bg-white/5" style={{ background: '#111113' }}>
-                  <div className="mb-4" style={{ color: '#C9A84C', fontSize: '12px', letterSpacing: '2px' }}>★★★★★</div>
-                  <p className="font-cormorant text-xl italic font-light leading-relaxed mb-7" style={{ color: 'rgba(255,255,255,0.7)' }}>"{card.q}"</p>
-                  <p className="text-xs uppercase tracking-widest" style={{ color: '#C9A84C' }}>{card.name}</p>
-                  <p className="text-xs mt-1" style={{ color: 'rgba(255,255,255,0.58)' }}>{card.handle}</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── WAITLIST ── */}
-      <section id="waitlist" className="py-36 text-center relative overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
-          style={{ width: '700px', height: '700px', background: 'radial-gradient(circle,rgba(201,168,76,.07) 0%,transparent 65%)' }} />
-        <div className="relative z-10 max-w-md mx-auto px-6">
-          <div className="flex justify-center mb-8">
-            <Sparkle size={64} animate />
-          </div>
-          <h2 className="font-cormorant font-light leading-none mb-6" style={{ fontSize: 'clamp(44px,7vw,96px)' }}>
-            Your runway<br /><em style={{ color: '#E2C97E' }}>is almost ready.</em>
+        <Reveal delay={0.1}>
+          <h2
+            className="font-cormorant"
+            style={{ fontSize: 'clamp(28px,3.8vw,52px)', fontWeight: 400, lineHeight: 1.15 }}
+          >
+            Photograph it once.
+            <br />
+            <em style={{ color: GOLD_LIGHT }}>See it forever.</em>
           </h2>
-          <p className="text-sm mb-14" style={{ color: 'rgba(255,255,255,0.58)', letterSpacing: '0.04em' }}>
-            Be the first to experience Fluntr. Join the waitlist.
+          <p className="mt-6 max-w-md text-[15px] leading-relaxed" style={{ color: MUTED }}>
+            Snap a piece and the background drops away on the phone itself.
+            Nothing is uploaded to be processed, nothing waits on a server, and
+            your closet turns into a grid you can actually look through.
           </p>
-          <WaitlistForm onSuccess={() => setWaitlistCount(c => c + 1)} />
-        </div>
-      </section>
+          <ul className="mt-8 flex flex-col gap-3">
+            {[
+              'Backgrounds removed on the device, not in the cloud',
+              'Grouped by colour, type and occasion',
+              'Private by default, shared only when you choose',
+            ].map(point => (
+              <li key={point} className="flex gap-3 text-[14px]" style={{ color: 'rgba(255,255,255,0.56)', lineHeight: 1.65 }}>
+                <span aria-hidden style={{ color: GOLD }}>+</span>
+                {point}
+              </li>
+            ))}
+          </ul>
+        </Reveal>
+      </div>
+    </section>
+  )
+}
 
+// ── 4. HOW IT WORKS ─────────────────────────────────────── four-step grid ──
+function How() {
+  const steps = [
+    ['Photograph', 'Shoot each piece as you wear it. The background goes on its own.'],
+    ['Organise', 'Group by occasion. Beach, office, wedding, whatever you actually do.'],
+    ['Plan', 'Build the outfit the night before, not during the morning.'],
+    ['Share', 'Post the look, or put two up and let people pick.'],
+  ]
+  return (
+    <section id="how" className="px-6 py-24 md:px-12 md:py-32 lg:px-16">
+      <div className="mx-auto max-w-6xl">
+        <Reveal>
+          <p className="mb-6 text-[11px] uppercase" style={{ color: GOLD, letterSpacing: '0.3em' }}>
+            How it works
+          </p>
+          <h2
+            className="font-cormorant mb-16 max-w-2xl"
+            style={{ fontSize: 'clamp(28px,3.8vw,52px)', fontWeight: 400, lineHeight: 1.15 }}
+          >
+            Four steps, then it runs itself.
+          </h2>
+        </Reveal>
+
+        <div className="grid gap-px sm:grid-cols-2 lg:grid-cols-4" style={{ background: 'rgba(201,168,76,0.13)' }}>
+          {steps.map(([title, desc], i) => (
+            <Reveal key={title} delay={i * 0.07}>
+              <div className="h-full p-9" style={{ background: '#09090b' }}>
+                <h3 className="font-cormorant mb-3" style={{ fontSize: 24, fontWeight: 400 }}>{title}</h3>
+                <p className="text-[13.5px] leading-relaxed" style={{ color: 'rgba(255,255,255,0.56)' }}>{desc}</p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ── 5. THE SOCIAL SIDE ───────────────────────────── asymmetric bento, 3 cells ──
+function Bento() {
+  return (
+    <section id="features" className="px-6 py-24 md:px-12 md:py-28 lg:px-16" style={{ background: '#111113' }}>
+      <div className="mx-auto max-w-6xl">
+        <Reveal>
+          <h2
+            className="font-cormorant mb-14 max-w-2xl"
+            style={{ fontSize: 'clamp(28px,3.8vw,52px)', fontWeight: 400, lineHeight: 1.15 }}
+          >
+            Then it gets social.
+          </h2>
+        </Reveal>
+
+        <div className="grid gap-5 lg:grid-cols-3 lg:grid-rows-2">
+          <Reveal className="lg:col-span-2 lg:row-span-2">
+            <div
+              className="flex h-full flex-col justify-between gap-8 overflow-hidden p-9 md:flex-row md:items-end"
+              style={{ border: '0.5px solid rgba(201,168,76,0.16)', background: '#09090b' }}
+            >
+              <div className="max-w-sm">
+                <h3 className="font-cormorant mb-3" style={{ fontSize: 30, fontWeight: 400 }}>
+                  Ask before you commit
+                </h3>
+                <p className="text-[14px] leading-relaxed" style={{ color: 'rgba(255,255,255,0.58)' }}>
+                  Put a look up and see what people think while you still have
+                  time to change. Every post says which pieces made it.
+                </p>
+              </div>
+              <Shot src="app-feed-2" alt="A Fluntr post showing an outfit, with like, comment and share counts" width={182} className="self-center md:self-end" />
+            </div>
+          </Reveal>
+
+          <Reveal delay={0.08}>
+            <div className="h-full p-9" style={{ border: '0.5px solid rgba(201,168,76,0.16)', background: '#09090b' }}>
+              <h3 className="font-cormorant mb-3" style={{ fontSize: 24, fontWeight: 400 }}>
+                See the whole outfit
+              </h3>
+              <p className="text-[13.5px] leading-relaxed" style={{ color: 'rgba(255,255,255,0.58)' }}>
+                Any look breaks down into the pieces behind it, and tells you
+                which ones are already in your closet.
+              </p>
+            </div>
+          </Reveal>
+
+          <Reveal delay={0.14}>
+            <div
+              className="h-full p-9"
+              style={{
+                border: '0.5px solid rgba(201,168,76,0.16)',
+                background: 'linear-gradient(145deg, rgba(201,168,76,0.1) 0%, #09090b 58%)',
+              }}
+            >
+              <h3 className="font-cormorant mb-3" style={{ fontSize: 24, fontWeight: 400 }}>
+                Borrow from friends
+              </h3>
+              <p className="text-[13.5px] leading-relaxed" style={{ color: 'rgba(255,255,255,0.58)' }}>
+                Close friends can look through each other's closets and ask for a
+                piece. Fluntr keeps track of who has what.
+              </p>
+            </div>
+          </Reveal>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ── 6. WHO IT IS FOR ──────────────────────────────────── centred statement ──
+function WhoFor() {
+  return (
+    <section className="px-6 py-24 md:px-12 md:py-32 lg:px-16">
+      <div className="mx-auto max-w-2xl text-center">
+        <Reveal>
+          <h2
+            className="font-cormorant"
+            style={{ fontSize: 'clamp(26px,3.4vw,46px)', fontWeight: 400, lineHeight: 1.22 }}
+          >
+            For people who own plenty
+            <br />
+            and <em style={{ color: GOLD_LIGHT }}>wear a fraction of it.</em>
+          </h2>
+          <p className="mx-auto mt-7 max-w-lg text-[15px] leading-relaxed" style={{ color: MUTED }}>
+            Fluntr is not open yet. We are building it with the people on the
+            waitlist, which is why the list is short and the questions are real.
+          </p>
+        </Reveal>
+      </div>
+    </section>
+  )
+}
+
+// ── 7. WAITLIST ───────────────────────────────────────────── centred CTA ──
+function Waitlist() {
+  return (
+    <section
+      id="waitlist"
+      className="relative overflow-hidden px-6 py-28 text-center md:py-36"
+      style={{ background: '#111113', borderTop: '0.5px solid rgba(201,168,76,0.1)' }}
+    >
+      <div
+        aria-hidden
+        className="pointer-events-none absolute"
+        style={{
+          top: '50%', left: '50%', transform: 'translate(-50%,-50%)',
+          width: 720, height: 720,
+          background: 'radial-gradient(circle, rgba(201,168,76,.075) 0%, transparent 65%)',
+        }}
+      />
+      <div className="relative z-10 mx-auto max-w-md">
+        <Reveal>
+          <h2 className="font-cormorant" style={{ fontSize: 'clamp(32px,4.6vw,60px)', fontWeight: 400, lineHeight: 1.1 }}>
+            Get in early.
+          </h2>
+          <p className="mb-10 mt-5 text-[15px]" style={{ color: MUTED }}>
+            Leave your email and we will tell you the day it opens.
+          </p>
+          <WaitlistForm />
+        </Reveal>
+      </div>
+    </section>
+  )
+}
+
+export default function Home() {
+  return (
+    <>
+      <Head>
+        <title>Fluntr - See everything you own, and actually wear it</title>
+        <meta
+          name="description"
+          content="Your wardrobe is full and you still have nothing to wear. Fluntr puts every piece you own on your phone, so you can see it, plan it, and wear it."
+        />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="canonical" href="https://fluntr.com/" />
+        <meta property="og:title" content="Fluntr - See everything you own, and actually wear it" />
+        <meta property="og:description" content="Your wardrobe is full and you still have nothing to wear. Fluntr puts every piece you own on your phone." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://fluntr.com/" />
+      </Head>
+
+      <Nav />
+      <main>
+        <Hero />
+        <Problem />
+        <Answer />
+        <How />
+        <Bento />
+        <WhoFor />
+        <Waitlist />
+      </main>
       <Footer />
     </>
   )

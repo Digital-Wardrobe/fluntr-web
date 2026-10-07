@@ -64,7 +64,7 @@ export default function Nav() {
           onMouseEnter={e => { e.currentTarget.style.background = '#C9A84C'; e.currentTarget.style.color = '#09090b' }}
           onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#C9A84C' }}
         >
-          Join Waitlist
+          Join the waitlist
         </Link>
       </div>
     </nav>

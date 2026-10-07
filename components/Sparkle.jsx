@@ -1,19 +1,25 @@
-export default function Sparkle({ size = 32, color = '#C9A84C', animate = false, className = '' }) {
+/**
+ * The Fluntr mark. A single four-point star, used as the logo glyph in the nav
+ * and once in the waitlist success state.
+ *
+ * Kept as hand-drawn SVG because it is the brand mark, not decoration: it is one
+ * simple geometric form, and it has to match the wordmark exactly.
+ */
+export default function Sparkle({ size = 24, color = '#C9A84C', animate = false }) {
   return (
     <svg
-      viewBox="0 0 80 80"
-      xmlns="http://www.w3.org/2000/svg"
       width={size}
       height={size}
-      className={`${animate ? 'animate-sparkle' : ''} ${className}`}
-      style={{ filter: animate ? `drop-shadow(0 0 16px ${color}66)` : undefined }}
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+      focusable="false"
+      style={animate ? { animation: 'sparkle 8s ease-in-out infinite' } : undefined}
     >
       <path
-        d="M40 5 L44.5 35.5 L75 40 L44.5 44.5 L40 75 L35.5 44.5 L5 40 L35.5 35.5 Z"
+        d="M12 0.5 C12 7 12 7 23.5 12 C12 17 12 17 12 23.5 C12 17 12 17 0.5 12 C12 7 12 7 12 0.5 Z"
         fill={color}
       />
-      <circle cx="70" cy="12" r="4" fill={color} opacity="0.4" />
-      <circle cx="12" cy="70" r="3" fill={color} opacity="0.22" />
     </svg>
   )
 }
