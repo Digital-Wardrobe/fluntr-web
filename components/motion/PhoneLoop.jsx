@@ -69,7 +69,7 @@ export default function PhoneLoop({ width = 288 }) {
         className="pointer-events-none absolute"
         style={{
           inset: '-18%',
-          background: 'radial-gradient(circle, rgba(201,168,76,0.14) 0%, transparent 62%)',
+          background: 'radial-gradient(circle, rgba(0,71,255,0.16) 0%, transparent 62%)',
         }}
       />
 
@@ -80,10 +80,10 @@ export default function PhoneLoop({ width = 288 }) {
         <div
           className="relative overflow-hidden"
           style={{
-            borderRadius: 30,
-            border: '1px solid rgba(201,168,76,0.26)',
-            boxShadow: '0 40px 90px rgba(0,0,0,0.66)',
-            background: '#0A0A0C',
+            borderRadius: 34,
+            border: '1px solid rgba(21,23,27,0.14)',
+            boxShadow: 'inset 0 0 0 2px rgba(255,255,255,0.9), inset 0 0 0 3px rgba(21,23,27,0.06), 0 40px 90px rgba(21,23,27,0.2)',
+            background: '#fff',
             aspectRatio: '620 / 1344',
           }}
         >
@@ -113,7 +113,7 @@ export default function PhoneLoop({ width = 288 }) {
             <motion.div
               aria-hidden
               className="pointer-events-none absolute inset-y-0 w-1/2"
-              style={{ background: 'linear-gradient(100deg, transparent, rgba(255,255,255,0.055), transparent)' }}
+              style={{ background: 'linear-gradient(100deg, transparent, rgba(255,255,255,0.35), transparent)' }}
               animate={{ x: ['-120%', '220%'] }}
               transition={{ duration: 5.2, repeat: Infinity, repeatDelay: 2.6, ease: 'easeInOut' }}
             />
@@ -125,18 +125,15 @@ export default function PhoneLoop({ width = 288 }) {
       {CHIPS.map(chip => (
         <motion.span
           key={chip.label}
-          className="absolute hidden whitespace-nowrap md:block"
+          className="glass absolute hidden whitespace-nowrap md:block"
           style={{
             left: chip.left,
             top: chip.top,
-            padding: '6px 13px',
+            padding: '8px 14px',
             borderRadius: 999,
-            fontSize: 10.5,
-            letterSpacing: '0.1em',
-            color: '#E2C97E',
-            background: 'rgba(12,12,15,0.86)',
-            border: '0.5px solid rgba(201,168,76,0.4)',
-            backdropFilter: 'blur(6px)',
+            fontSize: 12,
+            fontWeight: 500,
+            color: '#15171B',
           }}
           initial={reduce ? false : { opacity: 0, scale: 0.7, y: 10 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}

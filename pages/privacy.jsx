@@ -148,10 +148,10 @@ export default function PrivacyPolicy() {
             </Head>
 
             <div style={{
-                background: '#09090b',
+                background: '#F6F7F9',
                 minHeight: '100vh',
-                fontFamily: "'Jost', sans-serif",
-                color: '#fff',
+                fontFamily: "'Inter', system-ui, sans-serif",
+                color: '#15171B',
             }}>
                 {/* Nav */}
                 <nav style={{
@@ -159,21 +159,21 @@ export default function PrivacyPolicy() {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    borderBottom: '0.5px solid rgba(201,168,76,0.1)',
-                    background: 'rgba(9,9,11,0.95)',
+                    borderBottom: '1px solid rgba(21,23,27,0.08)',
+                    background: 'rgba(246,247,249,0.92)', backdropFilter: 'blur(16px)',
                     position: 'sticky',
                     top: 0,
                     zIndex: 50,
                 }}>
                     <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }}>
                         <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" width={20} height={20}>
-                            <path d="M30 4 L33.5 26.5 L56 30 L33.5 33.5 L30 56 L26.5 33.5 L4 30 L26.5 26.5 Z" fill="#C9A84C" />
+                            <path d="M30 4 L33.5 26.5 L56 30 L33.5 33.5 L30 56 L26.5 33.5 L4 30 L26.5 26.5 Z" fill="#0047FF" />
                         </svg>
-                        <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '18px', letterSpacing: '3px', color: '#fff', fontWeight: 400 }}>
+                        <span style={{ fontFamily: "'Instrument Serif', serif", fontSize: '18px', letterSpacing: '0', color: '#15171B', fontWeight: 600 }}>
                             fluntr
                         </span>
                     </Link>
-                    <Link href="/" style={{ fontSize: '11px', letterSpacing: '0.15em', color: 'rgba(255,255,255,0.4)', textDecoration: 'none', textTransform: 'uppercase' }}>
+                    <Link href="/" style={{ fontSize: '11px', letterSpacing: '0.15em', color: 'rgba(21,23,27,0.7)', textDecoration: 'none', textTransform: 'uppercase' }}>
                         ← Back to Home
                     </Link>
                 </nav>
@@ -183,26 +183,26 @@ export default function PrivacyPolicy() {
                     padding: '60px 24px 40px',
                     maxWidth: '760px',
                     margin: '0 auto',
-                    borderBottom: '0.5px solid rgba(201,168,76,0.1)',
+                    borderBottom: '1px solid rgba(21,23,27,0.08)',
                 }}>
-                    <p style={{ fontSize: '10px', letterSpacing: '0.3em', color: '#C9A84C', textTransform: 'uppercase', marginBottom: '16px', fontWeight: 400 }}>
+                    <p style={{ fontSize: '10px', letterSpacing: '0.3em', color: '#0047FF', textTransform: 'uppercase', marginBottom: '16px', fontWeight: 400 }}>
                         Legal
                     </p>
                     <h1 style={{
-                        fontFamily: "'Cormorant Garamond', serif",
+                        fontFamily: "'Instrument Serif', serif",
                         fontSize: 'clamp(36px, 8vw, 64px)',
-                        fontWeight: 300,
+                        fontWeight: 400,
                         lineHeight: 1.05,
-                        color: '#fff',
+                        color: '#15171B',
                         marginBottom: '20px',
                         letterSpacing: '-0.5px',
                     }}>
                         Privacy Policy
                     </h1>
-                    <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.45)', lineHeight: 1.8 }}>
-                        Effective Date: <strong style={{ color: 'rgba(255,255,255,0.7)' }}>June 3, 2026</strong>
+                    <p style={{ fontSize: '14px', color: 'rgba(21,23,27,0.75)', lineHeight: 1.8 }}>
+                        Effective Date: <strong style={{ color: 'rgba(21,23,27,1)' }}>June 3, 2026</strong>
                     </p>
-                    <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.45)', lineHeight: 1.8, marginTop: '8px' }}>
+                    <p style={{ fontSize: '14px', color: 'rgba(21,23,27,0.75)', lineHeight: 1.8, marginTop: '8px' }}>
                         Melchizedek Technologies Private Limited ("MTPL", "we", "us", or "our") operates the Fluntr mobile application (the "App"). This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our digital wardrobe and social commerce platform.
                     </p>
 
@@ -210,9 +210,9 @@ export default function PrivacyPolicy() {
                     <div style={{
                         marginTop: '28px',
                         padding: '20px 24px',
-                        background: 'rgba(201,168,76,0.06)',
-                        border: '0.5px solid rgba(201,168,76,0.25)',
-                        borderRadius: '2px',
+                        background: 'rgba(0,71,255,0.06)',
+                        border: '1px solid rgba(0,71,255,0.18)',
+                        borderRadius: '16px',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'space-between',
@@ -220,8 +220,8 @@ export default function PrivacyPolicy() {
                         gap: '12px',
                     }}>
                         <div>
-                            <p style={{ fontSize: '13px', color: '#fff', fontWeight: 500, marginBottom: '4px' }}>Want to delete your account?</p>
-                            <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.45)' }}>Submit a data deletion request instantly.</p>
+                            <p style={{ fontSize: '13px', color: '#15171B', fontWeight: 500, marginBottom: '4px' }}>Want to delete your account?</p>
+                            <p style={{ fontSize: '12px', color: 'rgba(21,23,27,0.75)' }}>Submit a data deletion request instantly.</p>
                         </div>
                         <a
                             href="https://forms.gle/kM4CPqDnbuvgk2QZ6"
@@ -229,8 +229,9 @@ export default function PrivacyPolicy() {
                             rel="noopener noreferrer"
                             style={{
                                 padding: '10px 24px',
-                                background: '#C9A84C',
-                                color: '#09090b',
+                                background: '#0047FF',
+                                color: '#fff',
+                                borderRadius: 999,
                                 fontSize: '11px',
                                 letterSpacing: '0.15em',
                                 textTransform: 'uppercase',
@@ -251,14 +252,14 @@ export default function PrivacyPolicy() {
                             key={section.num}
                             style={{
                                 padding: '40px 0',
-                                borderBottom: '0.5px solid rgba(255,255,255,0.06)',
+                                borderBottom: '1px solid rgba(21,23,27,0.07)',
                             }}
                         >
                             <div style={{ display: 'flex', gap: '20px', alignItems: 'flex-start' }}>
                                 <span style={{
-                                    fontFamily: "'Cormorant Garamond', serif",
+                                    fontFamily: "'Instrument Serif', serif",
                                     fontSize: '13px',
-                                    color: 'rgba(201,168,76,0.5)',
+                                    color: 'rgba(0,71,255,0.6)',
                                     letterSpacing: '0.1em',
                                     flexShrink: 0,
                                     paddingTop: '4px',
@@ -267,10 +268,10 @@ export default function PrivacyPolicy() {
                                 </span>
                                 <div style={{ flex: 1 }}>
                                     <h2 style={{
-                                        fontFamily: "'Cormorant Garamond', serif",
+                                        fontFamily: "'Instrument Serif', serif",
                                         fontSize: 'clamp(22px, 5vw, 30px)',
                                         fontWeight: 400,
-                                        color: '#fff',
+                                        color: '#15171B',
                                         marginBottom: '24px',
                                         letterSpacing: '-0.2px',
                                     }}>
@@ -282,7 +283,7 @@ export default function PrivacyPolicy() {
                                                 <p style={{
                                                     fontSize: '12px',
                                                     letterSpacing: '0.1em',
-                                                    color: '#C9A84C',
+                                                    color: '#0047FF',
                                                     textTransform: 'uppercase',
                                                     marginBottom: '6px',
                                                     fontWeight: 400,
@@ -291,7 +292,7 @@ export default function PrivacyPolicy() {
                                                 </p>
                                                 <p style={{
                                                     fontSize: '14px',
-                                                    color: 'rgba(255,255,255,0.55)',
+                                                    color: 'rgba(21,23,27,0.85)',
                                                     lineHeight: 1.85,
                                                     letterSpacing: '0.01em',
                                                 }}>
@@ -306,7 +307,7 @@ export default function PrivacyPolicy() {
                                                             display: 'inline-block',
                                                             marginTop: '10px',
                                                             fontSize: '13px',
-                                                            color: '#C9A84C',
+                                                            color: '#0047FF',
                                                             textDecoration: 'underline',
                                                             letterSpacing: '0.02em',
                                                         }}
@@ -325,7 +326,7 @@ export default function PrivacyPolicy() {
 
                 {/* Footer */}
                 <div style={{
-                    borderTop: '0.5px solid rgba(201,168,76,0.1)',
+                    borderTop: '1px solid rgba(21,23,27,0.08)',
                     padding: '32px 24px',
                     display: 'flex',
                     alignItems: 'center',
@@ -335,10 +336,10 @@ export default function PrivacyPolicy() {
                     maxWidth: '760px',
                     margin: '0 auto',
                 }}>
-                    <p style={{ fontSize: '11px', color: 'rgba(255,255,255,0.2)', letterSpacing: '0.05em' }}>
+                    <p style={{ fontSize: '11px', color: 'rgba(21,23,27,0.5)', letterSpacing: '0.05em' }}>
                         © 2026 Melchizedek Technologies Private Limited. All rights reserved.
                     </p>
-                    <Link href="/" style={{ fontSize: '11px', color: 'rgba(255,255,255,0.25)', textDecoration: 'none', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                    <Link href="/" style={{ fontSize: '11px', color: 'rgba(21,23,27,0.55)', textDecoration: 'none', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
                         fluntr.com
                     </Link>
                 </div>

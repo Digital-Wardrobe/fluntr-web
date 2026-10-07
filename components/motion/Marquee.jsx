@@ -17,8 +17,8 @@ export default function Marquee({ items, reverse = false, duration = 34, tone = 
     <div
       className="relative w-full overflow-hidden py-7"
       style={{
-        borderTop: '0.5px solid rgba(201,168,76,0.12)',
-        borderBottom: '0.5px solid rgba(201,168,76,0.12)',
+        borderTop: '1px solid rgba(21,23,27,0.07)',
+        borderBottom: '1px solid rgba(21,23,27,0.07)',
         // feather both ends so the phrases drift out of view rather than being chopped
         maskImage: 'linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent)',
         WebkitMaskImage: 'linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent)',
@@ -32,11 +32,11 @@ export default function Marquee({ items, reverse = false, duration = 34, tone = 
         {row.map((item, i) => (
           <span
             key={`${item}-${i}`}
-            className="font-cormorant whitespace-nowrap"
+            className="font-serif-display whitespace-nowrap"
             style={{ fontSize: 'clamp(22px,3.4vw,46px)', color: tone, fontStyle: 'italic', lineHeight: 1 }}
           >
             {item}
-            <span aria-hidden className="not-italic" style={{ color: 'rgba(201,168,76,0.4)', margin: '0 0 0 2.2rem' }}>
+            <span aria-hidden className="not-italic" style={{ color: 'rgba(0,71,255,0.45)', margin: '0 0 0 2.2rem' }}>
               &bull;
             </span>
           </span>

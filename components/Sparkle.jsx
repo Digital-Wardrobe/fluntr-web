@@ -5,7 +5,7 @@
  * Kept as hand-drawn SVG because it is the brand mark, not decoration: it is one
  * simple geometric form, and it has to match the wordmark exactly.
  */
-export default function Sparkle({ size = 24, color = '#C9A84C', animate = false }) {
+export default function Sparkle({ size = 24, color = '#0047FF', animate = false }) {
   return (
     <svg
       width={size}

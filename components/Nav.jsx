@@ -1,26 +1,21 @@
-// Drop into: flauntr-web/components/Nav.jsx
 'use client'
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import Sparkle from './Sparkle'
 
+/** Floating glass bar. Hides on scroll-down, returns on scroll-up. */
 export default function Nav() {
   const [visible, setVisible] = useState(true)
+  const [scrolled, setScrolled] = useState(false)
   const lastY = useRef(0)
 
   useEffect(() => {
     const onScroll = () => {
       const y = window.scrollY
-      if (y < 80) {
-        // Always show when near the top
-        setVisible(true)
-      } else if (y > lastY.current) {
-        // Scrolling DOWN — hide
-        setVisible(false)
-      } else {
-        // Scrolling UP — show
-        setVisible(true)
-      }
+      setScrolled(y > 24)
+      if (y < 80) setVisible(true)
+      else if (y > lastY.current) setVisible(false)
+      else setVisible(true)
       lastY.current = y
     }
     window.addEventListener('scroll', onScroll, { passive: true })
@@ -28,45 +23,35 @@ export default function Nav() {
   }, [])
 
   return (
-    <nav
-      className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-16 py-6 max-md:px-6"
+    <div
+      className="fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-4"
       style={{
-        borderBottom: '0.5px solid rgba(201,168,76,0.08)',
-        backdropFilter: 'blur(16px)',
-        background: 'rgba(9,9,11,0.88)',
-        transform: visible ? 'translateY(0)' : 'translateY(-110%)',
-        transition: 'transform 0.35s cubic-bezier(0.4,0,0.2,1)',
-        willChange: 'transform',
+        transform: visible ? 'translateY(0)' : 'translateY(-130%)',
+        transition: 'transform 0.4s cubic-bezier(0.16,1,0.3,1)',
+        pointerEvents: 'none',
       }}
     >
-      <Link href="/" className="flex items-center gap-3 no-underline">
-        <Sparkle size={24} />
-        <span className="font-cormorant text-xl font-normal tracking-widest text-white">fluntr</span>
-      </Link>
+      <nav
+        className={`${scrolled ? 'glass' : ''} flex w-full max-w-6xl items-center justify-between px-5 py-2.5 md:px-6`}
+        style={{ borderRadius: 999, pointerEvents: 'auto', transition: 'background 0.3s' }}
+      >
+        <Link href="/" className="flex items-center gap-2.5 no-underline">
+          <Sparkle size={20} />
+          <span className="text-[17px] font-semibold tracking-tight" style={{ color: '#15171B' }}>fluntr</span>
+        </Link>
 
-      <div className="hidden md:flex items-center gap-8">
-        {[['#features', 'Features'], ['#how', 'How it Works'], ['#app', 'The App']].map(([href, label]) => (
-          <Link
-            key={href}
-            href={href}
-            className="text-xs tracking-widest uppercase no-underline transition-colors"
-            style={{ color: 'rgba(255,255,255,0.4)' }}
-            onMouseEnter={e => e.target.style.color = '#C9A84C'}
-            onMouseLeave={e => e.target.style.color = 'rgba(255,255,255,0.4)'}
-          >
-            {label}
-          </Link>
-        ))}
-        <Link
-          href="#waitlist"
-          className="px-6 py-2.5 text-xs tracking-widest uppercase no-underline transition-all"
-          style={{ border: '0.5px solid #C9A84C', color: '#C9A84C' }}
-          onMouseEnter={e => { e.currentTarget.style.background = '#C9A84C'; e.currentTarget.style.color = '#09090b' }}
-          onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#C9A84C' }}
-        >
+        <div className="hidden items-center gap-7 md:flex">
+          {[['#features', 'Features'], ['#how', 'How it works'], ['#app', 'The app']].map(([href, label]) => (
+            <Link key={href} href={href} className="text-[13.5px] font-medium no-underline transition-colors hover:text-[#0047FF]" style={{ color: '#3A3D45' }}>
+              {label}
+            </Link>
+          ))}
+        </div>
+
+        <Link href="#waitlist" className="btn-primary" style={{ padding: '10px 18px', fontSize: 13 }}>
           Join the waitlist
         </Link>
-      </div>
-    </nav>
+      </nav>
+    </div>
   )
 }

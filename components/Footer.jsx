@@ -1,29 +1,19 @@
-// Drop into: flauntr-web/components/Footer.jsx
 import Sparkle from './Sparkle'
 
 export default function Footer() {
   return (
     <footer
-      className="flex items-center justify-between flex-wrap gap-6 px-16 py-14 max-md:px-6 max-md:flex-col max-md:items-start"
-      style={{ borderTop: '0.5px solid rgba(201,168,76,0.08)' }}
+      className="flex flex-wrap items-center justify-between gap-6 px-6 py-12 md:px-16"
+      style={{ borderTop: '1px solid rgba(21,23,27,0.08)' }}
     >
-      <div className="flex items-center gap-3">
-        <Sparkle size={18} color="rgba(201,168,76,0.4)" />
-        <span className="font-cormorant text-base tracking-widest" style={{ color: 'rgba(255,255,255,0.35)' }}>fluntr</span>
+      <div className="flex items-center gap-2.5">
+        <Sparkle size={16} color="#767A85" />
+        <span className="text-[15px] font-semibold tracking-tight" style={{ color: '#3A3D45' }}>fluntr</span>
       </div>
-      <p style={{ fontSize: '10px', color: 'rgba(255,255,255,0.18)', letterSpacing: '0.08em' }}>
-        © 2025 Fluntr. All rights reserved.
-      </p>
-      <div className="flex gap-7">
-        {['Instagram', 'Twitter', 'Privacy'].map(link => (
-          <a
-            key={link}
-            href="/privacy"
-            className="no-underline transition-colors"
-            style={{ fontSize: '10px', letterSpacing: '0.15em', color: 'rgba(255,255,255,0.25)', textTransform: 'uppercase' }}
-            onMouseEnter={e => e.target.style.color = '#C9A84C'}
-            onMouseLeave={e => e.target.style.color = 'rgba(255,255,255,0.25)'}
-          >
+      <p style={{ fontSize: 12, color: '#9AA0A6' }}>© 2026 Fluntr. All rights reserved.</p>
+      <div className="flex gap-6">
+        {[['Instagram', '#'], ['Twitter', '#'], ['Privacy', '/privacy']].map(([link, href]) => (
+          <a key={link} href={href} className="no-underline transition-colors hover:text-[#0047FF]" style={{ fontSize: 12.5, fontWeight: 500, color: '#767A85' }}>
             {link}
           </a>
         ))}

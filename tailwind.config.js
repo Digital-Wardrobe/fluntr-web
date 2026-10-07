@@ -7,36 +7,19 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        black: '#09090b',
-        black2: '#111113',
-        black3: '#1c1c1f',
-        gold: '#C9A84C',
-        'gold-light': '#E2C97E',
-        'gold-pale': '#F5EDD8',
+        bg: '#F6F7F9',
+        surface: '#F4F5F7',
+        ink: '#15171B',
+        'ink-2': '#3A3D45',
+        muted: '#767A85',
+        'muted-soft': '#9AA0A6',
+        blue: '#0047FF',
+        'blue-deep': '#0036C2',
+        pill: '#3A3A3C',
       },
       fontFamily: {
-        cormorant: ['Cormorant Garamond', 'serif'],
-        jost: ['Jost', 'sans-serif'],
-      },
-      animation: {
-        marquee: 'marquee 28s linear infinite',
-        sparkle: 'sparkle 8s ease-in-out infinite',
-        fadeUp: 'fadeUp 0.8s ease forwards',
-      },
-      keyframes: {
-        marquee: {
-          '0%': { transform: 'translateX(0)' },
-          '100%': { transform: 'translateX(-50%)' },
-        },
-        sparkle: {
-          '0%': { transform: 'rotate(0deg) scale(1)' },
-          '50%': { transform: 'rotate(180deg) scale(1.06)' },
-          '100%': { transform: 'rotate(360deg) scale(1)' },
-        },
-        fadeUp: {
-          from: { opacity: '0', transform: 'translateY(28px)' },
-          to: { opacity: '1', transform: 'translateY(0)' },
-        },
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        serif: ['Instrument Serif', 'serif'],
       },
     },
   },

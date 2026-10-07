@@ -51,7 +51,7 @@ export default function TiltCard({ children, className = '', style, max = 6, she
           className="pointer-events-none absolute inset-y-0 w-1/3 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
           style={{
             left: sheenX,
-            background: 'linear-gradient(100deg, transparent, rgba(226,201,126,0.11), transparent)',
+            background: 'linear-gradient(100deg, transparent, rgba(255,255,255,0.5), transparent)',
           }}
         />
       ) : null}

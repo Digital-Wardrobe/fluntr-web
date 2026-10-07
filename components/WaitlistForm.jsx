@@ -4,6 +4,8 @@ import Sparkle from './Sparkle'
 
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzSQkxDshm3SigX4og7GHrz98ywQGmakHJy_yDKelY9fwMsn9lJ9Wco7y1XTU0HYynn9g/exec'
 
+const ERR = { fontSize: 12, color: '#D93025', marginTop: -6 }
+
 export default function WaitlistForm({ onSuccess }) {
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
@@ -21,18 +23,15 @@ export default function WaitlistForm({ onSuccess }) {
     return Object.keys(e).length === 0
   }
 
-  // Only allow digits, max 10
-  const handlePhoneChange = (e) => {
-    const val = e.target.value.replace(/\D/g, '').slice(0, 10)
-    setPhone(val)
+  const handlePhoneChange = e => {
+    setPhone(e.target.value.replace(/\D/g, '').slice(0, 10))
     setErrors(p => ({ ...p, phone: false }))
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault()
     if (!validate()) return
     setLoading(true)
-
     try {
       await fetch(APPS_SCRIPT_URL, {
         method: 'POST',
@@ -51,107 +50,74 @@ export default function WaitlistForm({ onSuccess }) {
 
   if (done) {
     return (
-      <div className="flex flex-col items-center gap-4 p-12 text-center"
-        style={{ border: '0.5px solid rgba(201,168,76,0.25)', background: 'rgba(201,168,76,0.03)' }}>
-        <Sparkle size={40} animate />
-        <h3 className="font-cormorant text-3xl font-normal" style={{ color: '#E2C97E' }}>
-          You're on the runway.
-        </h3>
-        <p className="text-xs leading-relaxed tracking-wide" style={{ color: 'rgba(255,255,255,0.4)' }}>
-          Welcome to Fluntr. Your closet's about to get its moment —<br />we'll be in touch soon.
-        </p>
+      <div className="glass flex flex-col items-center gap-3 p-10 text-center" style={{ borderRadius: 24 }}>
+        <Sparkle size={36} animate />
+        <h3 className="font-serif-display" style={{ fontSize: 34, color: '#15171B' }}>You&apos;re on the list.</h3>
+        <p style={{ fontSize: 14, color: '#767A85' }}>We will tell you the day it opens.</p>
       </div>
     )
   }
 
-  return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-3 w-full max-w-md mx-auto">
+  const errStyle = { borderColor: '#D93025', boxShadow: '0 0 0 4px rgba(217,48,37,0.08)' }
 
-      {/* Name */}
+  return (
+    <form onSubmit={handleSubmit} className="mx-auto flex w-full max-w-md flex-col gap-3">
       <input
-        className="gold-input"
-        placeholder="Your Name"
+        className="field"
+        placeholder="Your name"
         value={name}
         onChange={e => { setName(e.target.value); setErrors(p => ({ ...p, name: false })) }}
-        style={errors.name ? { borderColor: 'rgba(201,168,76,0.8)' } : {}}
-        autoComplete="off"
+        style={errors.name ? errStyle : undefined}
+        autoComplete="name"
       />
-      {errors.name && (
-        <p style={{ fontSize: '11px', color: '#C9A84C', marginTop: '-8px', letterSpacing: '0.05em' }}>
-          Please enter your name
-        </p>
-      )}
+      {errors.name ? <p style={ERR}>Please enter your name</p> : null}
 
-      {/* Phone */}
-      <div style={{ position: 'relative' }}>
+      <div className="relative">
         <input
-          className="gold-input"
-          placeholder="Phone Number (10 digits)"
+          className="field"
+          placeholder="Phone number (10 digits)"
           type="tel"
           inputMode="numeric"
           value={phone}
           onChange={handlePhoneChange}
-          style={errors.phone ? { borderColor: 'rgba(201,168,76,0.8)' } : {}}
-          autoComplete="off"
+          style={errors.phone ? errStyle : undefined}
+          autoComplete="tel"
           maxLength={10}
         />
-        {/* digit counter */}
-        <span style={{
-          position: 'absolute',
-          right: '14px',
-          top: '50%',
-          transform: 'translateY(-50%)',
-          fontSize: '11px',
-          color: phone.length === 10 ? '#C9A84C' : 'rgba(255,255,255,0.22)',
-          letterSpacing: '0.05em',
-          pointerEvents: 'none',
-        }}>
+        <span
+          className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2"
+          style={{ fontSize: 12, color: phone.length === 10 ? '#0047FF' : '#9AA0A6', fontVariantNumeric: 'tabular-nums' }}
+        >
           {phone.length}/10
         </span>
       </div>
-      {errors.phone && (
-        <p style={{ fontSize: '11px', color: '#C9A84C', marginTop: '-8px', letterSpacing: '0.05em' }}>
-          Please enter a valid 10-digit phone number
-        </p>
-      )}
+      {errors.phone ? <p style={ERR}>Please enter a valid 10-digit phone number</p> : null}
 
-      {/* Struggle */}
       <select
-        className="gold-input"
+        className="field"
         value={struggle}
         onChange={e => { setStruggle(e.target.value); setErrors(p => ({ ...p, struggle: false })) }}
         style={{
-          color: struggle ? 'white' : 'rgba(255,255,255,0.25)',
-          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23C9A84C' opacity='.6'/%3E%3C/svg%3E")`,
+          color: struggle ? '#15171B' : '#9AA0A6',
+          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23767A85' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E")`,
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'right 16px center',
-          ...(errors.struggle ? { borderColor: 'rgba(201,168,76,0.8)' } : {}),
-        }}>
-        <option value="" disabled>Your Biggest Wardrobe Struggle</option>
+          ...(errors.struggle ? errStyle : null),
+        }}
+      >
+        <option value="" disabled>Your biggest wardrobe struggle</option>
         <option value="I never know what to wear">I never know what to wear</option>
         <option value="I forget what clothes I own">I forget what clothes I own</option>
-        <option value="Can't plan outfits for occasions">Can't plan outfits for occasions</option>
-        <option value="My partner / friends never agree on my fits">My partner / friends never agree on my fits 😅</option>
+        <option value="Can't plan outfits for occasions">Can&apos;t plan outfits for occasions</option>
+        <option value="My partner / friends never agree on my fits">My partner / friends never agree on my fits</option>
       </select>
-      {errors.struggle && (
-        <p style={{ fontSize: '11px', color: '#C9A84C', marginTop: '-8px', letterSpacing: '0.05em' }}>
-          Please select an option
-        </p>
-      )}
+      {errors.struggle ? <p style={ERR}>Please select an option</p> : null}
 
-      <button
-        type="submit"
-        disabled={loading}
-        className="btn-gold mt-1 w-full"
-        style={{ opacity: loading ? 0.7 : 1 }}
-      >
-        {loading ? 'Joining...' : 'Join the Waitlist ✦'}
+      <button type="submit" disabled={loading} className="btn-primary mt-1 w-full justify-center" style={{ opacity: loading ? 0.7 : 1 }}>
+        {loading ? 'Joining…' : 'Join the waitlist'}
       </button>
 
-      <p className="text-center mt-2"
-        style={{ fontSize: '10px', color: 'rgba(255,255,255,0.18)', letterSpacing: '0.06em' }}>
-        No spam. No noise. Just Fluntr.
-      </p>
+      <p className="mt-1 text-center" style={{ fontSize: 12, color: '#9AA0A6' }}>No spam. We will message you once, when it opens.</p>
     </form>
   )
 }

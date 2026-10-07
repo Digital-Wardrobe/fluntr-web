@@ -16,7 +16,7 @@ export default function Orb({ left = '50%', top = '50%', size = 760, pulse = fal
         width: size, height: size,
         maxWidth: '150vw', maxHeight: '150vw',
         translateX: '-50%', translateY: '-50%',
-        background: `radial-gradient(circle, rgba(201,168,76,${pulse ? 0.085 : 0.065}) 0%, transparent 65%)`,
+        background: `radial-gradient(circle, rgba(0,71,255,${pulse ? 0.12 : 0.09}) 0%, transparent 65%)`,
       }}
       animate={
         reduce
