@@ -112,7 +112,7 @@ function Face({ face, blinking, open, id }) {
   }
 }
 
-export default function Kween({ expression = 'idle', talking = false, follow = true, size = 180, className = '', style, onClick }) {
+export default function Kween({ expression = 'idle', talking = false, follow = true, walking = false, mirrored = false, size = 180, className = '', style, onClick }) {
   const reduce = useReducedMotion()
   const id = useId().replace(/:/g, '')
   const [open, setOpen] = useState(false)
@@ -151,11 +151,11 @@ export default function Kween({ expression = 'idle', talking = false, follow = t
       const r = el.getBoundingClientRect(); if (r.bottom < 0 || r.top > window.innerHeight) return
       const dx = Math.max(-1, Math.min(1, (e.clientX - (r.left + r.width / 2)) / 260))
       const dy = Math.max(-1, Math.min(1, (e.clientY - (r.top + r.height * 0.55)) / 260))
-      fx.set(dx * 7); fy.set(dy * 5)
+      fx.set(dx * 7 * (mirrored ? -1 : 1)); fy.set(dy * 5)
     }
     window.addEventListener('pointermove', onMove, { passive: true })
     return () => window.removeEventListener('pointermove', onMove)
-  }, [follow, reduce, fx, fy])
+  }, [follow, reduce, fx, fy, mirrored])
 
   const blinking = blink && !['love', 'sleepy', 'content'].includes(expression)
 
@@ -165,11 +165,17 @@ export default function Kween({ expression = 'idle', talking = false, follow = t
       style={{ width: size, display: 'block', cursor: onClick ? 'pointer' : 'default', ...style }}
       onClick={() => { if (!reduce) setHop(h => h + 1); onClick && onClick() }}
     >
+      {/* the app's waddle while walking: a bob on each step and a lean into it */}
+      <motion.div
+        style={{ transformOrigin: '50% 100%' }}
+        animate={walking && !reduce ? { y: [0, -6, 0, -6, 0], rotate: [0, 4.5, 0, -4.5, 0], scaleX: mirrored ? -1 : 1 } : { y: 0, rotate: 0, scaleX: mirrored ? -1 : 1 }}
+        transition={walking ? { duration: 0.84, repeat: Infinity, ease: 'easeInOut', scaleX: { duration: 0.2 } } : { duration: 0.25 }}
+      >
       {/* the app's hop: crouch, leap, land, settle */}
       <motion.div
         key={hop}
         style={{ transformOrigin: '50% 100%' }}
-        animate={hop && !reduce ? { y: [0, 0, -size * 0.17, 0, 0], scaleX: [1, 1.12, 0.89, 1.1, 1], scaleY: [1, 0.86, 1.13, 0.9, 1] } : {}}
+        animate={hop && !reduce ? { y: [0, 0, '-17%', 0, 0], scaleX: [1, 1.12, 0.89, 1.1, 1], scaleY: [1, 0.86, 1.13, 0.9, 1] } : {}}
         transition={{ duration: 0.79, times: [0, 0.14, 0.44, 0.7, 1], ease: 'easeOut' }}
       >
         <motion.svg
@@ -195,6 +201,7 @@ export default function Kween({ expression = 'idle', talking = false, follow = t
             </motion.g>
           </g>
         </motion.svg>
+      </motion.div>
       </motion.div>
     </motion.div>
   )

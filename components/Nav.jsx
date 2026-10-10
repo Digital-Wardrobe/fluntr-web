@@ -37,7 +37,7 @@ export default function Nav() {
         </Link>
 
         <div className="hidden items-center gap-7 md:flex">
-          {[['#how', 'Try it'], ['#app', 'The app'], ['#features', 'Kween']].map(([href, label]) => (
+          {[['/#how', 'Try it'], ['/#app', 'The app'], ['/#features', 'Kween'], ['/questions', 'Questions']].map(([href, label]) => (
             <Link key={href} href={href} className="text-[14px] font-medium no-underline transition-colors hover:text-[#121317]" style={{ color: '#3A3D45' }}>
               {label}
             </Link>
@@ -46,7 +46,7 @@ export default function Nav() {
 
         <div className="flex items-center gap-1.5">
           <SoundToggle />
-          <Link href="#waitlist" className="btn-primary" style={{ padding: '10px 18px', fontSize: 13.5 }}>
+          <Link href="/#waitlist" className="btn-primary" style={{ padding: '10px 18px', fontSize: 13.5 }}>
             Join the waitlist
           </Link>
         </div>

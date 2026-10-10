@@ -10,7 +10,7 @@ import Conversations from '../components/motion/Conversations'
 import Cursors from '../components/motion/Cursors'
 import Blobs from '../components/motion/Blobs'
 import Typed from '../components/motion/Typed'
-import Kween, { Bubble } from '../components/motion/Kween'
+import KweenRoamer, { KweenPerch } from '../components/motion/KweenRoamer'
 
 /*
  * Fluntr homepage.
@@ -25,6 +25,28 @@ import Kween, { Bubble } from '../components/motion/Kween'
 
 const INK = '#121317'
 const MUTED = '#6B7080'
+
+// What Fluntr is, for machines: the app, the company, and the site. Only facts
+// that are true today; no ratings, no prices, no download counts.
+const LD = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization', '@id': 'https://fluntr.com/#org', name: 'Fluntr', legalName: 'Melchizedek Technologies Private Limited', url: 'https://fluntr.com/',
+      email: 'support@fluntr.com', areaServed: 'IN', description: 'Fluntr is a digital wardrobe and style app from India.',
+    },
+    {
+      '@type': 'WebSite', '@id': 'https://fluntr.com/#site', url: 'https://fluntr.com/', name: 'Fluntr', publisher: { '@id': 'https://fluntr.com/#org' },
+    },
+    {
+      '@type': 'SoftwareApplication', '@id': 'https://fluntr.com/#app', name: 'Fluntr', applicationCategory: 'LifestyleApplication', operatingSystem: 'iOS, Android',
+      url: 'https://fluntr.com/', author: { '@id': 'https://fluntr.com/#org' },
+      description: 'Photograph the clothes you own and Fluntr turns them into a closet you can see and search on your phone, plans outfits from it, and lets you post looks and ask friends which to wear. Kween, the in-app stylist, suggests outfits from your own clothes.',
+      featureList: ['Digital wardrobe from photos', 'Background removed on the device', 'Automatic category, colour and occasion', 'Outfit planning from your own closet', 'Post looks and ask friends', 'Kween, an in-app stylist'],
+      keywords: 'digital wardrobe app, closet organiser app, outfit planner, AI stylist, what to wear today, virtual closet, wardrobe app India, OOTD, fit check, capsule wardrobe',
+    },
+  ],
+}
 
 function PillWord({ tone, soft, icon, children }) {
   return (
@@ -66,9 +88,11 @@ function Hero() {
           </p>
         </Reveal>
         <Reveal delay={0.42}>
-          <div className="mt-9 flex flex-wrap justify-center gap-3">
+          <div className="mt-9 flex flex-wrap items-end justify-center gap-3">
             <a href="#waitlist" className="btn-primary">Join the waitlist <span aria-hidden>→</span></a>
             <a href="#how" className="btn-glass glass">Try the demo <span aria-hidden>↓</span></a>
+            {/* she stands beside the buttons when you arrive, and greets you */}
+            <KweenPerch name="hero" className="ml-3 hidden md:block" width="clamp(84px, 7.5vw, 104px)" />
           </div>
         </Reveal>
       </div>
@@ -86,15 +110,8 @@ function Waitlist() {
     <section id="waitlist" className="relative overflow-hidden px-6 py-28 md:py-36">
       <Blobs tones={['#FFE3CC', '#EEEBFF', '#E4F3F6']} opacity={0.8} />
       <div className="relative z-10 mx-auto grid max-w-5xl items-center gap-12 lg:grid-cols-[1fr_minmax(0,460px)] lg:gap-20">
-        <div className="relative hidden lg:block">
-          <Reveal from="right">
-            <div className="relative mx-auto" style={{ width: 260 }}>
-              <Kween size="100%" expression="happy" />
-              <div className="absolute" style={{ left: '74%', top: '6%', whiteSpace: 'nowrap' }}>
-                <Bubble text="Go on. I’ll keep your spot." />
-              </div>
-            </div>
-          </Reveal>
+        <div className="relative hidden lg:flex lg:justify-center">
+          <KweenPerch name="waitlist" line="Go on. I’ll keep your spot." mood="happy" width="min(26vw, 240px)" />
         </div>
         <Reveal>
           <div className="glass px-7 py-10 md:px-12 md:py-14" style={{ borderRadius: 32 }}>
@@ -138,6 +155,7 @@ export default function Home() {
         <meta property="og:description" content="Photograph each piece once. Kween sorts it, keeps it, and tells you what goes with what." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://fluntr.com/" />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(LD) }} />
       </Head>
 
       <Nav />
@@ -150,6 +168,7 @@ export default function Home() {
       </main>
       <Footer />
       <FloatingBadge />
+      <KweenRoamer />
     </>
   )
 }

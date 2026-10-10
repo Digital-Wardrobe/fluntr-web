@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import TiltCard from './TiltCard'
 import { Device, ClosetScreen, FeedScreen, KweenScreen, byId } from './Demo'
+import { KweenPerch } from './KweenRoamer'
 
 /**
  * Three big cards, alternating sides, each with a real screen in a device and
@@ -14,7 +15,7 @@ import { Device, ClosetScreen, FeedScreen, KweenScreen, byId } from './Demo'
 const INK = '#121317'
 const MUTED = '#6B7080'
 
-function Card({ children, flip = false, tone, title, body, props = [] }) {
+function Card({ children, flip = false, tone, title, body, props = [], perch }) {
   const reduce = useReducedMotion()
   return (
     <motion.div
@@ -46,6 +47,7 @@ function Card({ children, flip = false, tone, title, body, props = [] }) {
         <div>
           <h3 className="h-display" style={{ fontSize: 'clamp(32px,4.2vw,58px)', color: INK }}>{title}</h3>
           <p className="mt-5 max-w-md text-[18px] leading-relaxed md:text-[20px]" style={{ color: MUTED }}>{body}</p>
+          {perch ? <KweenPerch name={perch.name} line={perch.line} mood={perch.mood} className="mt-8 hidden md:block" width="clamp(84px, 8vw, 110px)" /> : null}
         </div>
       </div>
     </motion.div>
@@ -63,6 +65,7 @@ export default function Features() {
           title="See everything you own. Finally."
           body="Every piece, in a grid you can actually look through. Grouped by colour, type and occasion, and searchable the way your memory is not."
           props={[{ text: '+ 8 added', left: '-22%', top: '16%', tone: '#4F9D6B' }, { text: 'Tops · 12', left: '82%', top: '42%' }]}
+          perch={{ name: 'closet', line: 'Your tops and bottoms make 24 combos. Lots to wear!', mood: 'happy' }}
         >
           <ClosetScreen selected={['teal', 'chinos', 'white', 'jeans', 'plaid', 'knit', 'rail', 'snake']} label="pieces · Everyone" />
         </Card>
@@ -73,6 +76,7 @@ export default function Features() {
           title="Ask before you commit."
           body="Put a look up and see what people think while you still have time to change. Every post says which pieces made it."
           props={[{ text: '♥ 142', left: '-16%', top: '26%' }, { text: 'that’s the one', left: '76%', top: '58%', tone: '#121317' }]}
+          perch={{ name: 'feed', line: 'I saw that like. Good taste.', mood: 'love' }}
         >
           <FeedScreen item={byId.teal} />
         </Card>

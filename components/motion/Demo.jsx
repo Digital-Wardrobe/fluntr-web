@@ -2,7 +2,9 @@
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
-import Kween, { Bubble } from './Kween'
+import Kween from './Kween'
+import { KweenPerch } from './KweenRoamer'
+import { kweenSay, kweenMood } from './kweenStore'
 import { useSound } from './Sound'
 
 /**
@@ -399,15 +401,16 @@ export default function Demo() {
   const reduce = useReducedMotion()
   const { play } = useSound()
 
+  // Each step, Kween says its line (through the shared store, so the roaming
+  // mascot says it from wherever she is standing).
   useEffect(() => {
     setLine(STEPS[step].line)
-    if (step === 5) return
-    setMood(step === 3 ? 'happy' : step === 2 ? 'smug' : 'idle')
-    if (reduce) return
-    setTalking(true)
-    const t = setTimeout(() => setTalking(false), 1100)
-    return () => clearTimeout(t)
+    const m = step === 3 ? 'happy' : step === 2 ? 'smug' : 'idle'
+    if (step !== 5) setMood(m)
+    kweenSay(STEPS[step].line, step === 5 ? 'idle' : m, { talkMs: reduce ? 0 : 1100, perch: 'demo' })
   }, [step, reduce])
+  // the in-phone Kween's feelings reach the roamer too
+  useEffect(() => { if (step === 5) kweenMood(mood, talking) }, [mood, talking, step])
 
   function go(n, sound) { if (sound) play(sound); setStep(n) }
   function toggle(id) {
@@ -458,19 +461,8 @@ export default function Demo() {
             </ol>
             {step > 0 ? <button type="button" onClick={restart} className="mt-5 text-[13px] font-medium underline" style={{ color: MUTED, background: 'none', border: 0, cursor: 'pointer' }}>Start over</button> : null}
 
-            {/* Kween, in the layout: on the stage floor, beside the steps, talking */}
-            <div className="mt-8 flex items-end gap-3 md:mt-10">
-              <div className="w-[96px] shrink-0 md:w-[120px]">
-                <Kween expression={mood} talking={talking} size="100%" onClick={() => { play('pop', { rate: 1.2 }); setTalking(true); setTimeout(() => setTalking(false), 900) }} />
-              </div>
-              <div className="pb-5 md:pb-7">
-                <AnimatePresence mode="wait">
-                  <motion.div key={line} initial={{ opacity: 0, scale: 0.7, y: 8 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.8 }} transition={{ duration: 0.35, ease: [0.34, 1.56, 0.64, 1] }}>
-                    <Bubble text={line} />
-                  </motion.div>
-                </AnimatePresence>
-              </div>
-            </div>
+            {/* where Kween stands while she walks you through this: the roamer comes here */}
+            <KweenPerch name="demo" className="mt-8 md:mt-10" width="clamp(96px, 9vw, 120px)" />
           </div>
 
           {/* right: the phone */}

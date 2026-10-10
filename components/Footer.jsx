@@ -9,7 +9,7 @@ export default function Footer() {
       <Logo size={16} color="#3A3D45" />
       <p style={{ fontSize: 12, color: '#9AA0A6' }}>© 2026 Fluntr. All rights reserved.</p>
       <div className="flex gap-6">
-        {[['Instagram', '#'], ['Twitter', '#'], ['Privacy', '/privacy']].map(([link, href]) => (
+        {[['Questions', '/questions'], ['Instagram', '#'], ['Twitter', '#'], ['Privacy', '/privacy']].map(([link, href]) => (
           <a key={link} href={href} className="no-underline transition-colors hover:text-[#15171B]" style={{ fontSize: 12.5, fontWeight: 500, color: '#767A85' }}>
             {link}
           </a>

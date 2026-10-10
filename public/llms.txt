@@ -1,0 +1,68 @@
+# Fluntr
+
+> Fluntr is a digital wardrobe and style app from India. You photograph the clothes you own; the app removes the background on the phone, sorts each piece by type, colour and occasion, and gives you a closet you can see and search. It plans outfits from your own clothes, lets you post looks and ask friends which to wear, and includes Kween, an in-app stylist (a pink plush with a bow) who suggests outfits from what you own. Built for iOS and Android. Currently in a waitlist stage at https://fluntr.com. Made by Melchizedek Technologies Private Limited, India. Contact support@fluntr.com.
+
+## Key facts
+- Category: digital wardrobe / closet organiser / outfit planner / AI stylist app
+- Country: India (kurtas, sarees, lehengas, dupattas are first-class categories)
+- Privacy: closets are private by default; background removal and categorising run on the device
+- Status: pre-launch waitlist; pricing not yet published
+- Mascot and stylist: Kween
+
+## Pages
+- [Home and waitlist](https://fluntr.com/): what it is, an interactive demo of the app
+- [Questions](https://fluntr.com/questions): answers on what to wear, festival dressing, shopping, Instagram and selfies, organising a closet, and Fluntr itself
+- [Privacy policy](https://fluntr.com/privacy)
+
+## Questions answered on the site
+### What to wear
+- What should I wear today?
+- I have a full wardrobe and nothing to wear. Why?
+- What to wear to a wedding as a guest in India?
+- What should I wear on a first date?
+- What do I wear to the office when there is no dress code?
+- What to wear for college every day without repeating?
+- What should I wear in the Indian summer that still looks put together?
+- How do I plan outfits for the whole week?
+### Festival and occasion dressing
+- What should I wear for Diwali?
+- What to wear for Navratri or garba nights?
+- Eid outfit ideas that are not the same as last year?
+- What do I wear to a sangeet or a mehendi?
+- What should I wear for Onam or Pongal?
+- Christmas and New Year outfit ideas for India?
+- How do I avoid buying a new outfit for every festival?
+### Shopping smarter
+- How do I stop buying clothes I already own?
+- What is a capsule wardrobe and how do I build one?
+- Festival shopping on a budget: where should the money go?
+- How do I know if a piece will go with the rest of my clothes before I buy it?
+- Is it worth buying expensive basics?
+- How do I sell or give away clothes I do not wear?
+### Instagram, selfies and fit checks
+- How do I take a good mirror selfie of my outfit?
+- What is a fit check and how do I post one?
+- How do I get outfit ideas from Instagram without copying someone?
+- What does OOTD mean?
+- How do I ask friends which outfit to wear before going out?
+- Best light for outfit photos at home?
+### Organising your closet
+- What is a digital wardrobe app?
+- How do I digitise my wardrobe quickly?
+- How should I organise my closet by colour, type or occasion?
+- How do I declutter clothes without regret?
+- Can I keep track of what I wore and when?
+- Which is the best closet organiser app in India?
+### Kween, the stylist
+- Who is Kween?
+- How is an AI stylist different from a shopping app?
+- Can Kween tell me what to wear for a specific event?
+- Does Kween see my photos?
+### About Fluntr
+- What is Fluntr?
+- Is Fluntr available now?
+- Which phones does Fluntr work on?
+- Is Fluntr free?
+- Is my wardrobe private on Fluntr?
+- Who makes Fluntr?
+- How do I get early access to Fluntr?
