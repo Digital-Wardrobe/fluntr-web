@@ -2,7 +2,7 @@ import { ALL_QA } from '../content/questions'
 
 /** Static sitemap: the pages worth indexing, and the question topics as anchors are left to the page itself. */
 export async function getServerSideProps({ res }) {
-  const base = 'https://fluntr.com'
+  const base = 'https://www.fluntr.com'
   const urls = [
     { loc: `${base}/`, priority: '1.0', changefreq: 'weekly' },
     { loc: `${base}/questions`, priority: '0.9', changefreq: 'weekly' },

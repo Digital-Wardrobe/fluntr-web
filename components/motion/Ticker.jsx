@@ -10,7 +10,7 @@ export default function Ticker() {
   const rowB = [...GALLERY.slice(4), ...GALLERY.slice(0, 4)]
   const rowBx = [...rowB, ...rowB, ...rowB]
   return (
-    <section aria-label="Pieces in Fluntr closets" className="py-16 md:py-20" style={{ background: '#fff' }}>
+    <section aria-label="Pieces in Fluntr closets" className="cv-auto overflow-hidden py-16 md:py-20" style={{ background: '#fff', containIntrinsicSize: 'auto 320px' }}>
       <p className="mb-8 text-center text-[17px] md:text-[20px]" style={{ color: '#9AA0A6', letterSpacing: '-0.01em' }}>
         What ends up in a Fluntr closet:
       </p>

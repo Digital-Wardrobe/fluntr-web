@@ -1,4 +1,5 @@
 'use client'
+import { useEffect, useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 
 /**
@@ -27,6 +28,16 @@ function Arrow({ tone }) {
 
 export default function Cursors({ className = '' }) {
   const reduce = useReducedMotion()
+  // Hidden on phones, so not even mounted there: their looping paths would
+  // otherwise keep running in JavaScript behind display:none.
+  const [wide, setWide] = useState(false)
+  useEffect(() => {
+    const m = window.matchMedia('(min-width: 768px)')
+    const f = () => setWide(m.matches)
+    f(); m.addEventListener('change', f)
+    return () => m.removeEventListener('change', f)
+  }, [])
+  if (!wide) return null
   return (
     <div aria-hidden className={`pointer-events-none absolute -inset-x-8 inset-y-0 z-30 md:-inset-x-24 ${className}`}>
       {TAGS.map(t => (

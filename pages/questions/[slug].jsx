@@ -26,16 +26,16 @@ export async function getStaticProps({ params }) {
 }
 
 export default function Question({ item, topic, siblings, next }) {
-  const url = `https://fluntr.com/questions/${item.slug}`
+  const url = `https://www.fluntr.com/questions/${item.slug}`
   const description = item.a.length > 158 ? item.a.slice(0, 155).replace(/\s+\S*$/, '') + '…' : item.a
   const ld = {
     '@context': 'https://schema.org',
     '@graph': [
       { '@type': 'FAQPage', mainEntity: [{ '@type': 'Question', name: item.q, acceptedAnswer: { '@type': 'Answer', text: item.a } }] },
       { '@type': 'BreadcrumbList', itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Fluntr', item: 'https://fluntr.com/' },
-        { '@type': 'ListItem', position: 2, name: 'Questions', item: 'https://fluntr.com/questions' },
-        { '@type': 'ListItem', position: 3, name: topic.title, item: `https://fluntr.com/questions#${topic.id}` },
+        { '@type': 'ListItem', position: 1, name: 'Fluntr', item: 'https://www.fluntr.com/' },
+        { '@type': 'ListItem', position: 2, name: 'Questions', item: 'https://www.fluntr.com/questions' },
+        { '@type': 'ListItem', position: 3, name: topic.title, item: `https://www.fluntr.com/questions#${topic.id}` },
         { '@type': 'ListItem', position: 4, name: item.q, item: url },
       ] },
     ],
@@ -50,7 +50,7 @@ export default function Question({ item, topic, siblings, next }) {
         <meta property="og:description" content={description} />
         <meta property="og:type" content="article" />
         <meta property="og:url" content={url} />
-        <meta property="og:image" content={`https://fluntr.com/og/${topic.id}.jpg`} />
+        <meta property="og:image" content={`https://www.fluntr.com/og/${topic.id}.jpg`} />
         <meta name="twitter:card" content="summary_large_image" />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
       </Head>

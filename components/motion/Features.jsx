@@ -32,15 +32,13 @@ function Card({ children, flip = false, tone, title, body, props = [], perch }) 
           <div className="relative" style={{ width: 'min(78vw, 320px)' }}>
             <TiltCard max={5} sheen={false}><Device>{children}</Device></TiltCard>
             {props.map((p, i) => (
-              <motion.span
+              <span
                 key={p.text}
-                className="pointer-events-none absolute z-20 hidden whitespace-nowrap md:block"
-                style={{ left: p.left, top: p.top, background: p.tone || tone, color: '#fff', borderRadius: 999, padding: '8px 14px', fontSize: 13, fontWeight: 700, boxShadow: `0 14px 30px -10px ${p.tone || tone}aa` }}
-                animate={reduce ? undefined : { y: [0, -7, 0] }}
-                transition={{ duration: 3 + i * 0.6, repeat: Infinity, ease: 'easeInOut', delay: i * 0.4 }}
+                className="float-y pointer-events-none absolute z-20 hidden whitespace-nowrap md:block"
+                style={{ left: p.left, top: p.top, background: p.tone || tone, color: '#fff', borderRadius: 999, padding: '8px 14px', fontSize: 13, fontWeight: 700, boxShadow: `0 14px 30px -10px ${p.tone || tone}aa`, animationDuration: `${3 + i * 0.6}s`, animationDelay: `${i * 0.4}s` }}
               >
                 {p.text}
-              </motion.span>
+              </span>
             ))}
           </div>
         </div>
@@ -58,7 +56,7 @@ export default function Features() {
   const [mood, setMood] = useState('smug')
   const [talking, setTalking] = useState(false)
   return (
-    <section id="app" className="px-4 py-10 md:px-6 md:py-16">
+    <section id="app" className="cv-auto px-4 py-10 md:px-6 md:py-16" style={{ containIntrinsicSize: 'auto 2600px' }}>
       <div className="mx-auto flex max-w-6xl flex-col gap-6">
         <Card
           tone="#2E8FA3"

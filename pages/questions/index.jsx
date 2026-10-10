@@ -26,12 +26,12 @@ export default function Questions() {
       <Head>
         <title>What to wear, how to shop, how to organise your closet - Fluntr answers</title>
         <meta name="description" content="Plain answers to the questions people actually ask: what to wear today, Diwali and wedding outfits, shopping without buying twice, mirror selfies and fit checks, digitising your wardrobe, and what Fluntr and Kween do." />
-        <link rel="canonical" href="https://fluntr.com/questions" />
+        <link rel="canonical" href="https://www.fluntr.com/questions" />
         <meta property="og:title" content="What to wear, how to shop, how to organise your closet - Fluntr answers" />
         <meta property="og:description" content="Outfit, shopping, festival, Instagram and closet questions, answered. Plus what Fluntr is and how Kween, its personal AI stylist, works." />
         <meta property="og:type" content="article" />
-        <meta property="og:url" content="https://fluntr.com/questions" />
-        <meta property="og:image" content="https://fluntr.com/og/questions.jpg" />
+        <meta property="og:url" content="https://www.fluntr.com/questions" />
+        <meta property="og:image" content="https://www.fluntr.com/og/questions.jpg" />
         <meta name="twitter:card" content="summary_large_image" />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
       </Head>

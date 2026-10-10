@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { Mark } from './Logo'
+import { track } from '../lib/analytics'
 
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzSQkxDshm3SigX4og7GHrz98ywQGmakHJy_yDKelY9fwMsn9lJ9Wco7y1XTU0HYynn9g/exec'
 
@@ -30,7 +31,7 @@ export default function WaitlistForm({ onSuccess }) {
 
   const handleSubmit = async e => {
     e.preventDefault()
-    if (!validate()) return
+    if (!validate()) { track('waitlist_invalid'); return }
     setLoading(true)
     try {
       await fetch(APPS_SCRIPT_URL, {
@@ -40,8 +41,11 @@ export default function WaitlistForm({ onSuccess }) {
         body: JSON.stringify({ name, phone, struggle }),
       })
       setDone(true)
+      // the answer to the struggle question only; never the name or the number
+      track('waitlist_joined', { struggle })
       if (onSuccess) onSuccess()
     } catch (err) {
+      track('waitlist_error')
       alert('Something went wrong. Please try again.')
     } finally {
       setLoading(false)

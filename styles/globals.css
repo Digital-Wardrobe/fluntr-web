@@ -1,4 +1,13 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Serif&display=swap');
+/* Fonts are served from our own domain (public/fonts, latin subset, woff2).
+ * The fallback face is Arial resized to Inter's metrics, so text does not
+ * jump when Inter arrives. */
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 400; font-display: swap; src: url('/fonts/inter-latin-400.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 500; font-display: swap; src: url('/fonts/inter-latin-500.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 600; font-display: swap; src: url('/fonts/inter-latin-600.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 700; font-display: swap; src: url('/fonts/inter-latin-700.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 800; font-display: swap; src: url('/fonts/inter-latin-800.woff2') format('woff2'); }
+@font-face { font-family: 'Instrument Serif'; font-style: normal; font-weight: 400; font-display: swap; src: url('/fonts/instrument-serif-latin-400.woff2') format('woff2'); }
+@font-face { font-family: 'Inter Fallback'; src: local('Arial'); size-adjust: 107.12%; ascent-override: 90.44%; descent-override: 22.52%; line-gap-override: 0%; }
 
 @tailwind base;
 @tailwind components;
@@ -44,7 +53,7 @@ html {
 body {
   background: var(--bg);
   color: var(--ink);
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: 'Inter', 'Inter Fallback', system-ui, -apple-system, sans-serif;
   font-weight: 400;
   font-size: 16px;
   line-height: 1.6;
@@ -60,7 +69,7 @@ body {
 
 /* ── Type ─────────────────────────────────────────────── */
 .h-display {
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: 'Inter', 'Inter Fallback', system-ui, sans-serif;
   font-weight: 800;
   letter-spacing: -0.035em;
   line-height: 1.02;
@@ -224,7 +233,7 @@ body {
     gap: 10px;
     background: var(--ink);
     color: #fff;
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: 'Inter', 'Inter Fallback', system-ui, sans-serif;
     font-size: 15px;
     font-weight: 600;
     letter-spacing: -0.005em;
@@ -274,7 +283,7 @@ body {
     align-items: center;
     gap: 10px;
     color: var(--ink);
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: 'Inter', 'Inter Fallback', system-ui, sans-serif;
     font-size: 15px;
     font-weight: 600;
     padding: 16px 28px;
@@ -295,7 +304,7 @@ body {
     background: rgba(255, 255, 255, 0.7);
     border: 1px solid var(--line-strong);
     color: var(--ink);
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: 'Inter', 'Inter Fallback', system-ui, sans-serif;
     font-size: 15px;
     padding: 15px 18px;
     border-radius: 14px;
@@ -345,4 +354,31 @@ body {
   .ticker-track {
     animation: none;
   }
+}
+
+/* Decorative motion runs as CSS transforms on the compositor, so it costs no
+ * JavaScript on a phone's main thread. */
+@keyframes float-y { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+.float-y { animation: float-y 3.2s ease-in-out infinite; }
+@keyframes pulse-soft { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
+.pulse-soft { animation: pulse-soft 1.6s ease-in-out infinite; }
+@keyframes blob-0 { 0%, 100% { transform: translate(-50%, -50%); } 33% { transform: translate(calc(-50% + 40px), calc(-50% - 30px)); } 66% { transform: translate(calc(-50% - 20px), calc(-50% + 20px)); } }
+@keyframes blob-1 { 0%, 100% { transform: translate(-50%, -50%); } 33% { transform: translate(calc(-50% - 50px), calc(-50% + 30px)); } 66% { transform: translate(calc(-50% + 30px), calc(-50% - 20px)); } }
+@keyframes blob-2 { 0%, 100% { transform: translate(-50%, -50%); } 33% { transform: translate(calc(-50% + 30px), calc(-50% - 20px)); } 66% { transform: translate(calc(-50% - 40px), calc(-50% + 30px)); } }
+.blob { position: absolute; border-radius: 9999px; transform: translate(-50%, -50%); }
+@media (prefers-reduced-motion: reduce) {
+  .float-y, .pulse-soft, .blob { animation: none !important; }
+}
+
+/* The hero fades in with CSS, not JavaScript, so the headline is on screen at
+ * first paint instead of waiting for the scripts to load. */
+@keyframes hero-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.hero-in { animation: hero-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+/* Sections below the fold are not laid out or painted until they come near
+ * the screen. Each sets its own estimated height (contain-intrinsic-size). */
+.cv-auto { content-visibility: auto; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-in { animation: none; }
 }

@@ -61,7 +61,7 @@ function TodayScreen() {
           <span>Office day and 31°. The olive kurti has not been out in three weeks, and the sneakers go with everything.</span>
         </motion.div>
         <motion.div variants={item} className="mt-3 flex gap-2">
-          <motion.span className="flex flex-1 items-center justify-center gap-1.5" style={{ height: 40, borderRadius: 999, background: '#0A0A0A', color: '#fff', fontSize: 13, fontWeight: 600 }} animate={reduce ? undefined : { scale: [1, 1.03, 1] }} transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}><Glyph k="check" color="#fff" size={14} />Wearing this</motion.span>
+          <span className="pulse-soft flex flex-1 items-center justify-center gap-1.5" style={{ height: 40, borderRadius: 999, background: '#0A0A0A', color: '#fff', fontSize: 13, fontWeight: 600 }}><Glyph k="check" color="#fff" size={14} />Wearing this</span>
           <span className="flex items-center justify-center" style={{ height: 40, padding: '0 16px', borderRadius: 999, background: FILL, fontSize: 13, fontWeight: 600, color: '#0A0A0A' }}>Another</span>
         </motion.div>
         <motion.div variants={item} className="mt-3 flex items-center gap-2 pt-3" style={{ borderTop: '1px solid rgba(10,10,10,0.08)', fontSize: 12 }}>
@@ -86,7 +86,7 @@ function TodayScreen() {
 export default function Stylist() {
   const reduce = useReducedMotion()
   return (
-    <section id="stylist" className="relative scroll-mt-20 overflow-hidden px-4 py-20 md:px-6 md:py-28">
+    <section id="stylist" className="cv-auto relative scroll-mt-20 overflow-hidden px-4 py-20 md:px-6 md:py-28" style={{ containIntrinsicSize: 'auto 1900px' }}>
       <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: 'radial-gradient(50% 45% at 85% 10%, rgba(242,140,56,0.12), transparent 60%), radial-gradient(45% 40% at 10% 90%, rgba(123,108,246,0.10), transparent 60%)' }} />
       <div className="relative mx-auto max-w-6xl">
         <motion.div initial={reduce ? false : { opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.4 }} transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }} className="max-w-3xl">
@@ -103,8 +103,8 @@ export default function Stylist() {
           <div className="flex flex-col items-center lg:items-start">
             <div className="relative" style={{ width: 'min(84vw, 340px)' }}>
               <TiltCard max={5} sheen={false}><Device><TodayScreen /></Device></TiltCard>
-              <motion.span className="pointer-events-none absolute z-20 hidden whitespace-nowrap md:block" style={{ left: '-26%', top: '12%', background: '#F28C38', color: '#fff', borderRadius: 999, padding: '8px 14px', fontSize: 13, fontWeight: 700, boxShadow: '0 14px 30px -10px #F28C38aa' }} animate={reduce ? undefined : { y: [0, -7, 0] }} transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}>7:00 · your outfit is ready</motion.span>
-              <motion.span className="pointer-events-none absolute z-20 hidden whitespace-nowrap md:block" style={{ left: '74%', top: '58%', background: '#121317', color: '#fff', borderRadius: 999, padding: '8px 14px', fontSize: 13, fontWeight: 700, boxShadow: '0 14px 30px -10px #121317aa' }} animate={reduce ? undefined : { y: [0, -6, 0] }} transition={{ duration: 3.4, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}>31° · smart casual</motion.span>
+              <span className="float-y pointer-events-none absolute z-20 hidden whitespace-nowrap md:block" style={{ left: '-26%', top: '12%', background: '#F28C38', color: '#fff', borderRadius: 999, padding: '8px 14px', fontSize: 13, fontWeight: 700, boxShadow: '0 14px 30px -10px #F28C38aa', animationDuration: '3s' }}>7:00 · your outfit is ready</span>
+              <span className="float-y pointer-events-none absolute z-20 hidden whitespace-nowrap md:block" style={{ left: '74%', top: '58%', background: '#121317', color: '#fff', borderRadius: 999, padding: '8px 14px', fontSize: 13, fontWeight: 700, boxShadow: '0 14px 30px -10px #121317aa', animationDuration: '3.4s', animationDelay: '0.5s' }}>31° · smart casual</span>
             </div>
             <KweenPerch name="stylist" line="I know every piece you own. A shop’s stylist can’t say that." mood="smug" className="mt-8 hidden md:block" width="clamp(84px, 8vw, 110px)" />
           </div>

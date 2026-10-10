@@ -6,6 +6,7 @@ import Kween from './Kween'
 import { KweenPerch } from './KweenRoamer'
 import { kweenSay, kweenMood } from './kweenStore'
 import { useSound } from './Sound'
+import { track } from '../../lib/analytics'
 
 /**
  * How it works, as a demo you drive. This is also the hero's stage.
@@ -88,7 +89,7 @@ export function Photo({ src, alt = '', sizes = '160px', className = '', style })
 /** The same piece with its background removed (pre-made, in /images/g). */
 export function Cut({ id, alt = '', className = '', style }) {
   // eslint-disable-next-line @next/next/no-img-element
-  return <img src={`/images/g/${id}.webp`} alt={alt} className={className} style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block', ...style }} />
+  return <img src={`/images/g/${id}.webp`} alt={alt} loading="lazy" decoding="async" className={className} style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block', ...style }} />
 }
 
 export function Glyph({ k, color = INK, size = 13, sw = 1.8 }) {
@@ -352,7 +353,7 @@ function DetailsForm({ item, fill }) {
 }
 
 /** The AI Magic Studio modal, as in add-item.tsx: dark room, gold scan line, Undo / Apply. */
-function Studio({ selected, onApply, onClose }) {
+function Studio({ selected, onApply, onClose, onDone }) {
   const reduce = useReducedMotion()
   const { play } = useSound()
   const [i, setI] = useState(0)          // which photo is in the room
@@ -360,8 +361,9 @@ function Studio({ selected, onApply, onClose }) {
   const per = reduce ? 700 : 2300
   const done = i >= selected.length
   const playRef = useRef(play); playRef.current = play
+  const doneRef = useRef(onDone); doneRef.current = onDone
   useEffect(() => {
-    if (done) { playRef.current('chime'); return }
+    if (done) { playRef.current('chime'); doneRef.current?.(); return }
     setCut(false)
     playRef.current('shutter', { gain: 0.8 })
     const a = setTimeout(() => { setCut(true); playRef.current('zip', { gain: 0.55 }) }, per * 0.6)
@@ -436,7 +438,7 @@ function SavedAlert({ item, onOk }) {
   )
 }
 
-export function AddItemScreen({ selected, cut, fill, pulse, studio, saved, onMagic, onApply, onCloseStudio, onSave, onOk }) {
+export function AddItemScreen({ selected, cut, fill, pulse, studio, saved, onMagic, onApply, onStudioDone, onCloseStudio, onSave, onOk }) {
   const item = byId[selected[0]] || GALLERY[0]
   const scroll = useRef(null)
   // Kween fills the form: scroll down to watch her do it
@@ -476,7 +478,7 @@ export function AddItemScreen({ selected, cut, fill, pulse, studio, saved, onMag
         </motion.button>
       </div>
       <AnimatePresence>
-        {studio ? <Studio key="studio" selected={selected} onApply={onApply} onClose={onCloseStudio} /> : null}
+        {studio ? <Studio key="studio" selected={selected} onApply={onApply} onClose={onCloseStudio} onDone={onStudioDone} /> : null}
         {saved ? <SavedAlert key="saved" item={item} onOk={onOk} /> : null}
       </AnimatePresence>
     </div>
@@ -606,6 +608,7 @@ export function KweenScreen({ onRestart, setMood, setTalking, mood, talking, pre
   function ask(i) {
     const qa = QA[i]
     play('pop')
+    track('demo_question', { q: qa.q })
     setAsked(i); setTyped(''); setMood(qa.mood); setTalking(true)
     clearInterval(timer.current)
     if (reduce) { setTyped(qa.a); setTalking(false); return }
@@ -659,13 +662,22 @@ export default function Demo() {
   const [step, setStep] = useState(0)
   const [selected, setSelected] = useState([])
   const [studio, setStudio] = useState(false)
+  const [studioDone, setStudioDone] = useState(false)
   const [cut, setCut] = useState(false)
   const [fill, setFill] = useState(0)
   const [saved, setSaved] = useState(false)
   const [mood, setMood] = useState('idle')
   const [talking, setTalking] = useState(false)
+  // is the part of the phone where the next tap happens actually on screen?
+  const [topSeen, setTopSeen] = useState(true)
+  const [bottomSeen, setBottomSeen] = useState(true)
   const reduce = useReducedMotion()
   const { play } = useSound()
+  const phoneRef = useRef(null)
+  const topRef = useRef(null)
+  const bottomRef = useRef(null)
+  const nudged = useRef(new Set())
+  const n = selected.length
 
   // Each step, Kween says its line (through the shared store, so the roaming
   // mascot says it from wherever she is standing).
@@ -673,6 +685,7 @@ export default function Demo() {
     const m = step === 3 ? 'happy' : step === 2 ? 'smug' : 'idle'
     if (step !== 5) setMood(m)
     kweenSay(STEPS[step].line, step === 5 ? 'idle' : m, { talkMs: reduce ? 0 : 1100, perch: 'demo' })
+    if (step > 0) track('demo_step', { step: step + 1, name: STEPS[step].k })
   }, [step, reduce])
   useEffect(() => { if (studio) kweenSay('Hold on. Doing the boring part.', 'idle', { talkMs: reduce ? 0 : 1000, perch: 'demo' }) }, [studio, reduce])
   // the in-phone Kween's feelings reach the roamer too
@@ -681,36 +694,104 @@ export default function Demo() {
   useEffect(() => {
     if (step !== 2) { setFill(0); return }
     const gap = reduce ? 120 : 520
-    const ts = [1, 2, 3, 4, 5, 6].map(n => setTimeout(() => { setFill(n); play('tick', { gain: 0.5, rate: 1 + n * 0.07 }) }, 500 + n * gap))
+    const ts = [1, 2, 3, 4, 5, 6].map(k => setTimeout(() => { setFill(k); play('tick', { gain: 0.5, rate: 1 + k * 0.07 }) }, 500 + k * gap))
     return () => ts.forEach(clearTimeout)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [step])
 
-  function go(n, sound) { if (sound) play(sound); setStep(n) }
+  // Watch the top and bottom of the phone. The nav covers the top 72px.
+  useEffect(() => {
+    if (typeof IntersectionObserver === 'undefined') return
+    const io = new IntersectionObserver(es => es.forEach(e => (e.target === topRef.current ? setTopSeen : setBottomSeen)(e.intersectionRatio > 0.55)), { threshold: [0, 0.55, 1], rootMargin: '-72px 0px 0px 0px' })
+    if (topRef.current) io.observe(topRef.current)
+    if (bottomRef.current) io.observe(bottomRef.current)
+    return () => io.disconnect()
+  }, [])
+
+  function go(k, sound) { if (sound) play(sound); setStep(k) }
   function toggle(id) {
-    setSelected(s => {
-      const on = s.includes(id)
-      if (!on && s.length >= 4) return s
-      play(on ? 'tick' : 'pop', { rate: on ? 0.9 : 1 + s.length * 0.06 })
-      return on ? s.filter(x => x !== id) : [...s, id]
-    })
+    const on = selected.includes(id)
+    if (!on && n >= 4) {
+      play('tick', { rate: 0.7 })
+      kweenSay('Four is the most for one item. Tap Add!', 'shock', { talkMs: reduce ? 0 : 1100, perch: 'demo' })
+      return
+    }
+    const next = on ? selected.filter(x => x !== id) : [...selected, id]
+    play(on ? 'tick' : 'pop', { rate: on ? 0.9 : 1 + n * 0.06 })
+    setSelected(next)
+    if (!on) track('demo_photo_picked', { item: id, count: next.length })
+    if (!on && next.length === 1) kweenSay('Ooh, good one! Pick a few more, then tap Add.', 'happy', { talkMs: reduce ? 0 : 1100, perch: 'demo' })
   }
-  function restart() { play('swish', { gain: 0.6 }); setSelected([]); setCut(false); setStudio(false); setSaved(false); setMood('idle'); setStep(0) }
+  const add = () => { track('demo_add', { count: n }); go(1, 'whoosh') }
+  const openStudio = () => { play('pop'); setStudioDone(false); setStudio(true); track('demo_magic') }
+  const apply = () => { setCut(true); setStudio(false); kweenSay('Ta-da. Look at that.', 'happy', { talkMs: 900, perch: 'demo' }); go(2, 'swish') }
+  const save = () => { play('hanger'); setSaved(true); track('demo_saved') }
+  const ok = () => { setSaved(false); go(3, 'swish') }
+  const toFeed = () => go(4, 'swish')
+  const toKween = () => go(5, 'pop')
+  function restart() {
+    play('swish', { gain: 0.6 }); track('demo_restart', { from: step + 1 })
+    setSelected([]); setCut(false); setStudio(false); setStudioDone(false); setSaved(false); setMood('idle'); nudged.current.clear(); setStep(0)
+  }
   function jump(i) {
     if (i === step) return
     if (i === 0) return go(0, 'tick')
-    if (!selected.length) return
+    if (!n) return
     if (i >= 2) setCut(true)
     setStudio(false); setSaved(false)
     go(i, 'tick')
   }
+
+  // What the visitor should do next, where in the phone it is, and what
+  // Kween says if they wander off without doing it.
+  const pending =
+    step === 0 ? (n ? { at: 'top', label: `Add ${n} photo${n > 1 ? 's' : ''}`, run: add, mood: 'shock', nudge: `Psst! You picked ${n} but didn’t add ${n > 1 ? 'them' : 'it'}. Tap Add to see the magic ✨` } : null)
+    : step === 1 ? (!studio ? { at: 'top', label: 'Remove the backgrounds ✦✦', run: openStudio, mood: 'happy', nudge: 'Psst! Tap the gold sparkles on the photo and watch the background vanish.' }
+      : studioDone ? { at: 'bottom', label: 'Keep the cutouts', run: apply, mood: 'love', nudge: 'All cut out! Tap Apply / Keep.' } : null)
+    : step === 2 ? (fill < 6 ? null : !saved ? { at: 'bottom', label: 'Save to my closet', run: save, mood: 'smug', nudge: 'I filled it all in. Hit Save!' }
+      : { at: 'bottom', label: 'Show my closet', run: ok, mood: 'happy', nudge: 'Saved! Tap OK to see your closet.' })
+    : step === 3 ? { at: 'bottom', label: 'See it in the feed', run: toFeed, mood: 'happy', nudge: 'Your closet looks good. Next stop: the feed!' }
+    : step === 4 ? { at: 'bottom', label: 'Ask Kween what goes with it', run: toKween, mood: 'smug', nudge: 'Ask me what goes with it. Go on!' }
+    : null
+  const actionSeen = !pending || (pending.at === 'top' ? topSeen : bottomSeen)
+  const pendKey = pending ? `${step}:${pending.label}` : null
+  useEffect(() => {
+    if (!pending || actionSeen || nudged.current.has(pendKey)) return
+    const t = setTimeout(() => {
+      nudged.current.add(pendKey)
+      kweenSay(pending.nudge, pending.mood, { talkMs: reduce ? 0 : 1600, perch: 'demo' })
+      play('pop', { gain: 0.5, rate: 1.25 })
+      track('demo_nudge', { step: step + 1, action: pending.label })
+    }, 900)
+    return () => clearTimeout(t)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pendKey, actionSeen])
+
+  function runPending() {
+    if (!pending) return
+    track('demo_helper_button', { step: step + 1, action: pending.label })
+    pending.run()
+    const el = phoneRef.current
+    if (!el) return
+    const r = el.getBoundingClientRect()
+    if (r.top < 64 || r.top > window.innerHeight * 0.45) el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' })
+  }
+
+  // The words follow what the visitor has actually done.
+  const view =
+    step === 0 && n ? { title: `${n} picked. Now add ${n > 1 ? 'them' : 'it'}.`, body: `Tap Add (${n}) at the top of the phone${n < 4 ? `, or pick up to ${4 - n} more` : ''}. Then watch the backgrounds disappear.` }
+    : step === 1 && studio && !studioDone ? { title: 'Watch the background go.', body: 'Kween cuts each piece out on the phone itself, one photo at a time. Nothing is uploaded.' }
+    : step === 1 && studioDone ? { title: 'All cut out.', body: 'Tap Apply / Keep and the cutouts go into the item.' }
+    : step === 2 && saved ? { title: 'Saved!', body: 'Kween filled in the category, colours, fabric and occasion from the photo. Tap OK to see your closet.' }
+    : STEPS[step]
+
   const first = byId[selected[0]] || GALLERY[0]
   const screens = [
-    <PickScreen key="pick" selected={selected} toggle={toggle} onNext={() => go(1, 'whoosh')} />,
-    <AddItemScreen key="add" selected={selected} cut={cut} fill={0} pulse={!studio} studio={studio} onMagic={() => { play('pop'); setStudio(true) }} onApply={() => { setCut(true); setStudio(false); kweenSay('Ta-da. Look at that.', 'happy', { talkMs: 900, perch: 'demo' }); go(2, 'swish') }} onCloseStudio={() => setStudio(false)} />,
-    <AddItemScreen key="add" selected={selected} cut={cut} fill={fill} saved={saved} onMagic={() => {}} onSave={fill >= 6 ? () => { play('hanger'); setSaved(true) } : null} onOk={() => { setSaved(false); go(3, 'swish') }} />,
-    <ClosetScreen key="closet" selected={selected} onNext={() => go(4, 'swish')} />,
-    <FeedScreen key="feed" item={first} onAsk={() => go(5, 'pop')} />,
+    <PickScreen key="pick" selected={selected} toggle={toggle} onNext={add} />,
+    <AddItemScreen key="add" selected={selected} cut={cut} fill={0} pulse={!studio} studio={studio} onMagic={openStudio} onApply={apply} onStudioDone={() => setStudioDone(true)} onCloseStudio={() => { setStudio(false); setStudioDone(false) }} />,
+    <AddItemScreen key="add" selected={selected} cut={cut} fill={fill} saved={saved} onMagic={() => {}} onSave={fill >= 6 ? save : null} onOk={ok} />,
+    <ClosetScreen key="closet" selected={selected} onNext={toFeed} />,
+    <FeedScreen key="feed" item={first} onAsk={toKween} />,
     <KweenScreen key="kween" onRestart={restart} mood={mood} talking={talking} setMood={setMood} setTalking={setTalking} />,
   ]
   // steps 1 and 2 are the same screen; keep it mounted so the hero does not flash
@@ -726,34 +807,51 @@ export default function Demo() {
           <div className="order-2 lg:order-1">
             <p className="text-eyebrow mb-4">How it works · try it</p>
             <AnimatePresence mode="wait">
-              <motion.div key={step} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.35 }}>
-                <h2 className="h-display" style={{ fontSize: 'clamp(30px,3.8vw,52px)', color: '#121317' }}>{STEPS[step].title}</h2>
-                <p className="mt-4 max-w-md text-[17px] leading-relaxed" style={{ color: MUTED }}>{STEPS[step].body}</p>
+              <motion.div key={view.title} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.3 }}>
+                <h2 className="h-display" style={{ fontSize: 'clamp(30px,3.8vw,52px)', color: '#121317' }}>{view.title}</h2>
+                <p className="mt-4 max-w-md text-[17px] leading-relaxed" style={{ color: MUTED }}>{view.body}</p>
               </motion.div>
             </AnimatePresence>
-            <ol className="mt-8 flex flex-col gap-1">
+
+            {/* Kween, and the next step as a button, right under the words.
+                On a phone the demo's own buttons scroll out of sight; this one
+                is always where you are reading. */}
+            <div className="mt-8">
+              {/* her bubble opens to the right of her head, so the button sits under her, not beside */}
+              <KweenPerch name="demo" bubble="right" width="clamp(72px, 7vw, 96px)" />
+              <div className="mt-3 min-h-[56px]">
+                <AnimatePresence mode="wait">
+                  {pending ? (
+                    <motion.button key={pending.label} type="button" onClick={runPending} className="btn-primary" initial={{ opacity: 0, y: 10, scale: 0.96 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, scale: 0.96 }} transition={{ type: 'spring', stiffness: 380, damping: 26 }}>
+                      {pending.label} <span aria-hidden>→</span>
+                    </motion.button>
+                  ) : null}
+                </AnimatePresence>
+              </div>
+            </div>
+
+            <ol className="mt-6 flex flex-col gap-1">
               {STEPS.map((s, i) => (
                 <li key={s.k}>
-                  <button type="button" onClick={() => jump(i)} className="flex w-full items-center gap-4 rounded-full px-3 py-2 text-left transition-colors" style={{ background: i === step ? '#fff' : 'transparent', cursor: i === 0 || selected.length ? 'pointer' : 'default', boxShadow: i === step ? '0 1px 2px rgba(18,19,23,0.06)' : 'none' }}>
+                  <button type="button" onClick={() => jump(i)} className="flex w-full items-center gap-4 rounded-full px-3 py-2 text-left transition-colors" style={{ background: i === step ? '#fff' : 'transparent', cursor: i === 0 || n ? 'pointer' : 'default', boxShadow: i === step ? '0 1px 2px rgba(18,19,23,0.06)' : 'none' }}>
                     <span className="flex h-6 w-6 shrink-0 items-center justify-center" style={{ borderRadius: 999, background: i <= step ? '#121317' : '#E8E9EC', color: i <= step ? '#fff' : MUTED, fontSize: 11, fontWeight: 600 }}>
                       {i < step ? <Glyph k="check" color="#fff" size={12} /> : i + 1}
                     </span>
-                    <span style={{ fontSize: 14, fontWeight: i === step ? 600 : 500, color: i === step ? '#121317' : MUTED }}>{s.title}</span>
+                    <span style={{ fontSize: 14, fontWeight: i === step ? 600 : 500, color: i === step ? '#121317' : MUTED }}>
+                      {s.title}{i === 0 && step === 0 && n ? <span style={{ color: '#F28C38' }}> · {n} picked</span> : null}
+                    </span>
                   </button>
                 </li>
               ))}
             </ol>
             {step > 0 ? <button type="button" onClick={restart} className="mt-5 text-[13px] font-medium underline" style={{ color: MUTED, background: 'none', border: 0, cursor: 'pointer' }}>Start over</button> : null}
-
-            {/* where Kween stands while she walks you through this: the roamer comes here */}
-            <KweenPerch name="demo" className="mt-10 hidden md:block" width="clamp(96px, 9vw, 120px)" />
           </div>
 
           {/* right: the phone */}
           <div className="order-1 flex flex-col items-center lg:order-2">
             {/* on phones she stands just above the demo phone, where you can see them both */}
             <div className="flex w-full justify-start md:hidden" style={{ maxWidth: 360 }}><KweenPerch name="demo" className="mb-2 ml-3" width="72px" /></div>
-            <div className="relative" style={{ width: 'min(84vw, 360px)' }}>
+            <div ref={phoneRef} className="relative" style={{ width: 'min(84vw, 360px)', scrollMarginTop: 84 }}>
               <Device>
                 <AnimatePresence mode="wait" initial={false}>
                   <motion.div key={screenKey} className="absolute inset-0" initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -24 }} transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}>
@@ -761,11 +859,14 @@ export default function Demo() {
                   </motion.div>
                 </AnimatePresence>
               </Device>
+              {/* where the next tap happens: the top (Add, ✦✦) or the bottom (Save, Next) */}
+              <div ref={topRef} aria-hidden className="pointer-events-none absolute inset-x-0 top-0" style={{ height: '22%' }} />
+              <div ref={bottomRef} aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0" style={{ height: '22%' }} />
               {/* floating props around the phone, per step */}
               <AnimatePresence>
                 {step === 1 && !studio ? <Prop key="p1" text="✦ on your phone, offline" tone="#121317" left="-30%" top="14%" /> : null}
                 {step === 2 ? <Prop key="p2" text="✨ filled by Kween" tone="#F28C38" left="-26%" top="62%" /> : null}
-                {step === 3 ? <Prop key="p3" text={`+ ${selected.length} ${selected.length === 1 ? 'piece' : 'pieces'}`} tone="#4F9D6B" left="-18%" top="18%" /> : null}
+                {step === 3 ? <Prop key="p3" text={`+ ${n} ${n === 1 ? 'piece' : 'pieces'}`} tone="#4F9D6B" left="-18%" top="18%" /> : null}
                 {step === 4 ? <Prop key="p4" text="♥ 142" tone="#F28C38" left="78%" top="30%" /> : null}
                 {step === 5 ? <Prop key="p5" text="Saturday · Wedding" tone="#7B6CF6" left="-24%" top="22%" /> : null}
               </AnimatePresence>
@@ -777,17 +878,18 @@ export default function Demo() {
   )
 }
 
+/** A label floating beside the phone. The bob is a CSS animation, so it costs no JavaScript. */
 function Prop({ text, tone, left, top }) {
   return (
     <motion.div
       className="pointer-events-none absolute z-20 hidden whitespace-nowrap md:block"
-      style={{ left, top, background: tone, color: '#fff', borderRadius: 999, padding: '8px 14px', fontSize: 13, fontWeight: 700, boxShadow: `0 14px 30px -10px ${tone}aa` }}
-      initial={{ opacity: 0, scale: 0.6, y: 10 }}
-      animate={{ opacity: 1, scale: 1, y: [0, -6, 0] }}
+      style={{ left, top }}
+      initial={{ opacity: 0, scale: 0.6 }}
+      animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.7 }}
-      transition={{ opacity: { duration: 0.3 }, scale: { duration: 0.4, ease: [0.34, 1.56, 0.64, 1] }, y: { duration: 3, repeat: Infinity, ease: 'easeInOut' } }}
+      transition={{ opacity: { duration: 0.3 }, scale: { duration: 0.4, ease: [0.34, 1.56, 0.64, 1] } }}
     >
-      {text}
+      <span className="float-y block" style={{ background: tone, color: '#fff', borderRadius: 999, padding: '8px 14px', fontSize: 13, fontWeight: 700, boxShadow: `0 14px 30px -10px ${tone}aa` }}>{text}</span>
     </motion.div>
   )
 }

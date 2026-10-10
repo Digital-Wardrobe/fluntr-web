@@ -6,6 +6,7 @@
         "components": [
           { "/": "/c/*", "comment": "Collection deep links" },
           { "/": "/p/*", "comment": "Post deep links" },
+          { "/": "/post/*", "comment": "Post links shared from the app" },
           { "/": "/v/*", "comment": "Vibe deep links" },
           { "/": "/u/*", "comment": "Profile deep links" }
         ]

@@ -12,6 +12,8 @@ import Cursors from '../components/motion/Cursors'
 import Blobs from '../components/motion/Blobs'
 import Typed from '../components/motion/Typed'
 import KweenRoamer, { KweenPerch } from '../components/motion/KweenRoamer'
+import { useEffect } from 'react'
+import { track } from '../lib/analytics'
 
 /*
  * Fluntr homepage.
@@ -33,15 +35,15 @@ const LD = {
   '@context': 'https://schema.org',
   '@graph': [
     {
-      '@type': 'Organization', '@id': 'https://fluntr.com/#org', name: 'Fluntr', legalName: 'Melchizedek Technologies Private Limited', url: 'https://fluntr.com/',
+      '@type': 'Organization', '@id': 'https://www.fluntr.com/#org', name: 'Fluntr', legalName: 'Melchizedek Technologies Private Limited', url: 'https://www.fluntr.com/',
       email: 'support@fluntr.com', areaServed: 'IN', description: 'Fluntr is a digital wardrobe and personal AI stylist app from India.',
     },
     {
-      '@type': 'WebSite', '@id': 'https://fluntr.com/#site', url: 'https://fluntr.com/', name: 'Fluntr', publisher: { '@id': 'https://fluntr.com/#org' },
+      '@type': 'WebSite', '@id': 'https://www.fluntr.com/#site', url: 'https://www.fluntr.com/', name: 'Fluntr', publisher: { '@id': 'https://www.fluntr.com/#org' },
     },
     {
-      '@type': 'SoftwareApplication', '@id': 'https://fluntr.com/#app', name: 'Fluntr', applicationCategory: 'LifestyleApplication', operatingSystem: 'iOS, Android',
-      url: 'https://fluntr.com/', author: { '@id': 'https://fluntr.com/#org' },
+      '@type': 'SoftwareApplication', '@id': 'https://www.fluntr.com/#app', name: 'Fluntr', applicationCategory: 'LifestyleApplication', operatingSystem: 'iOS, Android',
+      url: 'https://www.fluntr.com/', author: { '@id': 'https://www.fluntr.com/#org' },
       description: 'Photograph the clothes you own and Fluntr turns them into a closet you can see and search on your phone. Kween, the most personal AI stylist, learns what you own, your city, your week and your taste, and picks your outfit every morning from your own clothes: for the weather, your dress code and your plans. Fit checks from a mirror selfie, outfits planned for weddings, festivals and trips, wear history, laundry and wardrobe insights. Post looks and ask friends which to wear.',
       featureList: ['Digital wardrobe from photos', 'Background removed on the device', 'Automatic category, colour and occasion', 'Personal AI stylist that picks an outfit every morning', 'Fit check from a mirror selfie', 'Outfits planned for weddings, festivals and trips', 'Outfit calendar and wear history', 'Laundry and wardrobe insights', 'Post looks and ask friends', 'English and Hindi'],
       keywords: 'personal AI stylist, AI stylist app, digital wardrobe app, closet organiser app, outfit planner, what to wear today, outfit of the day, fit check app, virtual closet, wardrobe app India, OOTD, capsule wardrobe, what to wear to a wedding',
@@ -66,10 +68,10 @@ function Hero() {
 
       <div className="relative z-10 mx-auto max-w-5xl text-center">
         <Cursors />
-        <Reveal from="none">
+        <div className="hero-in">
           <p className="text-eyebrow mb-7">Your closet on your phone. The most personal AI stylist.</p>
-        </Reveal>
-        <Reveal delay={0.08}>
+        </div>
+        <div className="hero-in" style={{ animationDelay: '0.06s' }}>
           <h1 className="h-display mx-auto" style={{ fontSize: 'clamp(36px,4.4vw,58px)', color: INK, textWrap: 'balance' }}>
             Your <PillWord tone="#2E8FA3" soft="#E4F3F6" icon="closet">closet</PillWord>{' '}
             <span style={{ color: '#9AA0A6' }}>on your phone.</span>
@@ -81,14 +83,14 @@ function Hero() {
             <PillWord tone="#7B6CF6" soft="#EEEBFF" icon="clock">seconds</PillWord>
             <span style={{ color: '#9AA0A6' }}>.</span>
           </h1>
-        </Reveal>
-        <Reveal delay={0.3} blur>
+        </div>
+        <div className="hero-in" style={{ animationDelay: '0.18s' }}>
           <p className="mx-auto mt-8 max-w-2xl text-[18px] leading-relaxed md:text-[21px]" style={{ color: MUTED }}>
             Photograph each piece once. Kween learns what you own, your week and your weather, then picks what you wear every morning.
             Dressed for <Typed words={['weddings', 'the office', 'Diwali', 'a first date', 'brunch', 'the airport']} style={{ color: INK, fontWeight: 600 }} />
           </p>
-        </Reveal>
-        <Reveal delay={0.42}>
+        </div>
+        <div className="hero-in" style={{ animationDelay: '0.28s' }}>
           <div className="relative mt-9 md:mt-14">
             <div className="flex flex-wrap items-center justify-center gap-3">
               <a href="#waitlist" className="btn-primary">Join the waitlist <span aria-hidden>→</span></a>
@@ -98,7 +100,7 @@ function Hero() {
                 Placed outside the row so the buttons stay centred under the headline. */}
             <KweenPerch name="hero" bubble="right" className="absolute hidden md:block" style={{ left: 'calc(50% + 248px)', bottom: -24 }} width="clamp(84px, 7.5vw, 104px)" />
           </div>
-        </Reveal>
+        </div>
       </div>
 
       <div className="relative z-10 mt-20 md:mt-24">
@@ -111,7 +113,7 @@ function Hero() {
 // ── 5. WAITLIST ─────────────────────────────────── glass panel + Kween ──
 function Waitlist() {
   return (
-    <section id="waitlist" className="relative overflow-hidden px-6 py-28 md:py-36">
+    <section id="waitlist" className="cv-auto relative overflow-hidden px-6 py-28 md:py-36" style={{ containIntrinsicSize: 'auto 900px' }}>
       <Blobs tones={['#FFE3CC', '#EEEBFF', '#E4F3F6']} opacity={0.8} />
       <div className="relative z-10 mx-auto grid max-w-5xl items-center gap-12 lg:grid-cols-[1fr_minmax(0,460px)] lg:gap-20">
         <div className="relative hidden lg:flex lg:justify-center">
@@ -147,19 +149,32 @@ function FloatingBadge() {
   )
 }
 
+const SECTIONS = ['how', 'stylist', 'app', 'features', 'waitlist']
+
 export default function Home() {
+  // How far down people get: one event per section, the first time it is seen.
+  useEffect(() => {
+    if (typeof IntersectionObserver === 'undefined') return
+    const seen = new Set()
+    const io = new IntersectionObserver(es => es.forEach(e => {
+      const id = e.target.id
+      if (e.isIntersecting && !seen.has(id)) { seen.add(id); track('section_viewed', { section: id }) }
+    }), { threshold: 0.35 })
+    SECTIONS.forEach(id => { const el = document.getElementById(id); if (el) io.observe(el) })
+    return () => io.disconnect()
+  }, [])
   return (
     <>
       <Head>
         <title>Fluntr - Your closet on your phone. The most personal AI stylist.</title>
         <meta name="description" content="Photograph your clothes once. Fluntr keeps your whole closet on your phone, and Kween, the most personal AI stylist, picks your outfit every morning from what you actually own: for your weather, your dress code and your plans. Fit checks, wedding and festival outfits, wear history." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="canonical" href="https://fluntr.com/" />
+        <link rel="canonical" href="https://www.fluntr.com/" />
         <meta property="og:title" content="Fluntr - Your closet on your phone. The most personal AI stylist." />
         <meta property="og:description" content="Kween learns what you own, your week and your weather, then picks what you wear every morning. From your cupboard, never a cart." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://fluntr.com/" />
-        <meta property="og:image" content="https://fluntr.com/og/default.jpg" />
+        <meta property="og:url" content="https://www.fluntr.com/" />
+        <meta property="og:image" content="https://www.fluntr.com/og/default.jpg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta name="twitter:card" content="summary_large_image" />
@@ -169,7 +184,7 @@ export default function Home() {
       <Nav />
       <main>
         <Hero />
-      <Stylist />
+        <Stylist />
         <Ticker />
         <Features />
         <Conversations />

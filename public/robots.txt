@@ -30,4 +30,4 @@ Allow: /
 User-agent: meta-externalagent
 Allow: /
 
-Sitemap: https://fluntr.com/sitemap.xml
+Sitemap: https://www.fluntr.com/sitemap.xml

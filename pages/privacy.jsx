@@ -36,6 +36,10 @@ const SECTIONS = [
                 text: 'Usage data helps us fix bugs, improve performance, and build better features for our community.',
             },
             {
+                sub: 'Website Analytics',
+                text: 'On fluntr.com we use PostHog to understand how the site is used: pages viewed, clicks, how far people scroll, the device and browser, the referring site, approximate location from the IP address, page speed, and recordings of sessions in which everything typed into a form is masked. We never send your name or phone number to it. A cookie and local storage recognise a returning browser. If your browser sends Do Not Track, analytics stays off.',
+            },
+            {
                 sub: 'Communications',
                 text: 'We may send you product updates, waitlist confirmations, or important account notices. You may opt out of non-essential communications at any time.',
             },
@@ -200,7 +204,7 @@ export default function PrivacyPolicy() {
                         Privacy Policy
                     </h1>
                     <p style={{ fontSize: '14px', color: 'rgba(21,23,27,0.75)', lineHeight: 1.8 }}>
-                        Effective Date: <strong style={{ color: 'rgba(21,23,27,1)' }}>June 3, 2026</strong>
+                        Effective Date: <strong style={{ color: 'rgba(21,23,27,1)' }}>June 3, 2026</strong> · Last updated: <strong style={{ color: 'rgba(21,23,27,1)' }}>October 10, 2026</strong>
                     </p>
                     <p style={{ fontSize: '14px', color: 'rgba(21,23,27,0.75)', lineHeight: 1.8, marginTop: '8px' }}>
                         Melchizedek Technologies Private Limited ("MTPL", "we", "us", or "our") operates the Fluntr mobile application (the "App"). This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our digital wardrobe and social commerce platform.

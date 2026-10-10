@@ -18,7 +18,7 @@ module.exports = {
         pill: '#3A3A3C',
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        sans: ['Inter', 'Inter Fallback', 'system-ui', 'sans-serif'],
         serif: ['Instrument Serif', 'serif'],
       },
     },
