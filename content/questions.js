@@ -109,4 +109,6 @@ export const TOPICS = [
   },
 ]
 
-export const ALL_QA = TOPICS.flatMap(t => t.qa.map(([q, a]) => ({ q, a, topic: t.id })))
+export const slugOf = q => q.toLowerCase().replace(/[’']/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 80)
+
+export const ALL_QA = TOPICS.flatMap(t => t.qa.map(([q, a]) => ({ q, a, slug: slugOf(q), topic: t.id, topicTitle: t.title })))

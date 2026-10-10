@@ -1,9 +1,9 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import Nav from '../components/Nav'
-import Footer from '../components/Footer'
-import KweenRoamer, { KweenPerch } from '../components/motion/KweenRoamer'
-import { TOPICS, ALL_QA } from '../content/questions'
+import Nav from '../../components/Nav'
+import Footer from '../../components/Footer'
+import KweenRoamer, { KweenPerch } from '../../components/motion/KweenRoamer'
+import { TOPICS, ALL_QA, slugOf } from '../../content/questions'
 
 /**
  * Every question people ask about getting dressed, answered plainly, with how
@@ -31,6 +31,8 @@ export default function Questions() {
         <meta property="og:description" content="Outfit, shopping, festival, Instagram and closet questions, answered. Plus what Fluntr is and how Kween, its stylist, works." />
         <meta property="og:type" content="article" />
         <meta property="og:url" content="https://fluntr.com/questions" />
+        <meta property="og:image" content="https://fluntr.com/og/questions.jpg" />
+        <meta name="twitter:card" content="summary_large_image" />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
       </Head>
       <Nav />
@@ -58,8 +60,10 @@ export default function Questions() {
               <p className="mt-2 text-[16px]" style={{ color: MUTED }}>{t.blurb}</p>
               <dl className="mt-8 flex flex-col gap-8">
                 {t.qa.map(([q, a]) => (
-                  <div key={q} id={slug(q)} className="scroll-mt-28">
-                    <dt className="text-[19px] font-semibold tracking-tight" style={{ color: INK }}>{q}</dt>
+                  <div key={q} id={slugOf(q)} className="scroll-mt-28">
+                    <dt className="text-[19px] font-semibold tracking-tight" style={{ color: INK }}>
+                      <Link href={`/questions/${slugOf(q)}`} className="no-underline hover:underline" style={{ color: INK }}>{q}</Link>
+                    </dt>
                     <dd className="mt-2 text-[16px] leading-relaxed" style={{ color: '#3A3D45' }}>{a}</dd>
                   </div>
                 ))}
@@ -83,6 +87,3 @@ export default function Questions() {
   )
 }
 
-function slug(q) {
-  return q.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 80)
-}

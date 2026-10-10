@@ -155,6 +155,10 @@ export default function Home() {
         <meta property="og:description" content="Photograph each piece once. Kween sorts it, keeps it, and tells you what goes with what." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://fluntr.com/" />
+        <meta property="og:image" content="https://fluntr.com/og/default.jpg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta name="twitter:card" content="summary_large_image" />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(LD) }} />
       </Head>
 

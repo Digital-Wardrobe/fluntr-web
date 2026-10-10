@@ -1,4 +1,4 @@
-import { TOPICS } from '../content/questions'
+import { ALL_QA } from '../content/questions'
 
 /** Static sitemap: the pages worth indexing, and the question topics as anchors are left to the page itself. */
 export async function getServerSideProps({ res }) {
@@ -7,6 +7,7 @@ export async function getServerSideProps({ res }) {
     { loc: `${base}/`, priority: '1.0', changefreq: 'weekly' },
     { loc: `${base}/questions`, priority: '0.9', changefreq: 'weekly' },
     { loc: `${base}/privacy`, priority: '0.3', changefreq: 'yearly' },
+    ...ALL_QA.map(q => ({ loc: `${base}/questions/${q.slug}`, priority: '0.7', changefreq: 'monthly' })),
   ]
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
