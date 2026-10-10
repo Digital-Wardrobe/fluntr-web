@@ -52,7 +52,7 @@ export default function WaitlistForm({ onSuccess }) {
     return (
       <div className="glass flex flex-col items-center gap-3 p-10 text-center" style={{ borderRadius: 24 }}>
         <Mark size={34} color="#15171B" />
-        <h3 className="font-serif-display" style={{ fontSize: 34, color: '#15171B' }}>You&apos;re on the list.</h3>
+        <h3 className="h-display" style={{ fontSize: 30, color: '#121317' }}>You&apos;re on the list.</h3>
         <p style={{ fontSize: 14, color: '#767A85' }}>We will tell you the day it opens.</p>
       </div>
     )

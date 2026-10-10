@@ -169,7 +169,7 @@ export default function PrivacyPolicy() {
                         <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" width={20} height={20}>
                             <path d="M30 4 L33.5 26.5 L56 30 L33.5 33.5 L30 56 L26.5 33.5 L4 30 L26.5 26.5 Z" fill="#15171B" />
                         </svg>
-                        <span style={{ fontFamily: "'Instrument Serif', serif", fontSize: '18px', letterSpacing: '0', color: '#15171B', fontWeight: 600 }}>
+                        <span style={{ fontFamily: "'Inter', system-ui, sans-serif", fontWeight: 800, letterSpacing: '-0.03em', fontSize: '18px', letterSpacing: '0', color: '#15171B', fontWeight: 600 }}>
                             fluntr
                         </span>
                     </Link>
@@ -189,7 +189,7 @@ export default function PrivacyPolicy() {
                         Legal
                     </p>
                     <h1 style={{
-                        fontFamily: "'Instrument Serif', serif",
+                        fontFamily: "'Inter', system-ui, sans-serif", fontWeight: 800, letterSpacing: '-0.03em',
                         fontSize: 'clamp(36px, 8vw, 64px)',
                         fontWeight: 400,
                         lineHeight: 1.05,
@@ -257,7 +257,7 @@ export default function PrivacyPolicy() {
                         >
                             <div style={{ display: 'flex', gap: '20px', alignItems: 'flex-start' }}>
                                 <span style={{
-                                    fontFamily: "'Instrument Serif', serif",
+                                    fontFamily: "'Inter', system-ui, sans-serif", fontWeight: 800, letterSpacing: '-0.03em',
                                     fontSize: '13px',
                                     color: 'rgba(21,23,27,0.45)',
                                     letterSpacing: '0.1em',
@@ -268,7 +268,7 @@ export default function PrivacyPolicy() {
                                 </span>
                                 <div style={{ flex: 1 }}>
                                     <h2 style={{
-                                        fontFamily: "'Instrument Serif', serif",
+                                        fontFamily: "'Inter', system-ui, sans-serif", fontWeight: 800, letterSpacing: '-0.03em',
                                         fontSize: 'clamp(22px, 5vw, 30px)',
                                         fontWeight: 400,
                                         color: '#15171B',

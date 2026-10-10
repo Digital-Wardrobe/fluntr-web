@@ -2,8 +2,9 @@
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import Logo from './Logo'
+import { SoundToggle } from './motion/Sound'
 
-/** Floating glass bar. Hides on scroll-down, returns on scroll-up. */
+/** Floating pill bar: glass once you scroll, hides on the way down, back on the way up. */
 export default function Nav() {
   const [visible, setVisible] = useState(true)
   const [scrolled, setScrolled] = useState(false)
@@ -25,14 +26,10 @@ export default function Nav() {
   return (
     <div
       className="fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-4"
-      style={{
-        transform: visible ? 'translateY(0)' : 'translateY(-130%)',
-        transition: 'transform 0.4s cubic-bezier(0.16,1,0.3,1)',
-        pointerEvents: 'none',
-      }}
+      style={{ transform: visible ? 'translateY(0)' : 'translateY(-130%)', transition: 'transform 0.4s cubic-bezier(0.16,1,0.3,1)', pointerEvents: 'none' }}
     >
       <nav
-        className={`${scrolled ? 'glass' : ''} flex w-full max-w-6xl items-center justify-between px-5 py-2.5 md:px-6`}
+        className={`${scrolled ? 'glass' : ''} flex w-full max-w-6xl items-center justify-between px-4 py-2 md:px-5`}
         style={{ borderRadius: 999, pointerEvents: 'auto', transition: 'background 0.3s' }}
       >
         <Link href="/" className="flex items-center no-underline">
@@ -40,16 +37,19 @@ export default function Nav() {
         </Link>
 
         <div className="hidden items-center gap-7 md:flex">
-          {[['#features', 'Features'], ['#how', 'How it works'], ['#app', 'The app']].map(([href, label]) => (
-            <Link key={href} href={href} className="text-[13.5px] font-medium no-underline transition-colors hover:text-[#15171B]" style={{ color: '#3A3D45' }}>
+          {[['#how', 'Try it'], ['#app', 'The app'], ['#features', 'Kween']].map(([href, label]) => (
+            <Link key={href} href={href} className="text-[14px] font-medium no-underline transition-colors hover:text-[#121317]" style={{ color: '#3A3D45' }}>
               {label}
             </Link>
           ))}
         </div>
 
-        <Link href="#waitlist" className="btn-primary" style={{ padding: '10px 18px', fontSize: 13 }}>
-          Join the waitlist
-        </Link>
+        <div className="flex items-center gap-1.5">
+          <SoundToggle />
+          <Link href="#waitlist" className="btn-primary" style={{ padding: '10px 18px', fontSize: 13.5 }}>
+            Join the waitlist
+          </Link>
+        </div>
       </nav>
     </div>
   )
