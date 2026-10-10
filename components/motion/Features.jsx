@@ -64,10 +64,10 @@ export default function Features() {
           tone="#2E8FA3"
           title="See everything you own. Finally."
           body="Every piece, in a grid you can actually look through. Grouped by colour, type and occasion, and searchable the way your memory is not."
-          props={[{ text: '+ 8 added', left: '-22%', top: '16%', tone: '#4F9D6B' }, { text: 'Tops · 12', left: '82%', top: '42%' }]}
+          props={[{ text: '+ 6 added', left: '-22%', top: '16%', tone: '#4F9D6B' }, { text: 'Ethnic wear · 4', left: '78%', top: '42%' }]}
           perch={{ name: 'closet', line: 'Your tops and bottoms make 24 combos. Lots to wear!', mood: 'happy' }}
         >
-          <ClosetScreen selected={['teal', 'chinos', 'white', 'jeans', 'plaid', 'knit', 'rail', 'snake']} label="pieces · Everyone" />
+          <ClosetScreen selected={['kurta-look', 'lehenga', 'denim-jacket', 'saree', 'sneakers', 'juttis']} animate={false} />
         </Card>
 
         <Card
@@ -78,7 +78,7 @@ export default function Features() {
           props={[{ text: '♥ 142', left: '-16%', top: '26%' }, { text: 'that’s the one', left: '76%', top: '58%', tone: '#121317' }]}
           perch={{ name: 'feed', line: 'I saw that like. Good taste.', mood: 'love' }}
         >
-          <FeedScreen item={byId.teal} />
+          <FeedScreen item={byId['kurta-look']} />
         </Card>
 
         <Card

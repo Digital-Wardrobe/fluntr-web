@@ -69,7 +69,7 @@ function Hero() {
           <p className="text-eyebrow mb-7">Your closet, on your phone</p>
         </Reveal>
         <Reveal delay={0.08}>
-          <h1 className="h-display mx-auto" style={{ fontSize: 'clamp(38px,6vw,82px)', color: INK, textWrap: 'pretty' }}>
+          <h1 className="h-display mx-auto" style={{ fontSize: 'clamp(36px,4.4vw,58px)', color: INK, textWrap: 'balance' }}>
             Your <PillWord tone="#2E8FA3" soft="#E4F3F6" icon="closet">closet</PillWord>{' '}
             <span style={{ color: '#9AA0A6' }}>on your phone.</span>
             <br className="hidden md:block" />{' '}
@@ -88,11 +88,14 @@ function Hero() {
           </p>
         </Reveal>
         <Reveal delay={0.42}>
-          <div className="mt-9 flex flex-wrap items-end justify-center gap-3">
-            <a href="#waitlist" className="btn-primary">Join the waitlist <span aria-hidden>→</span></a>
-            <a href="#how" className="btn-glass glass">Try the demo <span aria-hidden>↓</span></a>
-            {/* she stands beside the buttons when you arrive, and greets you */}
-            <KweenPerch name="hero" className="ml-3 hidden md:block" width="clamp(84px, 7.5vw, 104px)" />
+          <div className="relative mt-9 md:mt-14">
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              <a href="#waitlist" className="btn-primary">Join the waitlist <span aria-hidden>→</span></a>
+              <a href="#how" className="btn-glass glass">Try the demo <span aria-hidden>↓</span></a>
+            </div>
+            {/* she stands just right of the buttons when you arrive, and greets you.
+                Placed outside the row so the buttons stay centred under the headline. */}
+            <KweenPerch name="hero" bubble="right" className="absolute hidden md:block" style={{ left: 'calc(50% + 248px)', bottom: -24 }} width="clamp(84px, 7.5vw, 104px)" />
           </div>
         </Reveal>
       </div>

@@ -21,11 +21,11 @@ const THREADS = [
   { u: 'I never know what to wear.', k: 'You own forty tops. We’ll start there.', mood: '🫠', who: 'Waitlist', where: 'Bengaluru', r: ['👗', '🔥', '😭'] },
   { u: 'Wedding on Saturday. Help.', k: 'Snake print over the white shirt. Arre, iconic.', mood: '😍', who: 'Demo', where: 'Question 2', r: ['✨', '❤️', '👏'] },
   { u: 'I forget what clothes I own.', k: 'That is the whole app. Photograph it once, see it forever.', mood: '🙃', who: 'Waitlist', where: 'Mumbai', r: ['🧥', '💯'] },
-  { u: 'Too much for office?', k: 'The teal? No. The snake print? Yes. Obviously.', mood: '😏', who: 'Demo', where: 'Question 3', r: ['😂', '🔥', '👔'] },
+  { u: 'Too much for office?', k: 'The olive kurti? No. The sherwani? Yes. Obviously.', mood: '😏', who: 'Demo', where: 'Question 3', r: ['😂', '🔥', '👔'] },
   { u: "Can't plan outfits for occasions.", k: 'Tell me the occasion. I’ll pull three from your closet.', mood: '📅', who: 'Waitlist', where: 'Delhi', r: ['✨', '👗'] },
   { u: 'My partner and I never agree on my fits.', k: 'Post both. Let the people decide.', mood: '🙄', who: 'Waitlist', where: 'Hyderabad', r: ['😂', '❤️', '🗳️'] },
-  { u: "What haven't I worn lately?", k: 'That cream knit hasn’t seen daylight in 3 weeks.', mood: '😳', who: 'Demo', where: 'Question 4', r: ['🧶', '😭', '🔥'] },
-  { u: 'What goes with this?', k: 'Easy. Sand chinos, white shirt. Done before chai.', mood: '☕', who: 'Demo', where: 'Question 1', r: ['👟', '✨', '💯'] },
+  { u: "What haven't I worn lately?", k: 'That denim jacket hasn’t seen daylight in 3 weeks.', mood: '😳', who: 'Demo', where: 'Question 4', r: ['🧶', '😭', '🔥'] },
+  { u: 'What goes with the kurta?', k: 'The maroon juttis. That’s it, you’re done.', mood: '☕', who: 'Demo', where: 'Question 1', r: ['👟', '✨', '💯'] },
   { u: 'Is this too much for brunch?', k: 'Nothing is too much for brunch. Wear the earrings.', mood: '💅', who: 'Kween', where: 'Running bit', r: ['💅', '🔥'] },
 ]
 

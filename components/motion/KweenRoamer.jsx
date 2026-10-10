@@ -36,13 +36,15 @@ function greeting() {
 }
 
 /** An empty slot a section reserves for her. She sizes herself to its width. */
-export function KweenPerch({ name, line, mood = 'idle', width = 'clamp(84px, 9vw, 116px)', className = '', style }) {
+/** `bubble` fixes which side of her head the speech bubble goes on at this perch; by default it points inwards. */
+export function KweenPerch({ name, line, mood = 'idle', bubble, width = 'clamp(84px, 9vw, 116px)', className = '', style }) {
   return (
     <div
       aria-hidden
       data-kween-perch={name}
       data-kween-line={line || ''}
       data-kween-mood={mood}
+      data-kween-bubble={bubble}
       className={className}
       style={{ width, aspectRatio: `200 / ${278}`, pointerEvents: 'none', ...style }}
     />
@@ -210,7 +212,9 @@ export default function KweenRoamer() {
 
   const [vw, setVw] = useState(1440)
   useEffect(() => { const f = () => setVw(window.innerWidth); f(); window.addEventListener('resize', f); return () => window.removeEventListener('resize', f) }, [])
-  const onRight = x.get() + size / 2 > vw / 2
+  // the perch may say which side the bubble goes (the hero's sits beside buttons it must not cover)
+  const perchBubble = onPerch && typeof document !== 'undefined' ? document.querySelector(`[data-kween-perch="${onPerch}"]`)?.dataset.kweenBubble : null
+  const onRight = perchBubble ? perchBubble === 'left' : x.get() + size / 2 > vw / 2
 
   return (
     <motion.div

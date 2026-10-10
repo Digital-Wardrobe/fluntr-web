@@ -32,7 +32,7 @@ export default function Cursors({ className = '' }) {
       {TAGS.map(t => (
         <motion.div
           key={t.name}
-          className={`absolute ${t.mobileHidden ? 'hidden md:block' : ''}`}
+          className="absolute hidden md:block"
           style={{ left: `${t.path[0][0]}%`, top: `${t.path[0][1]}%` }}
           animate={reduce ? undefined : { left: t.path.map(p => `${p[0]}%`), top: t.path.map(p => `${p[1]}%`) }}
           transition={{ duration: t.dur, delay: t.delay, repeat: Infinity, ease: 'easeInOut' }}
