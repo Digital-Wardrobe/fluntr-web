@@ -169,7 +169,7 @@ export default function Kween({ expression = 'idle', talking = false, follow = t
       <motion.div
         style={{ transformOrigin: '50% 100%' }}
         animate={walking && !reduce ? { y: [0, -6, 0, -6, 0], rotate: [0, 4.5, 0, -4.5, 0], scaleX: mirrored ? -1 : 1 } : { y: 0, rotate: 0, scaleX: mirrored ? -1 : 1 }}
-        transition={walking ? { duration: 0.84, repeat: Infinity, ease: 'easeInOut', scaleX: { duration: 0.2 } } : { duration: 0.25 }}
+        transition={walking ? { duration: 0.84, repeat: Infinity, ease: 'easeInOut', scaleX: { duration: 0 } } : { duration: 0.25, scaleX: { duration: 0 } }}
       >
       {/* the app's hop: crouch, leap, land, settle */}
       <motion.div

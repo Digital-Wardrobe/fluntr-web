@@ -123,9 +123,10 @@ export default function KweenRoamer() {
       wanderTimer.current = setTimeout(wander, 7000 + Math.random() * 6000)
     }
 
+    let started = false
     function tick() {
       raf = 0
-      if (draggingRef.current) return
+      if (draggingRef.current || !started) return
       const perches = measurePerches()
       const mid = vh() * 0.5
       // a perch counts when its middle sits well inside the window, not when a sliver clips the edge
@@ -165,10 +166,16 @@ export default function KweenRoamer() {
     const poll = setInterval(schedule, 400)
     window.addEventListener('scroll', schedule, { passive: true })
     window.addEventListener('resize', schedule)
-    // first appearance: start just off the bottom-left, then hop in and greet
+    // first appearance: she is parked just below the window, then walks up into
+    // the corner and greets. Perches only start pulling her once that has begun,
+    // so the entrance and a perch never fight over her.
     const s = wanderSize(); setSize(s); x.set(16); y.set(vh() + 40)
-    setTimeout(() => { travelTo(16, floorY(s), { onArrive: () => { flash('happy'); setTapLine(greeting()); setTimeout(() => setTapLine(null), 3600) } }); schedule() }, 900)
-    return () => { mounted.current = false; clearInterval(poll); clearTimeout(wanderTimer.current); cancelAnimationFrame(raf); stopTravel(); window.removeEventListener('scroll', schedule); window.removeEventListener('resize', schedule) }
+    const enter = setTimeout(() => {
+      started = true
+      travelTo(16, floorY(s), { onArrive: () => { if (perchRef.current) return; flash('happy'); setTapLine(greeting()); setTimeout(() => setTapLine(null), 3600) } })
+      setTimeout(schedule, 250)
+    }, 900)
+    return () => { mounted.current = false; clearTimeout(enter); clearInterval(poll); clearTimeout(wanderTimer.current); cancelAnimationFrame(raf); stopTravel(); window.removeEventListener('scroll', schedule); window.removeEventListener('resize', schedule) }
   }, [travelTo, flash, play, x, y])
 
   // ── life: sleep when the page is left alone, wake with a start ──
