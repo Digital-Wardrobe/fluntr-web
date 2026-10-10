@@ -785,6 +785,23 @@ export default function Demo() {
     : step === 2 && saved ? { title: 'Saved!', body: 'Kween filled in the category, colours, fabric and occasion from the photo. Tap OK to see your closet.' }
     : STEPS[step]
 
+  // Kween, with the next step as a button under her (her bubble opens to the
+  // right of her head, so the button goes below rather than beside her).
+  const helper = cls => (
+    <div className={cls}>
+      <KweenPerch name="demo" bubble="right" width="clamp(72px, 7vw, 96px)" />
+      <div className="mt-3 min-h-[56px]">
+        <AnimatePresence mode="wait">
+          {pending ? (
+            <motion.button key={pending.label} type="button" onClick={runPending} className="btn-primary" initial={{ opacity: 0, y: 10, scale: 0.96 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, scale: 0.96 }} transition={{ type: 'spring', stiffness: 380, damping: 26 }}>
+              {pending.label} <span aria-hidden>→</span>
+            </motion.button>
+          ) : null}
+        </AnimatePresence>
+      </div>
+    </div>
+  )
+
   const first = byId[selected[0]] || GALLERY[0]
   const screens = [
     <PickScreen key="pick" selected={selected} toggle={toggle} onNext={add} />,
@@ -813,24 +830,12 @@ export default function Demo() {
               </motion.div>
             </AnimatePresence>
 
-            {/* Kween, and the next step as a button, right under the words.
-                On a phone the demo's own buttons scroll out of sight; this one
-                is always where you are reading. */}
-            <div className="mt-8">
-              {/* her bubble opens to the right of her head, so the button sits under her, not beside */}
-              <KweenPerch name="demo" bubble="right" width="clamp(72px, 7vw, 96px)" />
-              <div className="mt-3 min-h-[56px]">
-                <AnimatePresence mode="wait">
-                  {pending ? (
-                    <motion.button key={pending.label} type="button" onClick={runPending} className="btn-primary" initial={{ opacity: 0, y: 10, scale: 0.96 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, scale: 0.96 }} transition={{ type: 'spring', stiffness: 380, damping: 26 }}>
-                      {pending.label} <span aria-hidden>→</span>
-                    </motion.button>
-                  ) : null}
-                </AnimatePresence>
-              </div>
-            </div>
+            {/* On phones and tablets Kween and the next-step button sit right
+                under the words: the demo's own buttons scroll out of sight
+                there, and this is where you are reading. */}
+            {helper('mt-8 lg:hidden')}
 
-            <ol className="mt-6 flex flex-col gap-1">
+            <ol className="mt-6 flex flex-col gap-1 lg:mt-8">
               {STEPS.map((s, i) => (
                 <li key={s.k}>
                   <button type="button" onClick={() => jump(i)} className="flex w-full items-center gap-4 rounded-full px-3 py-2 text-left transition-colors" style={{ background: i === step ? '#fff' : 'transparent', cursor: i === 0 || n ? 'pointer' : 'default', boxShadow: i === step ? '0 1px 2px rgba(18,19,23,0.06)' : 'none' }}>
@@ -845,6 +850,9 @@ export default function Demo() {
               ))}
             </ol>
             {step > 0 ? <button type="button" onClick={restart} className="mt-5 text-[13px] font-medium underline" style={{ color: MUTED, background: 'none', border: 0, cursor: 'pointer' }}>Start over</button> : null}
+
+            {/* On desktop the phone is beside the words, so Kween stands below the steps. */}
+            {helper('mt-10 hidden lg:block')}
           </div>
 
           {/* right: the phone */}

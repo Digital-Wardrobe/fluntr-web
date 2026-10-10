@@ -146,7 +146,8 @@ export default function KweenRoamer() {
           perchRef.current = target.name; lastPerch = target.name; settled = false
           setSize(target.w)
           travelTo(target.x, target.y, { onArrive: () => {
-            settled = true; setAsleep(false); setOnPerch(target.name); play('tick', { gain: 0.3 })
+            // arriving on a perch drops any leftover wander or greeting line, so she says the section's line
+            settled = true; setAsleep(false); setTapLine(null); setOnPerch(target.name); play('tick', { gain: 0.3 })
             if (target.line && target.name !== 'demo') kweenSay(target.line, target.mood, { perch: target.name })
           } })
         } else if (settled || !travelRef.current) {
