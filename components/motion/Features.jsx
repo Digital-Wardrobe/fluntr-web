@@ -84,7 +84,7 @@ export default function Features() {
         <Card
           tone="#7B6CF6"
           title="Kween knows your closet."
-          body="Short answers from the clothes you actually own, not a shop. Ask about Saturday, about the office, about what you have been ignoring."
+          body="Ask about Saturday, about the office, about what you have been ignoring. Short answers from the clothes you actually own, which is what makes her the most personal stylist there is."
           props={[{ text: 'Saturday · Wedding', left: '-28%', top: '20%' }, { text: '3 picks', left: '80%', top: '66%', tone: '#F28C38' }]}
         >
           <KweenScreen preset={1} mood={mood} talking={talking} setMood={setMood} setTalking={setTalking} />

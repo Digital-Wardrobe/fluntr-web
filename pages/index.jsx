@@ -5,6 +5,7 @@ import WaitlistForm from '../components/WaitlistForm'
 import Reveal from '../components/motion/Reveal'
 import Demo, { Glyph } from '../components/motion/Demo'
 import Ticker from '../components/motion/Ticker'
+import Stylist from '../components/motion/Stylist'
 import Features from '../components/motion/Features'
 import Conversations from '../components/motion/Conversations'
 import Cursors from '../components/motion/Cursors'
@@ -33,7 +34,7 @@ const LD = {
   '@graph': [
     {
       '@type': 'Organization', '@id': 'https://fluntr.com/#org', name: 'Fluntr', legalName: 'Melchizedek Technologies Private Limited', url: 'https://fluntr.com/',
-      email: 'support@fluntr.com', areaServed: 'IN', description: 'Fluntr is a digital wardrobe and style app from India.',
+      email: 'support@fluntr.com', areaServed: 'IN', description: 'Fluntr is a digital wardrobe and personal AI stylist app from India.',
     },
     {
       '@type': 'WebSite', '@id': 'https://fluntr.com/#site', url: 'https://fluntr.com/', name: 'Fluntr', publisher: { '@id': 'https://fluntr.com/#org' },
@@ -41,9 +42,9 @@ const LD = {
     {
       '@type': 'SoftwareApplication', '@id': 'https://fluntr.com/#app', name: 'Fluntr', applicationCategory: 'LifestyleApplication', operatingSystem: 'iOS, Android',
       url: 'https://fluntr.com/', author: { '@id': 'https://fluntr.com/#org' },
-      description: 'Photograph the clothes you own and Fluntr turns them into a closet you can see and search on your phone, plans outfits from it, and lets you post looks and ask friends which to wear. Kween, the in-app stylist, suggests outfits from your own clothes.',
-      featureList: ['Digital wardrobe from photos', 'Background removed on the device', 'Automatic category, colour and occasion', 'Outfit planning from your own closet', 'Post looks and ask friends', 'Kween, an in-app stylist'],
-      keywords: 'digital wardrobe app, closet organiser app, outfit planner, AI stylist, what to wear today, virtual closet, wardrobe app India, OOTD, fit check, capsule wardrobe',
+      description: 'Photograph the clothes you own and Fluntr turns them into a closet you can see and search on your phone. Kween, the most personal AI stylist, learns what you own, your city, your week and your taste, and picks your outfit every morning from your own clothes: for the weather, your dress code and your plans. Fit checks from a mirror selfie, outfits planned for weddings, festivals and trips, wear history, laundry and wardrobe insights. Post looks and ask friends which to wear.',
+      featureList: ['Digital wardrobe from photos', 'Background removed on the device', 'Automatic category, colour and occasion', 'Personal AI stylist that picks an outfit every morning', 'Fit check from a mirror selfie', 'Outfits planned for weddings, festivals and trips', 'Outfit calendar and wear history', 'Laundry and wardrobe insights', 'Post looks and ask friends', 'English and Hindi'],
+      keywords: 'personal AI stylist, AI stylist app, digital wardrobe app, closet organiser app, outfit planner, what to wear today, outfit of the day, fit check app, virtual closet, wardrobe app India, OOTD, capsule wardrobe, what to wear to a wedding',
     },
   ],
 }
@@ -66,24 +67,24 @@ function Hero() {
       <div className="relative z-10 mx-auto max-w-5xl text-center">
         <Cursors />
         <Reveal from="none">
-          <p className="text-eyebrow mb-7">Your closet, on your phone</p>
+          <p className="text-eyebrow mb-7">Your closet on your phone. The most personal AI stylist.</p>
         </Reveal>
         <Reveal delay={0.08}>
           <h1 className="h-display mx-auto" style={{ fontSize: 'clamp(36px,4.4vw,58px)', color: INK, textWrap: 'balance' }}>
             Your <PillWord tone="#2E8FA3" soft="#E4F3F6" icon="closet">closet</PillWord>{' '}
             <span style={{ color: '#9AA0A6' }}>on your phone.</span>
-            <br className="hidden md:block" />{' '}
-            Outfits in <PillWord tone="#F28C38" soft="#FFF0E3" icon="sparkle">seconds</PillWord>
-            <span style={{ color: '#9AA0A6' }}>, not twenty</span>
-            <br className="hidden md:block" />{' '}
-            <span style={{ color: '#9AA0A6' }}>minutes at the</span>{' '}
-            <PillWord tone="#7B6CF6" soft="#EEEBFF" icon="camera">mirror</PillWord>
+            <br />{' '}
+            The most personal <PillWord tone="#F28C38" soft="#FFF0E3" icon="sparkle">stylist</PillWord>
+            <span style={{ color: '#9AA0A6' }}>.</span>
+            <br />{' '}
+            <span style={{ color: '#9AA0A6' }}>Outfits in</span>{' '}
+            <PillWord tone="#7B6CF6" soft="#EEEBFF" icon="clock">seconds</PillWord>
             <span style={{ color: '#9AA0A6' }}>.</span>
           </h1>
         </Reveal>
         <Reveal delay={0.3} blur>
           <p className="mx-auto mt-8 max-w-2xl text-[18px] leading-relaxed md:text-[21px]" style={{ color: MUTED }}>
-            Photograph each piece once. Kween sorts it, keeps it, and tells you what goes with what.
+            Photograph each piece once. Kween learns what you own, your week and your weather, then picks what you wear every morning.
             Dressed for <Typed words={['weddings', 'the office', 'Diwali', 'a first date', 'brunch', 'the airport']} style={{ color: INK, fontWeight: 600 }} />
           </p>
         </Reveal>
@@ -150,12 +151,12 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Fluntr - Your closet on your phone, outfits in seconds</title>
-        <meta name="description" content="Photograph each piece once. Kween sorts it, keeps it, and tells you what goes with what. Your whole closet on your phone, and outfits in seconds instead of twenty minutes at the mirror." />
+        <title>Fluntr - Your closet on your phone. The most personal AI stylist.</title>
+        <meta name="description" content="Photograph your clothes once. Fluntr keeps your whole closet on your phone, and Kween, the most personal AI stylist, picks your outfit every morning from what you actually own: for your weather, your dress code and your plans. Fit checks, wedding and festival outfits, wear history." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="canonical" href="https://fluntr.com/" />
-        <meta property="og:title" content="Fluntr - Your closet on your phone, outfits in seconds" />
-        <meta property="og:description" content="Photograph each piece once. Kween sorts it, keeps it, and tells you what goes with what." />
+        <meta property="og:title" content="Fluntr - Your closet on your phone. The most personal AI stylist." />
+        <meta property="og:description" content="Kween learns what you own, your week and your weather, then picks what you wear every morning. From your cupboard, never a cart." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://fluntr.com/" />
         <meta property="og:image" content="https://fluntr.com/og/default.jpg" />
@@ -168,6 +169,7 @@ export default function Home() {
       <Nav />
       <main>
         <Hero />
+      <Stylist />
         <Ticker />
         <Features />
         <Conversations />

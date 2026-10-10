@@ -66,7 +66,7 @@ const STEPS = [
   { k: 'details', title: 'Kween fills in the details.', body: 'Category, colours, fabric, occasion. Check them, fix anything, save.', line: 'I filled it in. Fix anything I got wrong.' },
   { k: 'closet', title: 'It lands in your closet.', body: 'Every piece you own, cut out and in one grid you can actually look through.', line: 'That’s your closet. Finally.' },
   { k: 'feed', title: 'Post it, or ask first.', body: 'Put a look up and see what people think while you still have time to change.', line: 'Now post it. Or ask me.' },
-  { k: 'kween', title: 'Ask Kween.', body: 'Short answers, from the clothes you actually own.', line: 'Go on. Ask me something.' },
+  { k: 'kween', title: 'Ask your stylist.', body: 'Short answers, from the clothes you actually own. Kween only knows your closet, which is what makes her the most personal stylist there is.', line: 'Go on. Ask me something.' },
 ]
 
 const COLLECTIONS = ['My Closet', 'Office wear', 'Festive']
@@ -128,6 +128,8 @@ export function Glyph({ k, color = INK, size = 13, sw = 1.8 }) {
     case 'stats': return <svg viewBox="0 0 24 24" style={s}><path {...p} d="M4 20V10M10 20V4M16 20v-8M22 20H2" /></svg>
     case 'shirt': return <svg viewBox="0 0 24 24" style={s}><path {...p} d="M8 4 4 7l2 4 2-1v10h8V10l2 1 2-4-4-3a4 4 0 0 1-8 0z" /></svg>
     case 'send': return <svg viewBox="0 0 24 24" style={s}><path {...p} d="M21 3 10 14M21 3l-7 18-4-7-7-4z" /></svg>
+    case 'clock': return <svg viewBox="0 0 24 24" style={s}><circle {...p} cx="12" cy="12" r="8.5" /><path {...p} d="M12 7.5V12l3 2" /></svg>
+    case 'sun': return <svg viewBox="0 0 24 24" style={s}><circle {...p} cx="12" cy="12" r="4" /><path {...p} d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4 7 17M17 7l1.4-1.4" /></svg>
     case 'spin': return <svg viewBox="0 0 24 24" style={s}><path {...p} stroke={color} strokeWidth="2.4" d="M12 3a9 9 0 1 1-9 9" /></svg>
     default: return null
   }

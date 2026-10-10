@@ -88,6 +88,8 @@ export const TOPICS = [
     blurb: 'The pink plush with the bow. Short answers, from the clothes you own.',
     qa: [
       ['Who is Kween?', 'Fluntr’s mascot and stylist: a soft pink plush with a velvet bow who lives in your closet. She fills in category and colour when you add a piece, nudges you when something has not been worn for a while, and answers "what do I wear" with outfits from your own clothes. You can rename her and change her colour in the app.'],
+      ['Why is Fluntr called the most personal AI stylist?', 'Because Kween only knows you. A shop’s stylist knows a catalogue; Kween knows every piece in your cupboard, your city’s weather, your dress code for each weekday, the wedding you have on Saturday, what you wore last Diwali and how you like your tops to fit. Every suggestion comes from that, so it is always something you own and can wear this morning.'],
+      ['What does Fluntr’s AI stylist actually do?', 'Every morning Kween picks an outfit from your closet for the weather, your dress code and your plans, with two alternatives and the reason for each; one tap logs it as worn. She does fit checks from a mirror selfie (clothes only, the photo is deleted after), plans outfits days ahead for weddings, interviews, festivals and trips with a packing list, keeps your outfit calendar and wear history, tracks what is in the laundry, and shows which pieces get worn, cost per wear and the gaps worth filling. She works in English and Hindi.'],
       ['How is an AI stylist different from a shopping app?', 'A shopping app wants you to buy. A stylist that knows your closet wants you to wear. Kween only recommends from what you own, so the answer to "what goes with this" is always something in your cupboard, not something in a cart.'],
       ['Can Kween tell me what to wear for a specific event?', 'Yes. Tell her the occasion ("wedding on Saturday", "office, it is raining", "date, somewhere casual") and she pulls two or three outfits from your closet. The more of your wardrobe is photographed, the better the answers.'],
       ['Does Kween see my photos?', 'Background removal and categorising run on your phone. Your closet is private by default; you choose what to post and who sees it.'],
@@ -98,7 +100,7 @@ export const TOPICS = [
     title: 'About Fluntr',
     blurb: 'What it is, what it costs, where it runs.',
     qa: [
-      ['What is Fluntr?', 'Fluntr is a digital wardrobe and style app from India. You photograph the clothes you own, the app turns them into a closet you can see and search on your phone, plans outfits from it, and lets you post looks and ask friends which to wear. Kween, the in-app stylist, suggests outfits from your own clothes.'],
+      ['What is Fluntr?', 'Fluntr is a digital wardrobe and the most personal AI stylist, from India. You photograph the clothes you own and the app turns them into a closet you can see and search on your phone. Kween, the stylist, learns what you own, your city, your week and your taste, and picks your outfit every morning from your own clothes. You can also post looks and ask friends which to wear.'],
       ['Is Fluntr available now?', 'It is in a waitlist stage. Join the waitlist at fluntr.com and we will message you once, on the day it opens.'],
       ['Which phones does Fluntr work on?', 'It is built for iOS and Android. The web is for the waitlist, the demo and these pages.'],
       ['Is Fluntr free?', 'Joining the waitlist is free. Pricing for the app will be published when it opens; nothing on this site is a price promise.'],

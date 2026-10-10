@@ -28,7 +28,7 @@ export default function Questions() {
         <meta name="description" content="Plain answers to the questions people actually ask: what to wear today, Diwali and wedding outfits, shopping without buying twice, mirror selfies and fit checks, digitising your wardrobe, and what Fluntr and Kween do." />
         <link rel="canonical" href="https://fluntr.com/questions" />
         <meta property="og:title" content="What to wear, how to shop, how to organise your closet - Fluntr answers" />
-        <meta property="og:description" content="Outfit, shopping, festival, Instagram and closet questions, answered. Plus what Fluntr is and how Kween, its stylist, works." />
+        <meta property="og:description" content="Outfit, shopping, festival, Instagram and closet questions, answered. Plus what Fluntr is and how Kween, its personal AI stylist, works." />
         <meta property="og:type" content="article" />
         <meta property="og:url" content="https://fluntr.com/questions" />
         <meta property="og:image" content="https://fluntr.com/og/questions.jpg" />
@@ -43,7 +43,7 @@ export default function Questions() {
             Everything people ask about getting dressed.
           </h1>
           <p className="mt-6 max-w-2xl text-[18px] leading-relaxed" style={{ color: MUTED }}>
-            What to wear, what to buy, how to photograph it and how to find it again. Short answers, from people building a closet app, with how Fluntr helps where it actually does. Fluntr is pre-launch; nothing here is a promise.
+            What to wear, what to buy, how to photograph it and how to find it again. Short answers, from the people building a closet app with a personal AI stylist in it, with how Fluntr helps where it actually does. Fluntr is pre-launch; nothing here is a promise.
           </p>
           <nav aria-label="Topics" className="mt-8 flex flex-wrap gap-2">
             {TOPICS.map(t => (

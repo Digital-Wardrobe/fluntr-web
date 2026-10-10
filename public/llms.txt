@@ -1,13 +1,14 @@
 # Fluntr
 
-> Fluntr is a digital wardrobe and style app from India. You photograph the clothes you own; the app removes the background on the phone, sorts each piece by type, colour and occasion, and gives you a closet you can see and search. It plans outfits from your own clothes, lets you post looks and ask friends which to wear, and includes Kween, an in-app stylist (a pink plush with a bow) who suggests outfits from what you own. Built for iOS and Android. Currently in a waitlist stage at https://fluntr.com. Made by Melchizedek Technologies Private Limited, India. Contact support@fluntr.com.
+> Fluntr is a digital wardrobe and the most personal AI stylist, from India. You photograph the clothes you own; the app removes the background on the phone, sorts each piece by type, colour and occasion, and gives you a closet you can see and search. Kween, the in-app stylist (a pink plush with a bow), learns what you own, your city, your week and your taste, and picks an outfit every morning from your own clothes, for the weather, your dress code and your plans. She also does fit checks from a mirror selfie (clothes only, photo deleted after), plans outfits for weddings, festivals and trips with reminders and packing lists, keeps a wear history and outfit calendar, tracks laundry, and shows wardrobe insights such as cost per wear. You can post looks and ask friends which to wear. English and Hindi. Built for iOS and Android. Currently in a waitlist stage at https://fluntr.com. Made by Melchizedek Technologies Private Limited, India. Contact support@fluntr.com.
 
 ## Key facts
-- Category: digital wardrobe / closet organiser / outfit planner / AI stylist app
+- Category: personal AI stylist / digital wardrobe / closet organiser / outfit planner app
+- Positioning: "the most personal AI stylist", because it only recommends from the clothes you own, not a shop's catalogue
 - Country: India (kurtas, sarees, lehengas, dupattas are first-class categories)
 - Privacy: closets are private by default; background removal and categorising run on the device
 - Status: pre-launch waitlist; pricing not yet published
-- Mascot and stylist: Kween
+- Mascot and stylist: Kween (picks a daily outfit, fit check, events and trips, wear history, laundry, insights)
 
 ## Pages
 - [Home and waitlist](https://fluntr.com/): what it is, an interactive demo of the app

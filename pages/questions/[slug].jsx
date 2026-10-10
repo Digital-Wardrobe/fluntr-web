@@ -68,7 +68,7 @@ export default function Question({ item, topic, siblings, next }) {
           <div className="mt-10 flex flex-wrap items-end gap-6">
             <div className="glass flex-1 px-6 py-6" style={{ borderRadius: 24, minWidth: 260 }}>
               <p className="text-eyebrow mb-2">Fluntr</p>
-              <p className="text-[15px] leading-relaxed" style={{ color: MUTED }}>Photograph the clothes you own; Kween, the in-app stylist, answers this from your own closet. Pre-launch, waitlist open.</p>
+              <p className="text-[15px] leading-relaxed" style={{ color: MUTED }}>Photograph the clothes you own; Kween, the most personal AI stylist, answers this from your own closet. Pre-launch, waitlist open.</p>
               <div className="mt-4 flex flex-wrap gap-3">
                 <Link href="/#waitlist" className="btn-primary" style={{ padding: '12px 20px', fontSize: 14 }}>Join the waitlist →</Link>
                 <Link href="/#how" className="btn-glass glass" style={{ padding: '12px 20px', fontSize: 14 }}>Try the demo</Link>
