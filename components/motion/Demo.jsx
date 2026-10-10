@@ -356,7 +356,7 @@ export function KweenScreen({ onRestart, setMood, setTalking, mood, talking, pre
   return (
     <div className="absolute inset-0 flex flex-col" style={{ background: 'linear-gradient(180deg, #FFEBD9 0%, #fff 42%)' }}>
       <div className="flex items-center justify-between px-[6%] pt-[14%]"><span style={{ fontSize: 18 }}>‹</span><span style={{ fontSize: 13, fontWeight: 600 }}>Kween</span><span style={{ width: 18 }} /></div>
-      <div className="relative mx-auto mt-[2%]" style={{ width: '46%' }}>
+      <div className="relative mx-auto mt-[1%]" style={{ width: '36%' }}>
         <Kween expression={mood} talking={talking} size="100%" onClick={() => ask(asked == null ? 0 : (asked + 1) % QA.length)} />
       </div>
       <div className="px-[6%]">
@@ -430,19 +430,7 @@ export default function Demo() {
   ]
 
   return (
-    <div id="how" className="relative mx-auto w-full max-w-6xl scroll-mt-24">
-      {/* Kween sits on the top edge of the stage, the way a cat sits on a monitor */}
-      <div className="pointer-events-none absolute z-30 w-[112px] md:w-[140px]" style={{ left: '7%', top: -1, transform: 'translateY(-93%)' }}>
-        <div className="pointer-events-auto">
-          <Kween expression={mood} talking={talking} size="100%" onClick={() => { play('pop', { rate: 1.2 }); setTalking(true); setTimeout(() => setTalking(false), 900) }} />
-        </div>
-        <AnimatePresence mode="wait">
-          <motion.div key={line} className="absolute" style={{ left: '92%', bottom: '58%', whiteSpace: 'nowrap' }} initial={{ opacity: 0, scale: 0.7, y: 8 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.8 }} transition={{ duration: 0.35, ease: [0.34, 1.56, 0.64, 1] }}>
-            <Bubble text={line} style={{ fontSize: 13 }} />
-          </motion.div>
-        </AnimatePresence>
-      </div>
-
+    <div id="how" className="relative mx-auto w-full max-w-6xl scroll-mt-28">
       {/* the stage */}
       <div className="relative overflow-hidden" style={{ borderRadius: 40, background: '#F5F6F8', border: '1px solid rgba(18,19,23,0.08)', boxShadow: '0 40px 100px -40px rgba(18,19,23,0.25)' }}>
         <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: 'radial-gradient(60% 50% at 70% 20%, rgba(242,140,56,0.10), transparent 60%), radial-gradient(50% 40% at 15% 90%, rgba(46,143,163,0.10), transparent 60%)' }} />
@@ -469,6 +457,20 @@ export default function Demo() {
               ))}
             </ol>
             {step > 0 ? <button type="button" onClick={restart} className="mt-5 text-[13px] font-medium underline" style={{ color: MUTED, background: 'none', border: 0, cursor: 'pointer' }}>Start over</button> : null}
+
+            {/* Kween, in the layout: on the stage floor, beside the steps, talking */}
+            <div className="mt-8 flex items-end gap-3 md:mt-10">
+              <div className="w-[96px] shrink-0 md:w-[120px]">
+                <Kween expression={mood} talking={talking} size="100%" onClick={() => { play('pop', { rate: 1.2 }); setTalking(true); setTimeout(() => setTalking(false), 900) }} />
+              </div>
+              <div className="pb-5 md:pb-7">
+                <AnimatePresence mode="wait">
+                  <motion.div key={line} initial={{ opacity: 0, scale: 0.7, y: 8 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.8 }} transition={{ duration: 0.35, ease: [0.34, 1.56, 0.64, 1] }}>
+                    <Bubble text={line} />
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+            </div>
           </div>
 
           {/* right: the phone */}

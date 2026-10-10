@@ -73,7 +73,7 @@ function Hero() {
         </Reveal>
       </div>
 
-      <div className="relative z-10 mt-28 md:mt-36">
+      <div className="relative z-10 mt-20 md:mt-24">
         <Demo />
       </div>
     </section>
@@ -88,9 +88,9 @@ function Waitlist() {
       <div className="relative z-10 mx-auto grid max-w-5xl items-center gap-12 lg:grid-cols-[1fr_minmax(0,460px)] lg:gap-20">
         <div className="relative hidden lg:block">
           <Reveal from="right">
-            <div className="relative mx-auto" style={{ width: 300 }}>
+            <div className="relative mx-auto" style={{ width: 260 }}>
               <Kween size="100%" expression="happy" />
-              <div className="absolute" style={{ left: '70%', top: '2%', whiteSpace: 'nowrap' }}>
+              <div className="absolute" style={{ left: '74%', top: '6%', whiteSpace: 'nowrap' }}>
                 <Bubble text="Go on. I’ll keep your spot." />
               </div>
             </div>
