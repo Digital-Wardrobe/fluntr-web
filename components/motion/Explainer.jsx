@@ -98,7 +98,7 @@ function Sort({ play }) {
       <motion.div className="absolute overflow-hidden" style={{ left: 22, top: 20, width: 178, height: 250, borderRadius: 22, background: cut ? SOFT : '#ddd', boxShadow: '0 20px 44px rgba(18,19,23,0.16)', transition: 'background .4s' }} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.4 }}>
         <motion.div className="absolute inset-0" animate={{ opacity: cut ? 0 : 1 }} transition={{ duration: 0.5 }}><Photo src="juttis" sizes="180px" /></motion.div>
         <motion.div className="absolute inset-[8%]" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: cut ? 1 : 0, scale: cut ? 1 : 0.9 }} transition={spring}><Cut id="juttis" style={{ filter: 'drop-shadow(0 14px 16px rgba(18,19,23,0.2))' }} /></motion.div>
-        {!cut ? <motion.div className="absolute inset-x-0" style={{ height: 4, background: '#FFD700', boxShadow: '0 0 14px 3px #FFD700aa' }} initial={{ top: '0%' }} animate={{ top: ['0%', '100%', '0%'] }} transition={{ duration: 1.8, ease: 'linear' }} /> : null}
+        {!cut ? <motion.div className="absolute inset-0" initial={{ y: '0%' }} animate={{ y: ['0%', '98%', '0%'] }} transition={{ duration: 1.8, ease: 'linear' }}><div style={{ height: 4, background: '#FFD700', boxShadow: '0 0 14px 3px #FFD700aa' }} /></motion.div> : null}
         {cut ? [0, 1, 2, 3, 4, 5].map(n => (
           <motion.span key={n} className="absolute left-1/2 top-1/2" style={{ width: 7, height: 7, borderRadius: 999, background: '#FFD700' }} initial={{ x: 0, y: 0, opacity: 1 }} animate={{ x: Math.cos(n / 6 * Math.PI * 2) * 90, y: Math.sin(n / 6 * Math.PI * 2) * 90, opacity: 0 }} transition={{ duration: 0.7 }} />
         )) : null}
@@ -364,13 +364,14 @@ export default function Explainer() {
 
         {/* the story card */}
         <div className="flex flex-col items-center">
-          <div className="flex w-full justify-start lg:hidden" style={{ maxWidth: 'min(86vw, 360px)' }}><KweenPerch name="what" mood="happy" bubble="right" className="mb-2 ml-2" width="64px" /></div>
           <div ref={boxRef} className="relative" style={{ width: 'min(86vw, 360px)', aspectRatio: `${W} / ${H}`, borderRadius: 34 * scale, boxShadow: '0 40px 80px -30px rgba(18,19,23,0.35), 0 0 0 1px rgba(18,19,23,0.06)' }}>
             <div className="absolute left-0 top-0" style={{ width: W, height: H, transform: `scale(${scale})`, transformOrigin: '0 0' }}>
               <StoryCard i={i} progress={progress} playing={playing} onTap={next} onReplay={replay} onTry={tryIt} onToggle={() => { setPaused(p => !p); track('explainer_pause_toggle') }} play={play} />
             </div>
           </div>
-          <p className="mt-4 text-center text-[13px] lg:hidden" style={{ color: MUTED }}>Tap the card to skip ahead · <a href="#how" onClick={() => track('explainer_cta', { to: 'demo', from: 'skip' })} className="font-semibold underline" style={{ color: INK }}>Skip to the demo ↓</a></p>
+          {/* on phones Kween sits just below the card: above it she would slide under the navigation while the card fills the screen */}
+          <div className="mt-3 flex w-full justify-start lg:hidden" style={{ maxWidth: 'min(86vw, 360px)' }}><KweenPerch name="what" mood="happy" bubble="right" className="ml-2" width="60px" /></div>
+          <p className="mt-2 text-center text-[13px] lg:hidden" style={{ color: MUTED }}>Tap the card to skip ahead · <a href="#how" onClick={() => track('explainer_cta', { to: 'demo', from: 'skip' })} className="font-semibold underline" style={{ color: INK }}>Skip to the demo ↓</a></p>
         </div>
       </div>
     </section>

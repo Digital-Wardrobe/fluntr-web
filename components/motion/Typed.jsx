@@ -20,10 +20,16 @@ export default function Typed({ words, className = '', style }) {
     return () => clearTimeout(t)
   }, [n, del, i, words, reduce])
 
+  // A fixed-width slot (as wide as the longest word), so the centred line
+  // around it does not slide sideways each time the word changes.
+  const longest = words.reduce((a, w) => (w.length > a.length ? w : a), '')
   return (
-    <span className={className} style={style}>
-      {words[i].slice(0, n)}
-      <span aria-hidden className="typed-cursor" />
+    <span className={`relative inline-block whitespace-nowrap text-left ${className}`} style={style}>
+      <span aria-hidden style={{ visibility: 'hidden' }}>{longest}<span className="typed-cursor" /></span>
+      <span className="absolute left-0 top-0">
+        {words[i].slice(0, n)}
+        <span aria-hidden className="typed-cursor" />
+      </span>
     </span>
   )
 }

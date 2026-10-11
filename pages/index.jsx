@@ -102,6 +102,8 @@ function Hero() {
             {/* she stands just right of the buttons when you arrive, and greets you.
                 Placed outside the row so the buttons stay centred under the headline. */}
             <KweenPerch name="hero" bubble="right" className="absolute hidden md:block" style={{ left: 'calc(50% + 248px)', bottom: -24 }} width="clamp(84px, 7.5vw, 104px)" />
+            {/* on phones, below the buttons, where she covers nothing */}
+            <KweenPerch name="hero" className="mt-6 md:hidden" style={{ marginLeft: 4 }} width="64px" />
           </div>
         </div>
       </div>
@@ -125,6 +127,9 @@ function Waitlist() {
       <div className="relative z-10 mx-auto grid max-w-5xl items-center gap-12 lg:grid-cols-[1fr_minmax(0,460px)] lg:gap-20">
         <div className="relative hidden lg:flex lg:justify-center">
           <KweenPerch name="waitlist" line="Go on. I’ll keep your spot." mood="happy" width="min(26vw, 240px)" />
+        </div>
+        <div className="lg:hidden">
+          <KweenPerch name="waitlist" line="Go on. I’ll keep your spot." mood="happy" width="64px" className="-mb-6 ml-2" />
         </div>
         <Reveal>
           <div className="glass px-7 py-10 md:px-12 md:py-14" style={{ borderRadius: 32 }}>

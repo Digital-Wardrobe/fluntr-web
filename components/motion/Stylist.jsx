@@ -106,7 +106,7 @@ export default function Stylist() {
               <span className="float-y pointer-events-none absolute z-20 hidden whitespace-nowrap md:block" style={{ left: '-26%', top: '12%', background: '#F28C38', color: '#fff', borderRadius: 999, padding: '8px 14px', fontSize: 13, fontWeight: 700, boxShadow: '0 14px 30px -10px #F28C38aa', animationDuration: '3s' }}>7:00 · your outfit is ready</span>
               <span className="float-y pointer-events-none absolute z-20 hidden whitespace-nowrap md:block" style={{ left: '74%', top: '58%', background: '#121317', color: '#fff', borderRadius: 999, padding: '8px 14px', fontSize: 13, fontWeight: 700, boxShadow: '0 14px 30px -10px #121317aa', animationDuration: '3.4s', animationDelay: '0.5s' }}>31° · smart casual</span>
             </div>
-            <KweenPerch name="stylist" line="I know every piece you own. A shop’s stylist can’t say that." mood="smug" className="mt-8 hidden md:block" width="clamp(84px, 8vw, 110px)" />
+            <KweenPerch name="stylist" line="I know every piece you own. A shop’s stylist can’t say that." mood="smug" className="mt-6 self-start md:mt-8 md:self-auto lg:self-start" width="clamp(64px, 8vw, 110px)" />
           </div>
 
           <motion.ol className="grid gap-3 md:grid-cols-2" variants={list} initial={reduce ? false : 'hidden'} whileInView="show" viewport={{ once: true, amount: 0.2 }}>

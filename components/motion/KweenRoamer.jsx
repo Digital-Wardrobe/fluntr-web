@@ -16,13 +16,22 @@ import { useSound } from './Sound'
  * and chats when tapped, and you can drag her anywhere, which the app allows
  * too.
  *
+ * On a phone the page is narrow and every corner is content, so she behaves
+ * differently: no wandering and no dragging (a swipe that starts on her must
+ * scroll the page). She hops between perches instead of walking across the
+ * screen, and between perches she only peeks up from the bottom edge, silent
+ * and untouchable. People read a phone without touching it, so she waits
+ * longer before dozing off and wakes quietly.
+ *
  * Behaviour and lines are the app's (src/mascot/MascotOverlay.tsx, rules.ts,
  * i18n/en.ts): the greetings by time of day, the tap lines, the wake lines,
  * sleep after 18 s idle, a glance every 2.5 s.
  */
 
 const RATIO = 278 / 200 // her height per unit width, shadow included
-const SLEEP_AFTER = 18000
+const SLEEP_AFTER = 18000        // with a mouse: the app's 18 s
+const SLEEP_AFTER_TOUCH = 45000  // on a phone, reading without touching is normal
+const PEEK = 0.32                // on a phone, how much of her shows above the bottom edge between perches
 const TAP = ['Hi! I live in your closet.', 'Arre, that colour? Obsessed.', 'Socks with sandals? I won’t tell.', 'Your closet called. It misses you.', 'Wheee! Again!', 'Psst… post a fit today?']
 const WAKE = ['I was NOT asleep.', 'Oh! You’re back.']
 const WANDER = ['Just scrolling for inspo, as one does.', 'La la la… feed, fits and chill.', 'Hmm… would that colour work in your closet?']
@@ -57,7 +66,7 @@ function measurePerches() {
     const r = el.getBoundingClientRect()
     if (!r.width) return
     const name = el.dataset.kweenPerch
-    out.push({ name, line: name === 'hero' ? greeting() : el.dataset.kweenLine, mood: el.dataset.kweenMood || 'idle', x: r.left, y: r.top, w: r.width, h: r.height, cy: r.top + r.height / 2 })
+    out.push({ el, name, line: name === 'hero' ? greeting() : el.dataset.kweenLine, mood: el.dataset.kweenMood || 'idle', x: r.left, y: r.top, w: r.width, h: r.height, cy: r.top + r.height / 2 })
   })
   return out
 }
@@ -68,6 +77,18 @@ export default function KweenRoamer() {
   const { play } = useSound()
   const x = useMotionValue(-200)
   const y = useMotionValue(0)
+  const alpha = useMotionValue(1)
+  const [compact, setCompact] = useState(false) // phone layout
+  const [coarse, setCoarse] = useState(false)   // a finger, not a mouse
+  const [peeking, setPeeking] = useState(false) // phone: tucked under the bottom edge
+  const compactRef = useRef(false), coarseRef = useRef(false), peekRef = useRef(false)
+  // Seated on a perch she is part of the page (position: absolute, in page
+  // coordinates), so she scrolls with it natively instead of chasing it a frame
+  // behind, which shakes on a phone. Walking, hopping and peeking she floats
+  // (position: fixed, in window coordinates).
+  const rootRef = useRef(null)
+  const docRef = useRef(false)
+  const [seated, setSeated] = useState(false)
   const [size, setSize] = useState(96)
   const [walking, setWalking] = useState(false)
   const [facing, setFacing] = useState(1)
@@ -77,6 +98,7 @@ export default function KweenRoamer() {
   const [tapLine, setTapLine] = useState(null)
   const [onPerch, setOnPerch] = useState(null)
   const perchRef = useRef(null)      // name of the perch she is on / heading to
+  const perchEl = useRef(null)       // and its element: a section can have more than one spot with the same name
   const freeAtRef = useRef(null)     // the perch that was in view when she was dragged: she ignores it until it leaves
   const travelRef = useRef(null)     // running animations
   const freeRef = useRef(false)      // user dragged her: stay put until a new perch
@@ -93,8 +115,47 @@ export default function KweenRoamer() {
 
   const stopTravel = () => { travelRef.current?.forEach(a => a.stop()); travelRef.current = null }
 
+  // switch between floating and seated without a visible jump: same spot, other coordinates
+  const seat = useCallback((el) => {
+    travelRef.current?.forEach(a => a.stop()); travelRef.current = null
+    const r = el.getBoundingClientRect()
+    if (rootRef.current) rootRef.current.style.position = 'absolute'
+    x.set(r.left + window.scrollX); y.set(r.top + window.scrollY); docRef.current = true; setSeated(true)
+  }, [x, y])
+  const unseat = useCallback(() => {
+    if (!docRef.current) return
+    const vx = x.get() - window.scrollX, vy = y.get() - window.scrollY
+    if (rootRef.current) rootRef.current.style.position = 'fixed'
+    x.set(vx); y.set(vy); docRef.current = false; setSeated(false)
+  }, [x, y])
+
+  useEffect(() => {
+    const f = () => {
+      compactRef.current = window.innerWidth < 768; setCompact(compactRef.current)
+      coarseRef.current = window.matchMedia('(pointer: coarse)').matches; setCoarse(coarseRef.current)
+    }
+    f(); window.addEventListener('resize', f); return () => window.removeEventListener('resize', f)
+  }, [])
+
+  // Phones: a quick fade and pop to the new place, instead of a walk across the content.
+  const hopTo = useCallback((tx, ty, opts = {}) => {
+    stopTravel(); setWalking(false)
+    if (reduce || !mounted.current) { x.set(tx); y.set(ty); alpha.set(1); opts.onArrive?.(); return }
+    const run = [animate(alpha, 0, { duration: 0.14 })]
+    travelRef.current = run
+    const t1 = setTimeout(() => {
+      if (travelRef.current !== run) return
+      x.set(tx); y.set(ty + 16)
+      run.push(animate(alpha, 1, { duration: 0.2 }), animate(y, ty, { type: 'spring', stiffness: 380, damping: 20 }))
+      // land: stop the bounce before she is seated, or it would keep pulling her in window coordinates
+      const t2 = setTimeout(() => { if (travelRef.current === run) { run.forEach(a => a.stop()); travelRef.current = null; y.set(ty); alpha.set(1); opts.onArrive?.() } }, 360)
+      run.push({ stop: () => clearTimeout(t2) })
+    }, 150)
+    run.push({ stop: () => clearTimeout(t1) })
+  }, [x, y, alpha, reduce])
+
   const travelTo = useCallback((tx, ty, opts = {}) => {
-    stopTravel()
+    stopTravel(); alpha.set(1)
     const dx = tx - x.get(), dy = ty - y.get(), d = Math.hypot(dx, dy)
     if (Math.abs(dx) > 8) setFacing(dx < 0 ? -1 : 1)
     if (reduce || d < 2 || !mounted.current) { x.set(tx); y.set(ty); return }
@@ -104,7 +165,7 @@ export default function KweenRoamer() {
     const ax = animate(x, tx, { duration, ease })
     const ay = animate(y, ty, { duration, ease, onComplete: () => { setWalking(false); travelRef.current = null; opts.onArrive?.() } })
     travelRef.current = [ax, ay]
-  }, [x, y, reduce])
+  }, [x, y, alpha, reduce])
 
   // ── perches: walk to the one in view; follow it while it scrolls ──
   useEffect(() => {
@@ -117,7 +178,7 @@ export default function KweenRoamer() {
 
     function wander() {
       clearTimeout(wanderTimer.current); wanderTimer.current = null
-      if (draggingRef.current || freeRef.current || perchRef.current) return
+      if (draggingRef.current || freeRef.current || perchRef.current || narrow()) return
       const s = wanderSize(); setSize(s)
       // between the left edge and about a fifth of the way in: out of the copy's way
       const tx = 10 + Math.random() * Math.max(40, (narrow() ? vw() * 0.35 : vw() * 0.2) - s)
@@ -131,10 +192,14 @@ export default function KweenRoamer() {
       if (draggingRef.current || !started) return
       const perches = measurePerches()
       const mid = vh() * 0.5
+      const move = narrow() ? hopTo : travelTo
       // a perch counts when its middle sits well inside the window, not when a sliver clips the edge
-      const inView = perches.filter(p => p.cy > vh() * 0.15 && p.cy < vh() * 0.88)
+      const inView = perches.filter(p => p.cy > vh() * 0.15 && p.cy < vh() * (narrow() ? 0.92 : 0.88))
       inView.sort((a, b) => Math.abs(a.cy - mid) - Math.abs(b.cy - mid))
-      let target = inView[0]
+      // ...but once she is on one, she stays while any of it is still on screen, instead of flitting off at the edge
+      const cur = perchRef.current && (perches.find(p => p.el === perchEl.current) || perches.find(p => p.name === perchRef.current))
+      // (the top bound clears the fixed navigation bar: a spot under it hides her and her bubble)
+      let target = cur && cur.cy > Math.max(vh() * 0.03, 100) && cur.cy < vh() * 0.97 ? cur : inView[0]
       // Dragged somewhere: she stays until the perch she was pulled off has scrolled away.
       if (freeRef.current) {
         if (target && target.name === freeAtRef.current) target = null
@@ -142,25 +207,39 @@ export default function KweenRoamer() {
       }
       if (target) {
         clearTimeout(wanderTimer.current); wanderTimer.current = null
-        if (perchRef.current !== target.name) {
-          perchRef.current = target.name; lastPerch = target.name; settled = false
+        if (peekRef.current) { peekRef.current = false; setPeeking(false) }
+        if (perchRef.current !== target.name || perchEl.current !== target.el) {
+          unseat()
+          const sameSection = perchRef.current === target.name
+          perchRef.current = target.name; perchEl.current = target.el; lastPerch = target.name; settled = false
           setSize(target.w)
-          travelTo(target.x, target.y, { onArrive: () => {
+          move(target.x, target.y, { onArrive: () => {
             // arriving on a perch drops any leftover wander or greeting line, so she says the section's line
-            settled = true; setAsleep(false); setTapLine(null); setOnPerch(target.name); play('tick', { gain: 0.3 })
-            if (target.line && target.name !== 'demo') kweenSay(target.line, target.mood, { perch: target.name })
+            settled = true; seat(target.el); setAsleep(false); setTapLine(null); setOnPerch(target.name); play('tick', { gain: 0.3 })
+            if (target.line && target.name !== 'demo' && !sameSection) kweenSay(target.line, target.mood, { perch: target.name })
           } })
         } else if (settled || !travelRef.current) {
-          // perched: ride along with the page
-          x.set(target.x); y.set(target.y); settled = true
+          // seated: the page carries her. Only follow if the layout itself moved the perch.
+          if (!docRef.current) { settled = true; seat(target.el) }
+          else {
+            const r = target.el.getBoundingClientRect(), dx = r.left + window.scrollX, dy = r.top + window.scrollY
+            if (Math.abs(dx - x.get()) > 0.5 || Math.abs(dy - y.get()) > 0.5) { x.set(dx); y.set(dy) }
+          }
+          if (alpha.get() < 1) alpha.set(1)
         }
       } else {
         if (perchRef.current) {
           // the perch scrolled away, maybe while she was still walking to it: abandon the walk
-          perchRef.current = null; settled = false; setOnPerch(null)
+          unseat()
+          perchRef.current = null; perchEl.current = null; settled = false; setOnPerch(null)
           if (travelRef.current) { stopTravel(); setWalking(false) }
         }
-        if (!freeRef.current && !travelRef.current && !wanderTimer.current) {
+        if (narrow()) {
+          // phones: no wandering over the content; she peeks up from the bottom-left edge
+          const ps = wanderSize(), py = vh() - ps * RATIO * PEEK
+          if (!peekRef.current && !travelRef.current) { peekRef.current = true; setPeeking(true); setSize(ps); hopTo(10, py) }
+          else if (peekRef.current && !travelRef.current) { x.set(10); y.set(py); if (alpha.get() < 1) alpha.set(1) } // the toolbar can change the window height
+        } else if (!freeRef.current && !travelRef.current && !wanderTimer.current) {
           wanderTimer.current = setTimeout(wander, 300)
         }
       }
@@ -172,14 +251,15 @@ export default function KweenRoamer() {
     // first appearance: she is parked just below the window, then walks up into
     // the corner and greets. Perches only start pulling her once that has begun,
     // so the entrance and a perch never fight over her.
-    const s = wanderSize(); setSize(s); x.set(16); y.set(vh() + 40)
+    const s = wanderSize(); setSize(s); x.set(narrow() ? 10 : 16); y.set(vh() + 40)
     const enter = setTimeout(() => {
       started = true
+      if (narrow()) { schedule(); return } // a perch in view, or a peek; no walk across the screen
       travelTo(16, floorY(s), { onArrive: () => { if (perchRef.current) return; flash('happy'); setTapLine(greeting()); setTimeout(() => setTapLine(null), 3600) } })
       setTimeout(schedule, 250)
     }, 900)
     return () => { mounted.current = false; clearTimeout(enter); clearInterval(poll); clearTimeout(wanderTimer.current); cancelAnimationFrame(raf); stopTravel(); window.removeEventListener('scroll', schedule); window.removeEventListener('resize', schedule) }
-  }, [travelTo, flash, play, x, y])
+  }, [travelTo, hopTo, seat, unseat, flash, play, x, y, alpha])
 
   // a section talking through her (the explainer, the demo) counts as company: no dozing mid-story
   useEffect(() => { if (guide.at) lastActRef.current = Date.now() }, [guide.at])
@@ -187,22 +267,31 @@ export default function KweenRoamer() {
   // ── life: sleep when the page is left alone, wake with a start ──
   useEffect(() => {
     const act = () => { lastActRef.current = Date.now() }
-    const evs = ['pointermove', 'pointerdown', 'keydown', 'scroll', 'touchstart']
+    const evs = ['pointermove', 'pointerdown', 'keydown', 'scroll', 'touchstart', 'wheel']
     evs.forEach(e => window.addEventListener(e, act, { passive: true }))
+    // a tab in the background is nobody there; coming back is activity
+    const onVis = () => { if (!document.hidden) act() }
+    document.addEventListener('visibilitychange', onVis)
     const t = setInterval(() => {
-      const idle = Date.now() - lastActRef.current
-      if (idle > SLEEP_AFTER && !asleep && !walking) { setAsleep(true); setFace('sleepy'); setBubble(null) }
-      else if (idle < 2000 && asleep) { setAsleep(false); flash('shock', 1200); setTapLine(pick(WAKE)); play('pop', { rate: 1.3 }); setTimeout(() => setTapLine(null), 2600) }
+      const touch = coarseRef.current || compactRef.current
+      const idle = document.hidden ? Infinity : Date.now() - lastActRef.current
+      if (idle > (touch ? SLEEP_AFTER_TOUCH : SLEEP_AFTER) && !asleep && !walking) { setAsleep(true); setFace('sleepy'); setBubble(null) }
+      else if (idle < 2000 && asleep) {
+        setAsleep(false)
+        if (touch) flash('happy', 900) // on a phone she just opens her eyes: no start, no sound, no line
+        else { flash('shock', 1200); setTapLine(pick(WAKE)); play('pop', { rate: 1.3 }); setTimeout(() => setTapLine(null), 2600) }
+      }
     }, 1000)
-    return () => { clearInterval(t); evs.forEach(e => window.removeEventListener(e, act)) }
+    return () => { clearInterval(t); evs.forEach(e => window.removeEventListener(e, act)); document.removeEventListener('visibilitychange', onVis) }
   }, [asleep, walking, flash, play])
 
   // ── what she says: the section's line, or a tap/wake line on top ──
   useEffect(() => {
+    if (peeking) { setBubble(null); return } // tucked away on a phone: she listens, she doesn't talk over the page
     if (asleep) return
     const scoped = guide.perch && guide.perch !== onPerch
     setBubble(tapLine || (scoped ? null : guide.line))
-  }, [guide.line, guide.perch, onPerch, tapLine, asleep])
+  }, [guide.line, guide.perch, onPerch, tapLine, asleep, peeking])
   const mood = asleep ? 'sleepy' : face !== 'idle' ? face : guide.mood
   const talking = !asleep && (guide.talking || !!tapLine)
 
@@ -222,14 +311,18 @@ export default function KweenRoamer() {
 
   return (
     <motion.div
-      className="pointer-events-none fixed left-0 top-0 z-[45]"
-      style={{ x, y, width: size, touchAction: 'none' }}
-      drag
+      ref={rootRef}
+      className="pointer-events-none left-0 top-0 z-[45]"
+      data-kween-state={asleep ? 'asleep' : walking ? 'walking' : 'awake'}
+      data-kween-on={onPerch || ''}
+      style={{ position: seated ? 'absolute' : 'fixed', x, y, opacity: alpha, width: size, touchAction: coarse ? 'auto' : 'none' }}
+      drag={!coarse}
       dragMomentum={false}
       dragElastic={0}
       onDragStart={() => { draggingRef.current = true; stopTravel(); setWalking(false); clearTimeout(wanderTimer.current); wanderTimer.current = null; flash('shock', 600); setBubble(null) }}
       onDragEnd={() => {
-        draggingRef.current = false; draggedAt.current = Date.now(); freeRef.current = true; freeAtRef.current = perchRef.current; perchRef.current = null; setOnPerch(null)
+        unseat()
+        draggingRef.current = false; draggedAt.current = Date.now(); freeRef.current = true; freeAtRef.current = perchRef.current; perchRef.current = null; perchEl.current = null; setOnPerch(null)
         // keep her on the page
         const w = size, h = size * RATIO
         const cx = Math.min(Math.max(x.get(), -w * 0.3), window.innerWidth - w * 0.7)
@@ -251,7 +344,7 @@ export default function KweenRoamer() {
           </motion.div>
         ) : null}
       </AnimatePresence>
-      <div className="pointer-events-auto" style={{ cursor: 'grab' }}>
+      <div className={!compact || (onPerch && !peeking) ? 'pointer-events-auto' : ''} style={{ cursor: coarse ? 'pointer' : 'grab' }}>
         <Kween size="100%" expression={mood} talking={talking} walking={walking} mirrored={facing < 0} onClick={onTap} />
       </div>
     </motion.div>

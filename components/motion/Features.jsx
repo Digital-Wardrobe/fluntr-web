@@ -45,7 +45,7 @@ function Card({ children, flip = false, tone, title, body, props = [], perch }) 
         <div>
           <h3 className="h-display" style={{ fontSize: 'clamp(32px,4.2vw,58px)', color: INK }}>{title}</h3>
           <p className="mt-5 max-w-md text-[18px] leading-relaxed md:text-[20px]" style={{ color: MUTED }}>{body}</p>
-          {perch ? <KweenPerch name={perch.name} line={perch.line} mood={perch.mood} className="mt-8 hidden md:block" width="clamp(84px, 8vw, 110px)" /> : null}
+          {perch ? <KweenPerch name={perch.name} line={perch.line} mood={perch.mood} className="mt-6 md:mt-8" width="clamp(64px, 8vw, 110px)" /> : null}
         </div>
       </div>
     </motion.div>

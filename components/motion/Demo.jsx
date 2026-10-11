@@ -393,7 +393,7 @@ function Studio({ selected, onApply, onClose, onDone }) {
             </motion.div>
           </AnimatePresence>
           {!done && !cut && !reduce ? (
-            <motion.div aria-hidden className="absolute inset-x-0" style={{ height: 4, background: GOLD, boxShadow: `0 0 14px 3px ${GOLD}aa` }} animate={{ top: ['0%', '100%', '0%'] }} transition={{ duration: 2, repeat: Infinity, ease: 'linear' }} />
+            <motion.div aria-hidden className="absolute inset-0" animate={{ y: ['0%', '98%', '0%'] }} transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}><div style={{ height: 4, background: GOLD, boxShadow: `0 0 14px 3px ${GOLD}aa` }} /></motion.div>
           ) : null}
         </div>
         {/* the pieces done so far */}
@@ -750,9 +750,9 @@ export default function Demo() {
   }, [step, reduce])
   useEffect(() => { if (studio) kweenSay('Hold on. Doing the boring part.', 'idle', { talkMs: reduce ? 0 : 1000, perch: 'demo' }) }, [studio, reduce])
   // she calls out each moment the next tap becomes possible
-  useEffect(() => { if (studioDone) kweenSay('All cut out! Now tap Apply / Keep.', 'love', { talkMs: reduce ? 0 : 1100, perch: 'demo' }) }, [studioDone, reduce])
-  useEffect(() => { if (step === 2 && fill >= 6 && !saved) kweenSay('All filled in. Tap Save!', 'smug', { talkMs: reduce ? 0 : 1000, perch: 'demo' }) }, [step, fill, saved, reduce])
-  useEffect(() => { if (saved) kweenSay('Saved! Tap OK to see your closet.', 'happy', { talkMs: reduce ? 0 : 1000, perch: 'demo' }) }, [saved, reduce])
+  useEffect(() => { if (studioDone) { nudged.current.add('1:Keep the cutouts'); kweenSay('All cut out! Now tap Apply / Keep.', 'love', { talkMs: reduce ? 0 : 1100, perch: 'demo' }) } }, [studioDone, reduce])
+  useEffect(() => { if (step === 2 && fill >= 6 && !saved) { nudged.current.add('2:Save to my closet'); kweenSay('All filled in. Tap Save!', 'smug', { talkMs: reduce ? 0 : 1000, perch: 'demo' }) } }, [step, fill, saved, reduce])
+  useEffect(() => { if (saved) { nudged.current.add('2:Show my closet'); kweenSay('Saved! Tap OK to see your closet.', 'happy', { talkMs: reduce ? 0 : 1000, perch: 'demo' }) } }, [saved, reduce])
   // the in-phone Kween's feelings reach the roamer too
   useEffect(() => { if (step === 5) kweenMood(mood, talking) }, [mood, talking, step])
   // on the details step she fills the form in, one field at a time
@@ -938,9 +938,9 @@ export default function Demo() {
 
           {/* right: the phone */}
           <div className="order-1 flex flex-col items-center lg:order-2">
-            {/* on phones she stands just above the demo phone, where you can see them both */}
-            <div className="flex w-full justify-start md:hidden" style={{ maxWidth: 360 }}><KweenPerch name="demo" className="mb-2 ml-3" width="72px" /></div>
             <div ref={phoneRef} className="relative" style={{ width: 'min(84vw, 360px)', scrollMarginTop: 84 }}>
+              {/* on phones she sits on the demo phone's top-left corner, in the status-bar space, right beside what she talks about */}
+              <KweenPerch name="demo" className="absolute md:hidden" style={{ left: 2, top: -46 }} width="60px" />
               <Device>
                 <AnimatePresence mode="wait" initial={false}>
                   <motion.div key={screenKey} className="absolute inset-0" initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -24 }} transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}>
