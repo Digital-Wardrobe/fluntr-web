@@ -4,6 +4,7 @@ import Footer from '../components/Footer'
 import WaitlistForm from '../components/WaitlistForm'
 import Reveal from '../components/motion/Reveal'
 import Demo, { Glyph } from '../components/motion/Demo'
+import Explainer from '../components/motion/Explainer'
 import Ticker from '../components/motion/Ticker'
 import Stylist from '../components/motion/Stylist'
 import Features from '../components/motion/Features'
@@ -88,7 +89,7 @@ function Hero() {
         </div>
         <div className="hero-in" style={{ animationDelay: '0.18s' }}>
           <p className="mx-auto mt-8 max-w-2xl text-[18px] leading-relaxed md:text-[21px]" style={{ color: MUTED }}>
-            Photograph each piece once. Kween learns what you own, your week and your weather, then picks what you wear every morning.
+            <strong style={{ color: INK, fontWeight: 600 }}>Fluntr is an app for your clothes.</strong> Click a photo of each piece once, and Kween, your AI stylist, tells you what to wear every day from what you already own.
             Dressed for <Typed words={['weddings', 'the office', 'Diwali', 'a first date', 'brunch', 'the airport']} style={{ color: INK, fontWeight: 600 }} />
           </p>
         </div>
@@ -96,7 +97,7 @@ function Hero() {
           <div className="relative mt-9 md:mt-14">
             <div className="flex flex-wrap items-center justify-center gap-3">
               <a href="#waitlist" className="btn-primary">Join the waitlist <span aria-hidden>→</span></a>
-              <a href="#how" className="btn-glass glass">Try the demo <span aria-hidden>↓</span></a>
+              <a href="#what" className="btn-glass glass"><span aria-hidden style={{ fontSize: 11 }}>▶</span> What is Fluntr? 20 sec</a>
             </div>
             {/* she stands just right of the buttons when you arrive, and greets you.
                 Placed outside the row so the buttons stay centred under the headline. */}
@@ -105,7 +106,11 @@ function Hero() {
         </div>
       </div>
 
-      <div className="relative z-10 mt-20 md:mt-24">
+      {/* first what it is, in five short bites; then the demo to try it */}
+      <div className="relative z-10 mt-16 md:mt-24">
+        <Explainer />
+      </div>
+      <div className="relative z-10 mt-20 md:mt-28">
         <Demo />
       </div>
     </section>
@@ -151,7 +156,7 @@ function FloatingBadge() {
   )
 }
 
-const SECTIONS = ['how', 'stylist', 'app', 'features', 'waitlist']
+const SECTIONS = ['what', 'how', 'stylist', 'app', 'features', 'waitlist']
 
 export default function Home() {
   // How far down people get: one event per section, the first time it is seen.

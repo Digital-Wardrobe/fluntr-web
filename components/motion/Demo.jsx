@@ -822,7 +822,7 @@ export default function Demo() {
         <div className="relative grid items-center gap-10 px-6 py-10 md:px-12 md:py-14 lg:grid-cols-[1fr_minmax(0,420px)] lg:gap-16">
           {/* left: what is happening, and the step list */}
           <div className="order-2 lg:order-1">
-            <p className="text-eyebrow mb-4">How it works · try it</p>
+            <p className="text-eyebrow mb-4">Now try it yourself</p>
             <AnimatePresence mode="wait">
               <motion.div key={view.title} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.3 }}>
                 <h2 className="h-display" style={{ fontSize: 'clamp(30px,3.8vw,52px)', color: '#121317' }}>{view.title}</h2>

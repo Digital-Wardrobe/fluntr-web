@@ -37,7 +37,7 @@ export default function Nav() {
         </Link>
 
         <div className="hidden items-center gap-7 md:flex">
-          {[['/#how', 'Try it'], ['/#app', 'The app'], ['/#stylist', 'Stylist'], ['/questions', 'Questions']].map(([href, label]) => (
+          {[['/#what', 'What is it'], ['/#how', 'Try it'], ['/#stylist', 'Stylist'], ['/questions', 'Questions']].map(([href, label]) => (
             <Link key={href} href={href} className="text-[14px] font-medium no-underline transition-colors hover:text-[#121317]" style={{ color: '#3A3D45' }}>
               {label}
             </Link>

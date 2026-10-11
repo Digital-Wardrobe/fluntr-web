@@ -181,6 +181,9 @@ export default function KweenRoamer() {
     return () => { mounted.current = false; clearTimeout(enter); clearInterval(poll); clearTimeout(wanderTimer.current); cancelAnimationFrame(raf); stopTravel(); window.removeEventListener('scroll', schedule); window.removeEventListener('resize', schedule) }
   }, [travelTo, flash, play, x, y])
 
+  // a section talking through her (the explainer, the demo) counts as company: no dozing mid-story
+  useEffect(() => { if (guide.at) lastActRef.current = Date.now() }, [guide.at])
+
   // ── life: sleep when the page is left alone, wake with a start ──
   useEffect(() => {
     const act = () => { lastActRef.current = Date.now() }
