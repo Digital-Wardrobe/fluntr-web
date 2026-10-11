@@ -148,6 +148,7 @@ export default function PrivacyPolicy() {
         <>
             <Head>
                 <title>Privacy Policy — Fluntr</title>
+                <link rel="canonical" href="https://www.fluntr.com/privacy" />
                 <meta name="description" content="Fluntr Privacy Policy — how we collect, use, and protect your data." />
             </Head>
 

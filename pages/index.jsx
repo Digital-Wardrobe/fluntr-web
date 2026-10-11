@@ -36,10 +36,12 @@ const LD = {
   '@graph': [
     {
       '@type': 'Organization', '@id': 'https://www.fluntr.com/#org', name: 'Fluntr', legalName: 'Melchizedek Technologies Private Limited', url: 'https://www.fluntr.com/',
-      email: 'support@fluntr.com', areaServed: 'IN', description: 'Fluntr is a digital wardrobe and personal AI stylist app from India.',
+      email: 'support@fluntr.com', areaServed: 'IN', slogan: 'Your closet on your phone. The most personal AI stylist.',
+      logo: 'https://www.fluntr.com/icons/icon-512.png', description: 'Fluntr is a digital wardrobe and personal AI stylist app from India.',
+      knowsAbout: ['What to wear', 'Indian wedding guest outfits', 'Festival outfits', 'Capsule wardrobes', 'Closet organisation', 'Personal styling'],
     },
     {
-      '@type': 'WebSite', '@id': 'https://www.fluntr.com/#site', url: 'https://www.fluntr.com/', name: 'Fluntr', publisher: { '@id': 'https://www.fluntr.com/#org' },
+      '@type': 'WebSite', '@id': 'https://www.fluntr.com/#site', url: 'https://www.fluntr.com/', name: 'Fluntr', inLanguage: 'en-IN', publisher: { '@id': 'https://www.fluntr.com/#org' },
     },
     {
       '@type': 'SoftwareApplication', '@id': 'https://www.fluntr.com/#app', name: 'Fluntr', applicationCategory: 'LifestyleApplication', operatingSystem: 'iOS, Android',

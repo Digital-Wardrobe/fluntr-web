@@ -3,7 +3,7 @@ import Link from 'next/link'
 import Nav from '../../components/Nav'
 import Footer from '../../components/Footer'
 import KweenRoamer, { KweenPerch } from '../../components/motion/KweenRoamer'
-import { TOPICS, ALL_QA, slugOf } from '../../content/questions'
+import { TOPICS, ALL_QA, slugOf, topicUrl } from '../../content/questions'
 
 /**
  * Every question people ask about getting dressed, answered plainly, with how
@@ -17,18 +17,18 @@ const MUTED = '#6B7080'
 const faqLd = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
-  mainEntity: ALL_QA.map(({ q, a }) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })),
+  mainEntity: ALL_QA.map(({ q, a, also }) => ({ '@type': 'Question', name: q, ...(also.length ? { alternateName: also } : null), acceptedAnswer: { '@type': 'Answer', text: a } })),
 }
 
 export default function Questions() {
   return (
     <>
       <Head>
-        <title>What to wear, how to shop, how to organise your closet - Fluntr answers</title>
-        <meta name="description" content="Plain answers to the questions people actually ask: what to wear today, Diwali and wedding outfits, shopping without buying twice, mirror selfies and fit checks, digitising your wardrobe, and what Fluntr and Kween do." />
+        <title>What to wear for every occasion in India: weddings, festivals, office, trends - Fluntr</title>
+        <meta name="description" content="Plain answers to what people ask about getting dressed in India: what to wear today, wedding functions from haldi to reception, Diwali, Navratri, Durga Puja and Holi outfits, interviews, temples, menswear, monsoon and winter dressing, trends, what to buy, and how Fluntr's AI stylist helps." />
         <link rel="canonical" href="https://www.fluntr.com/questions" />
-        <meta property="og:title" content="What to wear, how to shop, how to organise your closet - Fluntr answers" />
-        <meta property="og:description" content="Outfit, shopping, festival, Instagram and closet questions, answered. Plus what Fluntr is and how Kween, its personal AI stylist, works." />
+        <meta property="og:title" content="What to wear for every occasion in India - Fluntr" />
+        <meta property="og:description" content="Wedding, festival, office, travel, trend and shopping questions, answered for India. Plus what Fluntr is and how Kween, its personal AI stylist, works." />
         <meta property="og:type" content="article" />
         <meta property="og:url" content="https://www.fluntr.com/questions" />
         <meta property="og:image" content="https://www.fluntr.com/og/questions.jpg" />
@@ -47,7 +47,7 @@ export default function Questions() {
           </p>
           <nav aria-label="Topics" className="mt-8 flex flex-wrap gap-2">
             {TOPICS.map(t => (
-              <a key={t.id} href={`#${t.id}`} className="no-underline" style={{ background: '#F3F4F6', color: INK, borderRadius: 999, padding: '8px 14px', fontSize: 13.5, fontWeight: 600 }}>{t.title}</a>
+              <a key={t.id} href={topicUrl(t)} className="no-underline" style={{ background: '#F3F4F6', color: INK, borderRadius: 999, padding: '8px 14px', fontSize: 13.5, fontWeight: 600 }}>{t.title}</a>
             ))}
           </nav>
           <KweenPerch name="questions" line="Ask me anything. Well, anything about clothes." mood="happy" className="mt-8 hidden md:block" width="clamp(84px, 7vw, 100px)" />
@@ -56,7 +56,7 @@ export default function Questions() {
         <div className="mx-auto mt-16 flex max-w-3xl flex-col gap-16">
           {TOPICS.map(t => (
             <section key={t.id} id={t.id} className="scroll-mt-28">
-              <h2 className="h-display" style={{ fontSize: 'clamp(26px,3.4vw,40px)', color: INK }}>{t.title}</h2>
+              <h2 className="h-display" style={{ fontSize: 'clamp(26px,3.4vw,40px)', color: INK }}><Link href={topicUrl(t)} className="no-underline hover:underline" style={{ color: INK }}>{t.title}</Link></h2>
               <p className="mt-2 text-[16px]" style={{ color: MUTED }}>{t.blurb}</p>
               <dl className="mt-8 flex flex-col gap-8">
                 {t.qa.map(([q, a]) => (
