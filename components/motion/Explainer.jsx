@@ -126,7 +126,7 @@ function Closet({ play }) {
       <motion.div className="absolute" style={{ left: 26, top: 0, width: 308, height: 328, borderRadius: 26, background: '#fff', boxShadow: '0 20px 44px rgba(18,19,23,0.14)', padding: 14 }} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
         <div className="flex items-center justify-between" style={{ marginBottom: 10 }}>
           <span style={{ fontSize: 18, fontWeight: 800, color: INK, letterSpacing: '-0.02em' }}>My Closet</span>
-          <span style={{ fontSize: 12, fontWeight: 700, color: '#4F9D6B', background: '#E9F5EE', borderRadius: 999, padding: '4px 10px' }}>{n} pieces</span>
+          <span style={{ fontSize: 12, fontWeight: 700, color: '#4F9D6B', background: '#E9F5EE', borderRadius: 999, padding: '4px 10px' }}>{n} {n === 1 ? 'piece' : 'pieces'}</span>
         </div>
         <div className="grid grid-cols-3 gap-2">
           {ids.map((id, i) => <Tile key={id} id={id} size={84} delay={0.3 + i * 0.17} />)}
