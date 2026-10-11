@@ -382,3 +382,15 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .hero-in { animation: none; }
 }
+
+/* The demo's coach: a pulsing ring on the next thing to tap, and a finger
+ * nudging towards it. */
+@keyframes coach-ring { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.12); opacity: 0.85; } }
+.coach-ring { animation: coach-ring 1.3s ease-in-out infinite; }
+@keyframes coach-finger-up { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+.coach-finger-up { animation: coach-finger-up 0.9s ease-in-out infinite; }
+@keyframes coach-finger-down { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(7px); } }
+.coach-finger-down { animation: coach-finger-down 0.9s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .coach-ring, .coach-finger-up, .coach-finger-down { animation: none; }
+}

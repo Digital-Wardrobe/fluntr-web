@@ -97,7 +97,7 @@ function Hero() {
           <div className="relative mt-9 md:mt-14">
             <div className="flex flex-wrap items-center justify-center gap-3">
               <a href="#waitlist" className="btn-primary">Join the waitlist <span aria-hidden>→</span></a>
-              <a href="#what" className="btn-glass glass"><span aria-hidden style={{ fontSize: 11 }}>▶</span> What is Fluntr? 20 sec</a>
+              <a href="#what" className="btn-glass glass"><span aria-hidden style={{ fontSize: 11 }}>▶</span> What is Fluntr? 30 sec</a>
             </div>
             {/* she stands just right of the buttons when you arrive, and greets you.
                 Placed outside the row so the buttons stay centred under the headline. */}

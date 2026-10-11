@@ -217,7 +217,7 @@ export default function KweenRoamer() {
   const [vw, setVw] = useState(1440)
   useEffect(() => { const f = () => setVw(window.innerWidth); f(); window.addEventListener('resize', f); return () => window.removeEventListener('resize', f) }, [])
   // the perch may say which side the bubble goes (the hero's sits beside buttons it must not cover)
-  const perchBubble = onPerch && typeof document !== 'undefined' ? document.querySelector(`[data-kween-perch="${onPerch}"]`)?.dataset.kweenBubble : null
+  const perchBubble = onPerch && typeof document !== 'undefined' ? [...document.querySelectorAll(`[data-kween-perch="${onPerch}"]`)].find(e => e.getBoundingClientRect().width)?.dataset.kweenBubble : null
   const onRight = perchBubble ? perchBubble === 'left' : x.get() + size / 2 > vw / 2
 
   return (

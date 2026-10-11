@@ -11,7 +11,8 @@ import { track } from '../../lib/analytics'
 
 /**
  * "What is Fluntr?" in five short animated bites, played like Instagram
- * stories: progress bars on top, tap to skip, each bite a few seconds. A
+ * stories: progress bars on top, tap to skip, about six seconds a bite so
+ * there is time to read each one (30 seconds in all). A
  * first-time visitor should understand the product before they are asked to
  * try it, and these say it in the plainest words we have.
  *
@@ -26,19 +27,19 @@ const MUTED = '#5E6373'
 const SOFT = '#F5F5F7'
 
 export const BITES = [
-  { k: 'snap', tone: '#F28C38', bg: 'linear-gradient(180deg,#FFF3E8 0%,#FFFFFF 70%)', ms: 4200,
+  { k: 'snap', tone: '#F28C38', bg: 'linear-gradient(180deg,#FFF3E8 0%,#FFFFFF 70%)', ms: 6000,
     say: 'Step one: show me your clothes.', mood: 'happy',
     tag: 'Snap', title: 'Click a photo of your clothes.', sub: 'Just once. A mirror selfie or a pile on the bed works.' },
-  { k: 'sort', tone: '#2E8FA3', bg: 'linear-gradient(180deg,#E6F4F7 0%,#FFFFFF 70%)', ms: 4400,
+  { k: 'sort', tone: '#2E8FA3', bg: 'linear-gradient(180deg,#E6F4F7 0%,#FFFFFF 70%)', ms: 6200,
     say: 'I cut them out. Neatly.', mood: 'smug',
     tag: 'Sorted', title: 'Fluntr cuts them out and sorts them.', sub: 'Type, colour and occasion, filled in for you.' },
-  { k: 'closet', tone: '#4F9D6B', bg: 'linear-gradient(180deg,#E9F5EE 0%,#FFFFFF 70%)', ms: 4000,
+  { k: 'closet', tone: '#4F9D6B', bg: 'linear-gradient(180deg,#E9F5EE 0%,#FFFFFF 70%)', ms: 5600,
     say: 'Look! Your whole closet.', mood: 'love',
     tag: 'Your closet', title: 'Your whole wardrobe, on your phone.', sub: 'See everything you own. No more digging through the almirah.' },
-  { k: 'kween', tone: '#E0457B', bg: 'linear-gradient(180deg,#FFEAF1 0%,#FFFFFF 70%)', ms: 4800,
+  { k: 'kween', tone: '#E0457B', bg: 'linear-gradient(180deg,#FFEAF1 0%,#FFFFFF 70%)', ms: 6600,
     say: 'That’s me. I pick your outfits.', mood: 'smug',
     tag: 'Kween', title: 'Every morning, Kween picks your outfit.', sub: 'Your AI stylist. From your own clothes, for your weather and your day.' },
-  { k: 'plans', tone: '#7B6CF6', bg: 'linear-gradient(180deg,#EFEDFF 0%,#FFFFFF 70%)', ms: 4600,
+  { k: 'plans', tone: '#7B6CF6', bg: 'linear-gradient(180deg,#EFEDFF 0%,#FFFFFF 70%)', ms: 6200,
     say: 'Shaadi on Saturday? Sorted.', mood: 'happy',
     tag: 'Plans', title: 'Weddings, festivals, trips: planned.', sub: 'Outfits ready days ahead, and a packing list for every trip.' },
 ]
@@ -65,7 +66,7 @@ function Chip({ children, tone, delay }) {
 /* ── the five scenes, each in a 360 x 330 box ───────────────────────────── */
 
 function Snap({ play }) {
-  useEffect(() => { const t = setTimeout(() => play('shutter', { gain: 0.7 }), 1250); return () => clearTimeout(t) }, [play])
+  useEffect(() => { const t = setTimeout(() => play('shutter', { gain: 0.7 }), 1600); return () => clearTimeout(t) }, [play])
   return (
     <div className="absolute inset-0">
       <motion.div className="absolute overflow-hidden" style={{ left: 34, top: 8, width: 168, height: 312, borderRadius: 30, background: '#111', border: '6px solid #1B1C20', boxShadow: '0 24px 50px rgba(18,19,23,0.25)' }} initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}>
@@ -74,16 +75,16 @@ function Snap({ play }) {
         {[[10, 34, '0 0'], [130, 34, '90deg'], [10, 214, '-90deg'], [130, 214, '180deg']].map(([l, t, r], n) => (
           <span key={n} className="absolute" style={{ left: l, top: t, width: 18, height: 18, borderTop: '3px solid #fff', borderLeft: '3px solid #fff', borderRadius: '4px 0 0 0', transform: `rotate(${r})`, transformOrigin: '9px 9px', opacity: 0.95 }} />
         ))}
-        <motion.span className="absolute left-1/2 -translate-x-1/2" style={{ bottom: 14, width: 48, height: 48, borderRadius: 999, border: '4px solid #fff', background: 'rgba(255,255,255,0.35)' }} animate={{ scale: [1, 1, 0.82, 1] }} transition={{ duration: 1.6, times: [0, 0.7, 0.8, 1] }} />
-        <motion.div className="absolute inset-0" style={{ background: '#fff' }} initial={{ opacity: 0 }} animate={{ opacity: [0, 0, 0.95, 0] }} transition={{ duration: 1.8, times: [0, 0.68, 0.74, 1] }} />
+        <motion.span className="absolute left-1/2 -translate-x-1/2" style={{ bottom: 14, width: 48, height: 48, borderRadius: 999, border: '4px solid #fff', background: 'rgba(255,255,255,0.35)' }} animate={{ scale: [1, 1, 0.82, 1] }} transition={{ duration: 2.0, times: [0, 0.72, 0.8, 1] }} />
+        <motion.div className="absolute inset-0" style={{ background: '#fff' }} initial={{ opacity: 0 }} animate={{ opacity: [0, 0, 0.95, 0] }} transition={{ duration: 2.3, times: [0, 0.69, 0.74, 1] }} />
       </motion.div>
       <div className="absolute flex flex-col gap-3" style={{ left: 226, top: 30 }}>
         {['kurta-set', 'juttis', 'denim-jacket'].map((id, n) => (
-          <motion.div key={id} className="overflow-hidden" style={{ width: 92, height: 76, borderRadius: 14, boxShadow: '0 10px 20px rgba(18,19,23,0.14)', border: '3px solid #fff' }} initial={{ opacity: 0, x: -60, scale: 0.5 }} animate={{ opacity: 1, x: 0, scale: 1 }} transition={{ ...spring, delay: 1.9 + n * 0.35 }}>
+          <motion.div key={id} className="overflow-hidden" style={{ width: 92, height: 76, borderRadius: 14, boxShadow: '0 10px 20px rgba(18,19,23,0.14)', border: '3px solid #fff' }} initial={{ opacity: 0, x: -60, scale: 0.5 }} animate={{ opacity: 1, x: 0, scale: 1 }} transition={{ ...spring, delay: 2.4 + n * 0.45 }}>
             <Photo src={id} sizes="92px" />
           </motion.div>
         ))}
-        <motion.span {...pop(3.0)} className="text-center" style={{ fontSize: 13, fontWeight: 800, color: '#F28C38' }}>+3 added</motion.span>
+        <motion.span {...pop(3.8)} className="text-center" style={{ fontSize: 13, fontWeight: 800, color: '#F28C38' }}>+3 added</motion.span>
       </div>
     </div>
   )
@@ -91,23 +92,23 @@ function Snap({ play }) {
 
 function Sort({ play }) {
   const [cut, setCut] = useState(false)
-  useEffect(() => { const t = setTimeout(() => { setCut(true); play('zip', { gain: 0.5 }) }, 1500); return () => clearTimeout(t) }, [play])
+  useEffect(() => { const t = setTimeout(() => { setCut(true); play('zip', { gain: 0.5 }) }, 1900); return () => clearTimeout(t) }, [play])
   return (
     <div className="absolute inset-0">
       <motion.div className="absolute overflow-hidden" style={{ left: 22, top: 20, width: 178, height: 250, borderRadius: 22, background: cut ? SOFT : '#ddd', boxShadow: '0 20px 44px rgba(18,19,23,0.16)', transition: 'background .4s' }} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.4 }}>
         <motion.div className="absolute inset-0" animate={{ opacity: cut ? 0 : 1 }} transition={{ duration: 0.5 }}><Photo src="juttis" sizes="180px" /></motion.div>
         <motion.div className="absolute inset-[8%]" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: cut ? 1 : 0, scale: cut ? 1 : 0.9 }} transition={spring}><Cut id="juttis" style={{ filter: 'drop-shadow(0 14px 16px rgba(18,19,23,0.2))' }} /></motion.div>
-        {!cut ? <motion.div className="absolute inset-x-0" style={{ height: 4, background: '#FFD700', boxShadow: '0 0 14px 3px #FFD700aa' }} initial={{ top: '0%' }} animate={{ top: ['0%', '100%', '0%'] }} transition={{ duration: 1.4, ease: 'linear' }} /> : null}
+        {!cut ? <motion.div className="absolute inset-x-0" style={{ height: 4, background: '#FFD700', boxShadow: '0 0 14px 3px #FFD700aa' }} initial={{ top: '0%' }} animate={{ top: ['0%', '100%', '0%'] }} transition={{ duration: 1.8, ease: 'linear' }} /> : null}
         {cut ? [0, 1, 2, 3, 4, 5].map(n => (
           <motion.span key={n} className="absolute left-1/2 top-1/2" style={{ width: 7, height: 7, borderRadius: 999, background: '#FFD700' }} initial={{ x: 0, y: 0, opacity: 1 }} animate={{ x: Math.cos(n / 6 * Math.PI * 2) * 90, y: Math.sin(n / 6 * Math.PI * 2) * 90, opacity: 0 }} transition={{ duration: 0.7 }} />
         )) : null}
       </motion.div>
-      <motion.span {...pop(1.7)} className="absolute" style={{ left: 32, top: 280, fontSize: 12, fontWeight: 700, color: '#2E8FA3' }}>✓ Background removed</motion.span>
+      <motion.span {...pop(2.1)} className="absolute" style={{ left: 32, top: 280, fontSize: 12, fontWeight: 700, color: '#2E8FA3' }}>✓ Background removed</motion.span>
       <div className="absolute flex flex-col items-start gap-2.5" style={{ left: 212, top: 46 }}>
-        <Chip tone="#2E8FA3" delay={2.0}>Juttis</Chip>
-        <Chip tone="#2E8FA3" delay={2.35}>Maroon · Gold</Chip>
-        <Chip tone="#2E8FA3" delay={2.7}>Wedding</Chip>
-        <Chip tone="#2E8FA3" delay={3.05}>Festive</Chip>
+        <Chip tone="#2E8FA3" delay={2.5}>Juttis</Chip>
+        <Chip tone="#2E8FA3" delay={3.0}>Maroon · Gold</Chip>
+        <Chip tone="#2E8FA3" delay={3.5}>Wedding</Chip>
+        <Chip tone="#2E8FA3" delay={4.0}>Festive</Chip>
       </div>
     </div>
   )
@@ -117,7 +118,7 @@ function Closet({ play }) {
   const ids = ['kurta-look', 'lehenga', 'denim-jacket', 'saree', 'sneakers', 'kurta-set', 'jeans', 'sherwani', 'juttis']
   const [n, setN] = useState(0)
   useEffect(() => {
-    const ts = ids.map((_, i) => setTimeout(() => { setN(i + 1); play('tick', { gain: 0.35, rate: 1 + i * 0.05 }) }, 350 + i * 170))
+    const ts = ids.map((_, i) => setTimeout(() => { setN(i + 1); play('tick', { gain: 0.35, rate: 1 + i * 0.05 }) }, 450 + i * 230))
     return () => ts.forEach(clearTimeout)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [play])
@@ -129,7 +130,7 @@ function Closet({ play }) {
           <span style={{ fontSize: 12, fontWeight: 700, color: '#4F9D6B', background: '#E9F5EE', borderRadius: 999, padding: '4px 10px' }}>{n} {n === 1 ? 'piece' : 'pieces'}</span>
         </div>
         <div className="grid grid-cols-3 gap-2">
-          {ids.map((id, i) => <Tile key={id} id={id} size={84} delay={0.3 + i * 0.17} />)}
+          {ids.map((id, i) => <Tile key={id} id={id} size={84} delay={0.4 + i * 0.23} />)}
         </div>
       </motion.div>
     </div>
@@ -138,7 +139,7 @@ function Closet({ play }) {
 
 function KweenPicks({ play }) {
   const [worn, setWorn] = useState(false)
-  useEffect(() => { const t = setTimeout(() => { setWorn(true); play('hanger', { gain: 0.6 }) }, 3300); return () => clearTimeout(t) }, [play])
+  useEffect(() => { const t = setTimeout(() => { setWorn(true); play('hanger', { gain: 0.6 }) }, 4400); return () => clearTimeout(t) }, [play])
   return (
     <div className="absolute inset-0">
       <motion.div {...pop(0.2)} className="absolute" style={{ left: 14, top: 6, width: 196, background: '#fff', borderRadius: '18px 18px 18px 6px', padding: '10px 12px', fontSize: 13.5, fontWeight: 600, color: INK, lineHeight: 1.35, boxShadow: '0 10px 24px rgba(18,19,23,0.10)' }}>
@@ -147,15 +148,15 @@ function KweenPicks({ play }) {
       <div className="absolute" style={{ left: 8, top: 150, width: 112 }}>
         <Kween expression={worn ? 'love' : 'happy'} talking={!worn} size="100%" follow={false} />
       </div>
-      <motion.div className="absolute" style={{ left: 128, top: 78, width: 218, background: '#fff', borderRadius: 22, padding: 12, boxShadow: '0 20px 44px rgba(18,19,23,0.14)' }} initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ ...spring, delay: 0.7 }}>
+      <motion.div className="absolute" style={{ left: 128, top: 78, width: 218, background: '#fff', borderRadius: 22, padding: 12, boxShadow: '0 20px 44px rgba(18,19,23,0.14)' }} initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ ...spring, delay: 1.0 }}>
         <div className="flex items-center justify-between" style={{ fontSize: 12, fontWeight: 700, color: INK }}>
           <span>Today · Office</span>
           <span className="flex items-center gap-1" style={{ background: '#FFF3E8', borderRadius: 999, padding: '3px 8px' }}><Glyph k="sun" color="#F28C38" size={12} />31°</span>
         </div>
         <div className="mt-2.5 flex gap-1.5">
-          {['kurti', 'jeans', 'sneakers'].map((id, n) => <Tile key={id} id={id} size={60} delay={1.2 + n * 0.3} />)}
+          {['kurti', 'jeans', 'sneakers'].map((id, n) => <Tile key={id} id={id} size={60} delay={1.6 + n * 0.4} />)}
         </div>
-        <motion.div {...pop(2.4)} className="mt-3 flex items-center justify-center gap-1.5" style={{ height: 38, borderRadius: 999, background: worn ? '#2E7D4F' : '#0A0A0A', color: '#fff', fontSize: 13, fontWeight: 700, transition: 'background .3s' }}>
+        <motion.div {...pop(3.2)} className="mt-3 flex items-center justify-center gap-1.5" style={{ height: 38, borderRadius: 999, background: worn ? '#2E7D4F' : '#0A0A0A', color: '#fff', fontSize: 13, fontWeight: 700, transition: 'background .3s' }}>
           <motion.span className="flex items-center gap-1.5" animate={worn ? { scale: [1, 0.92, 1] } : {}} transition={{ duration: 0.3 }}><Glyph k="check" color="#fff" size={13} />{worn ? 'Logged for today' : 'Wearing this'}</motion.span>
         </motion.div>
       </motion.div>
@@ -172,7 +173,7 @@ function Plans({ play }) {
   const packing = ['2 bottoms', '4 tops', 'Sandals', 'Rain jacket']
   const [ticked, setTicked] = useState(0)
   useEffect(() => {
-    const ts = packing.map((_, i) => setTimeout(() => { setTicked(i + 1); play('tick', { gain: 0.4, rate: 1.1 + i * 0.08 }) }, 2300 + i * 380))
+    const ts = packing.map((_, i) => setTimeout(() => { setTicked(i + 1); play('tick', { gain: 0.4, rate: 1.1 + i * 0.08 }) }, 3100 + i * 480))
     return () => ts.forEach(clearTimeout)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [play])
@@ -180,16 +181,16 @@ function Plans({ play }) {
     <div className="absolute inset-0" style={{ padding: '4px 22px' }}>
       <div className="flex flex-col gap-2">
         {rows.map((r, n) => (
-          <motion.div key={r.what} className="flex items-center justify-between" style={{ background: '#fff', borderRadius: 18, padding: '8px 10px 8px 14px', boxShadow: '0 10px 22px rgba(18,19,23,0.08)' }} initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ ...spring, delay: 0.15 + n * 0.3 }}>
+          <motion.div key={r.what} className="flex items-center justify-between" style={{ background: '#fff', borderRadius: 18, padding: '8px 10px 8px 14px', boxShadow: '0 10px 22px rgba(18,19,23,0.08)' }} initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ ...spring, delay: 0.2 + n * 0.45 }}>
             <div>
               <div style={{ fontSize: 11.5, fontWeight: 600, color: MUTED }}>{r.day}</div>
               <div style={{ fontSize: 16, fontWeight: 800, color: r.tone, letterSpacing: '-0.01em' }}>{r.what}</div>
             </div>
-            <div className="flex gap-1.5">{r.ids.map((id, m) => <Tile key={id} id={id} size={50} delay={0.6 + n * 0.3 + m * 0.15} style={{ borderRadius: 12 }} />)}</div>
+            <div className="flex gap-1.5">{r.ids.map((id, m) => <Tile key={id} id={id} size={50} delay={0.8 + n * 0.45 + m * 0.2} style={{ borderRadius: 12 }} />)}</div>
           </motion.div>
         ))}
       </div>
-      <motion.div className="mt-2.5" style={{ background: '#fff', borderRadius: 18, padding: '10px 14px', boxShadow: '0 10px 22px rgba(18,19,23,0.08)' }} {...pop(1.9)}>
+      <motion.div className="mt-2.5" style={{ background: '#fff', borderRadius: 18, padding: '10px 14px', boxShadow: '0 10px 22px rgba(18,19,23,0.08)' }} {...pop(2.6)}>
         <div className="flex items-center justify-between" style={{ fontSize: 13, fontWeight: 800, color: INK }}>
           <span>Goa trip · packing list</span><span style={{ fontSize: 11, color: '#7B6CF6' }}>{ticked}/{packing.length}</span>
         </div>
@@ -234,7 +235,7 @@ export function StoryCard({ i, progress, onTap, onReplay, onTry, playing, onTogg
       <div className="absolute flex items-center gap-2" style={{ left: 16, top: 30 }}>
         <span className="flex items-center justify-center" style={{ width: 30, height: 30, borderRadius: 999, background: '#fff', boxShadow: '0 2px 8px rgba(18,19,23,0.10)' }}><Mark size={15} color={INK} /></span>
         <span style={{ fontSize: 14, fontWeight: 700, color: INK }}>fluntr</span>
-        <span style={{ fontSize: 12, color: MUTED }}>· Fluntr in 20 seconds</span>
+        <span style={{ fontSize: 12, color: MUTED }}>· Fluntr in 30 seconds</span>
       </div>
       {onToggle && !end ? (
         <button type="button" onClick={e => { e.stopPropagation(); onToggle() }} aria-label={playing ? 'Pause' : 'Play'} className="absolute z-20 flex items-center justify-center" style={{ right: 14, top: 28, width: 34, height: 34, borderRadius: 999, border: 0, background: 'rgba(255,255,255,0.85)', boxShadow: '0 2px 8px rgba(18,19,23,0.10)', cursor: 'pointer' }}>
@@ -341,7 +342,7 @@ export default function Explainer() {
         {/* words and chapters */}
         <div className="text-center lg:text-left">
           <p className="text-eyebrow mb-3">What is Fluntr?</p>
-          <h2 className="h-display" style={{ fontSize: 'clamp(30px,3.8vw,50px)', color: INK }}>Fluntr in 20 seconds.</h2>
+          <h2 className="h-display" style={{ fontSize: 'clamp(30px,3.8vw,50px)', color: INK }}>Fluntr in 30 seconds.</h2>
           <p className="mx-auto mt-4 max-w-md text-[17px] leading-relaxed lg:mx-0" style={{ color: MUTED }}>Five quick bites, then try it yourself.</p>
           <ol className="mx-auto mt-7 hidden max-w-md flex-col gap-1 text-left lg:mx-0 lg:flex">
             {BITES.map((b, n) => (

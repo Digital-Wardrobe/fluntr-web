@@ -63,7 +63,7 @@ export const QA = [
 
 const STEPS = [
   { k: 'pick', title: 'Pick a few photos.', body: 'Straight from your camera roll. A mirror shot, a flat lay, the kurta on its hanger.', line: 'Pick a few. Any photo works.' },
-  { k: 'magic', title: 'Tap ✦✦. The background goes.', body: 'Each piece is cut out on the phone itself, one tap, no studio needed. Nothing is uploaded until you save.', line: 'See the gold sparkles on the photo? Tap them.' },
+  { k: 'magic', title: 'Tap ✦✦. The background goes.', body: 'Each piece is cut out on the phone itself, one tap, no studio needed. Nothing is uploaded until you save.', line: 'Tap the gold ✦✦ on the photo. Watch the background vanish!' },
   { k: 'details', title: 'Kween fills in the details.', body: 'Category, colours, fabric, occasion. Check them, fix anything, save.', line: 'I filled it in. Fix anything I got wrong.' },
   { k: 'closet', title: 'It lands in your closet.', body: 'Every piece you own, cut out and in one grid you can actually look through.', line: 'That’s your closet. Finally.' },
   { k: 'feed', title: 'Post it, or ask first.', body: 'Put a look up and see what people think while you still have time to change.', line: 'Now post it. Or ask me.' },
@@ -136,10 +136,11 @@ export function Glyph({ k, color = INK, size = 13, sw = 1.8 }) {
   }
 }
 
-function Pill({ children, dark = false, small = false, onClick, disabled, style }) {
+function Pill({ children, dark = false, small = false, onClick, disabled, style, coach }) {
   return (
     <button
       type="button"
+      data-coach={coach}
       onClick={onClick}
       disabled={disabled}
       className="inline-flex items-center justify-center gap-1.5 transition-transform active:scale-[0.97] disabled:opacity-40"
@@ -222,7 +223,7 @@ function PickScreen({ selected, toggle, onNext }) {
       <div className="flex items-center justify-between px-4 pb-3 pt-[13%]" style={{ borderBottom: `1px solid ${HAIR}` }}>
         <Glyph k="close" size={20} sw={2.2} />
         <span style={{ fontSize: 15, fontWeight: 800, letterSpacing: '-0.01em' }}>Select Photos</span>
-        <motion.button type="button" onClick={onNext} disabled={!n} animate={n ? { scale: [1, 1.08, 1] } : { scale: 1 }} transition={{ duration: 0.35 }} style={{ background: n ? INK : '#F0F0F0', color: n ? '#fff' : '#AAA', borderRadius: 999, padding: '7px 14px', fontSize: 12.5, fontWeight: 700, border: 0, cursor: n ? 'pointer' : 'default' }}>
+        <motion.button type="button" data-coach="add" onClick={onNext} disabled={!n} animate={n ? { scale: [1, 1.08, 1] } : { scale: 1 }} transition={{ duration: 0.35 }} style={{ background: n ? INK : '#F0F0F0', color: n ? '#fff' : '#AAA', borderRadius: 999, padding: '7px 14px', fontSize: 12.5, fontWeight: 700, border: 0, cursor: n ? 'pointer' : 'default' }}>
           Add{n ? ` (${n})` : ''}
         </motion.button>
       </div>
@@ -234,11 +235,11 @@ function PickScreen({ selected, toggle, onNext }) {
         {ALBUMS.map((a, i) => <span key={a} className="shrink-0" style={{ padding: '6px 12px', borderRadius: 999, fontSize: 11, fontWeight: i ? 600 : 700, background: i ? 'transparent' : INK, color: i ? '#666' : '#fff', border: `1px solid ${i ? '#E5E5E5' : INK}` }}>{a}</span>)}
       </div>
       <div className="grid grid-cols-3 gap-[3px] px-2 pt-2">
-        {GALLERY.map(g => {
+        {GALLERY.map((g, gi) => {
           const on = selected.includes(g.id)
           const full = !on && n >= 4
           return (
-            <button key={g.id} type="button" onClick={() => toggle(g.id)} className="relative overflow-hidden" style={{ aspectRatio: '1 / 1', border: `2px solid ${on ? INK : 'transparent'}`, padding: 0, background: '#eee', cursor: 'pointer', borderRadius: 8, opacity: full ? 0.45 : 1, transition: 'opacity .2s' }} aria-pressed={on} aria-label={g.name}>
+            <button key={g.id} type="button" data-coach={gi === 0 ? 'pick' : undefined} onClick={() => toggle(g.id)} className="relative overflow-hidden" style={{ aspectRatio: '1 / 1', border: `2px solid ${on ? INK : 'transparent'}`, padding: 0, background: '#eee', cursor: 'pointer', borderRadius: 8, opacity: full ? 0.45 : 1, transition: 'opacity .2s' }} aria-pressed={on} aria-label={g.name}>
               <motion.div className="h-full w-full overflow-hidden" style={{ borderRadius: 6 }} animate={{ scale: on ? 0.94 : 1 }} transition={{ type: 'spring', stiffness: 400, damping: 26 }}>
                 <Photo src={g.src} sizes="120px" />
               </motion.div>
@@ -287,7 +288,7 @@ function Hero({ item, cut, onMagic, onTrash, pulse }) {
       {/* the gold sparkles: the AI Magic Studio button, exactly where the app has it */}
       <div className="absolute right-2 top-2">
         {pulse ? <motion.span aria-hidden className="absolute inset-0 rounded-full" style={{ border: `2px solid ${GOLD}` }} animate={{ scale: [1, 2.1], opacity: [0.9, 0] }} transition={{ duration: 1.4, repeat: Infinity, ease: 'easeOut' }} /> : null}
-        <motion.button type="button" aria-label="Remove background" onClick={onMagic} className="relative flex items-center justify-center" style={{ width: 32, height: 32, borderRadius: 999, background: 'rgba(0,0,0,0.5)', border: 0, cursor: 'pointer', color: GOLD, fontSize: 11, fontWeight: 700, letterSpacing: 0.5 }} animate={pulse ? { scale: [1, 1.15, 1] } : { scale: 1 }} transition={{ duration: 1.4, repeat: Infinity }}>✦✦</motion.button>
+        <motion.button type="button" data-coach="magic" aria-label="Remove background" onClick={onMagic} className="relative flex items-center justify-center" style={{ width: 32, height: 32, borderRadius: 999, background: 'rgba(0,0,0,0.5)', border: 0, cursor: 'pointer', color: GOLD, fontSize: 11, fontWeight: 700, letterSpacing: 0.5 }} animate={pulse ? { scale: [1, 1.15, 1] } : { scale: 1 }} transition={{ duration: 1.4, repeat: Infinity }}>✦✦</motion.button>
       </div>
       {item.look && !cut ? (
         <span className="absolute bottom-3 left-3 flex items-center gap-1.5" style={{ background: 'rgba(10,10,10,0.86)', color: '#fff', borderRadius: 999, padding: '7px 11px', fontSize: 11.5, fontWeight: 700 }}><Glyph k="scan" color="#fff" size={13} />Scan outfit</span>
@@ -409,7 +410,7 @@ function Studio({ selected, onApply, onClose, onDone }) {
         {done ? (
           <motion.div className="flex gap-3" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
             <button type="button" onClick={onClose} style={{ flex: 1, height: 48, borderRadius: 24, background: '#2C2C2C', color: '#fff', fontSize: 13.5, fontWeight: 700, border: 0, cursor: 'pointer' }}>Undo</button>
-            <button type="button" onClick={onApply} style={{ flex: 1, height: 48, borderRadius: 24, background: '#fff', color: '#000', fontSize: 13.5, fontWeight: 700, border: 0, cursor: 'pointer' }}>Apply / Keep</button>
+            <button type="button" data-coach="apply" onClick={onApply} style={{ flex: 1, height: 48, borderRadius: 24, background: '#fff', color: '#000', fontSize: 13.5, fontWeight: 700, border: 0, cursor: 'pointer' }}>Apply / Keep</button>
           </motion.div>
         ) : (
           <div className="flex items-center justify-center gap-2.5" style={{ height: 48 }}>
@@ -432,7 +433,7 @@ function SavedAlert({ item, onOk }) {
           <div style={{ fontSize: 16, fontWeight: 700 }}>Saved! 🎉</div>
           <div className="mt-1.5" style={{ fontSize: 12.5, lineHeight: 1.35, color: INK2 }}>Kween already filled in {filled} from your photo. Have a look and fix anything that’s off.</div>
         </div>
-        <button type="button" onClick={onOk} className="w-full" style={{ height: 44, border: 0, borderTop: `1px solid ${HAIR}`, background: 'transparent', color: '#007AFF', fontSize: 16, fontWeight: 600, cursor: 'pointer' }}>OK</button>
+        <button type="button" data-coach="ok" onClick={onOk} className="w-full" style={{ height: 44, border: 0, borderTop: `1px solid ${HAIR}`, background: 'transparent', color: '#007AFF', fontSize: 16, fontWeight: 600, cursor: 'pointer' }}>OK</button>
       </motion.div>
     </motion.div>
   )
@@ -473,7 +474,7 @@ export function AddItemScreen({ selected, cut, fill, pulse, studio, saved, onMag
       {/* the glass bar (GlassBar) with Close and Save */}
       <div className="absolute inset-x-2 bottom-2 z-10 flex items-center gap-2.5" style={{ padding: 8, borderRadius: 28, background: 'rgba(255,255,255,0.82)', backdropFilter: 'blur(20px)', boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.85), 0 10px 30px rgba(0,0,0,0.12)' }}>
         <span className="flex items-center justify-center" style={{ height: 44, padding: '0 20px', borderRadius: 999, background: FILL, fontSize: 14, fontWeight: 600 }}>Close</span>
-        <motion.button type="button" onClick={onSave} disabled={!onSave} className="flex flex-1 items-center justify-center gap-2" animate={fill >= 6 && onSave ? { scale: [1, 1.03, 1] } : { scale: 1 }} transition={{ duration: 1.2, repeat: Infinity }} style={{ height: 44, borderRadius: 999, background: INK, color: '#fff', fontSize: 14, fontWeight: 600, border: 0, cursor: onSave ? 'pointer' : 'default', opacity: onSave ? 1 : 0.5 }}>
+        <motion.button type="button" data-coach="save" onClick={onSave} disabled={!onSave} className="flex flex-1 items-center justify-center gap-2" animate={fill >= 6 && onSave ? { scale: [1, 1.03, 1] } : { scale: 1 }} transition={{ duration: 1.2, repeat: Infinity }} style={{ height: 44, borderRadius: 999, background: INK, color: '#fff', fontSize: 14, fontWeight: 600, border: 0, cursor: onSave ? 'pointer' : 'default', opacity: onSave ? 1 : 0.5 }}>
           <Glyph k="sparkle" color="#fff" size={15} />Save
         </motion.button>
       </div>
@@ -538,7 +539,7 @@ export function ClosetScreen({ selected, onNext, label = 'added to My Closet', a
           + {selected.length} {label}
         </motion.div>
       ) : null}
-      {onNext ? <div className="absolute inset-x-0 z-20 flex justify-center" style={{ bottom: '14%' }}><Pill dark onClick={onNext}>See it in the feed →</Pill></div> : null}
+      {onNext ? <div className="absolute inset-x-0 z-20 flex justify-center" style={{ bottom: '14%' }}><Pill dark coach="feed" onClick={onNext}>See it in the feed →</Pill></div> : null}
       <TabBar active="closet" />
     </div>
   )
@@ -591,7 +592,7 @@ export function FeedScreen({ item, onAsk }) {
         <span className="absolute bottom-3 right-3 flex items-center justify-center" style={{ width: 40, height: 40, borderRadius: 999, background: 'rgba(60,60,62,0.9)' }}><Glyph k="bookmark" color="#fff" size={18} sw={2} /></span>
       </motion.div>
       <div className="mt-2 flex items-center gap-1.5 px-4" style={{ fontSize: 10.5, color: '#767A85' }}><Glyph k="sparkle" color="#767A85" size={11} />Suggested for you · {item.name}</div>
-      {onAsk ? <div className="absolute inset-x-0 z-20 flex justify-center" style={{ bottom: '14%' }}><Pill dark onClick={onAsk}>Ask Kween what goes with it</Pill></div> : null}
+      {onAsk ? <div className="absolute inset-x-0 z-20 flex justify-center" style={{ bottom: '14%' }}><Pill dark coach="ask" onClick={onAsk}>Ask Kween what goes with it</Pill></div> : null}
       <TabBar active="home" />
     </div>
   )
@@ -647,12 +648,70 @@ export function KweenScreen({ onRestart, setMood, setTalking, mood, talking, pre
       <div className="mt-auto px-4 pb-[14%]">
         <div className="flex flex-wrap gap-1.5">
           {QA.map((x, i) => (
-            <button key={x.q} type="button" onClick={() => ask(i)} style={{ background: i === asked ? INK : '#fff', color: i === asked ? '#fff' : INK, border: `1px solid ${i === asked ? INK : 'rgba(18,19,23,0.14)'}`, borderRadius: 999, padding: '7px 11px', fontSize: 11, fontWeight: 600, cursor: 'pointer' }}>{x.q}</button>
+            <button key={x.q} type="button" data-coach={i === 0 ? 'question' : undefined} onClick={() => ask(i)} style={{ background: i === asked ? INK : '#fff', color: i === asked ? '#fff' : INK, border: `1px solid ${i === asked ? INK : 'rgba(18,19,23,0.14)'}`, borderRadius: 999, padding: '7px 11px', fontSize: 11, fontWeight: 600, cursor: 'pointer' }}>{x.q}</button>
           ))}
         </div>
       </div>
       {onRestart ? <button type="button" onClick={onRestart} className="absolute right-[6%]" style={{ bottom: '4.5%', background: 'none', border: 0, fontSize: 11, color: MUTED, cursor: 'pointer', textDecoration: 'underline' }}>Start over</button> : null}
     </div>
+  )
+}
+
+/* ── the coach: points at the next thing to tap ───────────────────────────── */
+
+/**
+ * Finds the element marked data-coach="<target>" inside the phone, rings it,
+ * points at it with a bouncing finger and says what to do. For the one tap
+ * people miss (the gold ✦✦), it also dims everything else. Purely visual:
+ * clicks go straight through to the phone underneath.
+ */
+function Coach({ coach, phoneRef, onBox }) {
+  const [box, setBox] = useState(null)
+  const onBoxRef = useRef(onBox); onBoxRef.current = onBox
+  const target = coach?.target
+  useEffect(() => {
+    setBox(null); onBoxRef.current?.(null)
+    if (!target) return
+    let alive = true
+    const measure = () => {
+      const phone = phoneRef.current
+      const el = phone?.querySelector(`[data-coach="${target}"]`)
+      if (!phone || !el) return null
+      const d = phone.getBoundingClientRect(), r = el.getBoundingClientRect()
+      if (!r.width || r.top < d.top - 4 || r.bottom > d.bottom + 4) return null
+      return { x: r.left - d.left, y: r.top - d.top, w: r.width, h: r.height, W: d.width, H: d.height }
+    }
+    const update = () => {
+      if (!alive) return
+      const b = measure()
+      setBox(old => (b && old && Math.abs(b.x - old.x) < 1 && Math.abs(b.y - old.y) < 1 && Math.abs(b.w - old.w) < 1) ? old : b)
+      onBoxRef.current?.(b)
+    }
+    const first = setTimeout(update, coach.delay ?? 700)
+    const follow = setInterval(update, 450) // the screen can still be settling or scrolling
+    return () => { alive = false; clearTimeout(first); clearInterval(follow) }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [target, phoneRef])
+  if (!coach || !box) return null
+  const cx = box.x + box.w / 2, cy = box.y + box.h / 2
+  const below = cy < box.H * 0.55
+  // the ring follows the button's own shape; the label stays inside the phone
+  const labelPos = cx > box.W * 0.62 ? { right: Math.max(10, box.W - (box.x + box.w) - 4) }
+    : cx < box.W * 0.38 ? { left: Math.max(10, box.x - 4) }
+    : { left: cx, transform: 'translateX(-50%)' }
+  return (
+    <motion.div key={target} className="pointer-events-none absolute inset-0 z-[35] overflow-hidden" style={{ borderRadius: 40 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
+      <span className="coach-ring absolute" style={{
+        left: box.x - 7, top: box.y - 7, width: box.w + 14, height: box.h + 14, borderRadius: Math.min((box.h + 14) / 2, 22),
+        border: `2.5px solid ${coach.spot ? GOLD : '#fff'}`, boxShadow: coach.spot ? `0 0 0 1600px rgba(10,10,10,0.45), 0 0 18px 4px ${GOLD}aa` : '0 0 0 3px rgba(10,10,10,0.55), 0 0 16px 2px rgba(255,255,255,0.6)',
+      }} />
+      <span className={`absolute ${below ? 'coach-finger-up' : 'coach-finger-down'}`} style={{ left: cx - 14, top: below ? box.y + box.h + 4 : box.y - 36, fontSize: 28, lineHeight: 1, filter: 'drop-shadow(0 3px 4px rgba(0,0,0,0.35))' }}>{below ? '👆' : '👇'}</span>
+      {coach.hint ? (
+        <span className="absolute whitespace-nowrap" style={{ ...labelPos, top: below ? box.y + box.h + 40 : box.y - 72, background: '#0A0A0A', color: '#fff', borderRadius: 999, padding: '7px 12px', fontSize: 12.5, fontWeight: 700, boxShadow: '0 8px 20px rgba(0,0,0,0.3)', border: coach.spot ? `1.5px solid ${GOLD}` : '1.5px solid rgba(255,255,255,0.25)' }}>
+          {coach.hint}
+        </span>
+      ) : null}
+    </motion.div>
   )
 }
 
@@ -668,6 +727,8 @@ export default function Demo() {
   const [saved, setSaved] = useState(false)
   const [mood, setMood] = useState('idle')
   const [talking, setTalking] = useState(false)
+  const [askedAny, setAskedAny] = useState(false)  // has the visitor asked Kween anything yet
+  const [coachBox, setCoachBox] = useState(null)   // where the coach is pointing, inside the phone
   // is the part of the phone where the next tap happens actually on screen?
   const [topSeen, setTopSeen] = useState(true)
   const [bottomSeen, setBottomSeen] = useState(true)
@@ -688,6 +749,10 @@ export default function Demo() {
     if (step > 0) track('demo_step', { step: step + 1, name: STEPS[step].k })
   }, [step, reduce])
   useEffect(() => { if (studio) kweenSay('Hold on. Doing the boring part.', 'idle', { talkMs: reduce ? 0 : 1000, perch: 'demo' }) }, [studio, reduce])
+  // she calls out each moment the next tap becomes possible
+  useEffect(() => { if (studioDone) kweenSay('All cut out! Now tap Apply / Keep.', 'love', { talkMs: reduce ? 0 : 1100, perch: 'demo' }) }, [studioDone, reduce])
+  useEffect(() => { if (step === 2 && fill >= 6 && !saved) kweenSay('All filled in. Tap Save!', 'smug', { talkMs: reduce ? 0 : 1000, perch: 'demo' }) }, [step, fill, saved, reduce])
+  useEffect(() => { if (saved) kweenSay('Saved! Tap OK to see your closet.', 'happy', { talkMs: reduce ? 0 : 1000, perch: 'demo' }) }, [saved, reduce])
   // the in-phone Kween's feelings reach the roamer too
   useEffect(() => { if (step === 5) kweenMood(mood, talking) }, [mood, talking, step])
   // on the details step she fills the form in, one field at a time
@@ -731,7 +796,7 @@ export default function Demo() {
   const toKween = () => go(5, 'pop')
   function restart() {
     play('swish', { gain: 0.6 }); track('demo_restart', { from: step + 1 })
-    setSelected([]); setCut(false); setStudio(false); setStudioDone(false); setSaved(false); setMood('idle'); nudged.current.clear(); setStep(0)
+    setSelected([]); setCut(false); setStudio(false); setStudioDone(false); setSaved(false); setMood('idle'); setAskedAny(false); nudged.current.clear(); setStep(0)
   }
   function jump(i) {
     if (i === step) return
@@ -754,6 +819,20 @@ export default function Demo() {
     : step === 4 ? { at: 'bottom', label: 'Ask Kween what goes with it', run: toKween, mood: 'smug', nudge: 'Ask me what goes with it. Go on!' }
     : null
   const actionSeen = !pending || (pending.at === 'top' ? topSeen : bottomSeen)
+
+  // The next tap, pointed at on the phone itself. The ✦✦ gets the spotlight:
+  // it is the one people did not notice.
+  const coach =
+    step === 0 ? (n ? { target: 'add', hint: `Tap Add to continue`, delay: 600 } : { target: 'pick', hint: 'Tap a photo to pick it', delay: 4000 })
+    : step === 1 ? (!studio ? { target: 'magic', hint: 'Tap ✦✦ to remove the background', spot: true, delay: 450 }
+      : studioDone ? { target: 'apply', hint: 'Tap to keep the cutouts', delay: 600 } : null)
+    : step === 2 ? (fill < 6 ? null : !saved ? { target: 'save', hint: 'Tap Save', delay: 500 } : { target: 'ok', hint: 'Tap OK', delay: 500 })
+    : step === 3 ? { target: 'feed', delay: 1800 }
+    : step === 4 ? { target: 'ask', delay: 1600 }
+    : step === 5 && !askedAny ? { target: 'question', hint: 'Ask Kween something', delay: 1400 }
+    : null
+  // On a wide screen Kween walks over and stands beside the phone, level with the ✦✦
+  const kweenAtPhone = step === 1 && !studio && coachBox
   const pendKey = pending ? `${step}:${pending.label}` : null
   useEffect(() => {
     if (!pending || actionSeen || nudged.current.has(pendKey)) return
@@ -787,9 +866,11 @@ export default function Demo() {
 
   // Kween, with the next step as a button under her (her bubble opens to the
   // right of her head, so the button goes below rather than beside her).
-  const helper = cls => (
+  const helper = (cls, away = false) => (
     <div className={cls}>
-      <KweenPerch name="demo" bubble="right" width="clamp(72px, 7vw, 96px)" />
+      {away
+        ? <div aria-hidden style={{ width: 'clamp(72px, 7vw, 96px)', aspectRatio: '200 / 278' }} />
+        : <KweenPerch name="demo" bubble="right" width="clamp(72px, 7vw, 96px)" />}
       <div className="mt-3 min-h-[56px]">
         <AnimatePresence mode="wait">
           {pending ? (
@@ -809,7 +890,7 @@ export default function Demo() {
     <AddItemScreen key="add" selected={selected} cut={cut} fill={fill} saved={saved} onMagic={() => {}} onSave={fill >= 6 ? save : null} onOk={ok} />,
     <ClosetScreen key="closet" selected={selected} onNext={toFeed} />,
     <FeedScreen key="feed" item={first} onAsk={toKween} />,
-    <KweenScreen key="kween" onRestart={restart} mood={mood} talking={talking} setMood={setMood} setTalking={setTalking} />,
+    <KweenScreen key="kween" onRestart={restart} mood={mood} talking={talking} setMood={m => { setMood(m); setAskedAny(true) }} setTalking={setTalking} />,
   ]
   // steps 1 and 2 are the same screen; keep it mounted so the hero does not flash
   const screenKey = step === 1 || step === 2 ? 'add' : STEPS[step].k
@@ -852,7 +933,7 @@ export default function Demo() {
             {step > 0 ? <button type="button" onClick={restart} className="mt-5 text-[13px] font-medium underline" style={{ color: MUTED, background: 'none', border: 0, cursor: 'pointer' }}>Start over</button> : null}
 
             {/* On desktop the phone is beside the words, so Kween stands below the steps. */}
-            {helper('mt-10 hidden lg:block')}
+            {helper('mt-10 hidden lg:block', !!kweenAtPhone)}
           </div>
 
           {/* right: the phone */}
@@ -867,12 +948,17 @@ export default function Demo() {
                   </motion.div>
                 </AnimatePresence>
               </Device>
+              <AnimatePresence>{coach ? <Coach key={coach.target} coach={coach} phoneRef={phoneRef} onBox={setCoachBox} /> : null}</AnimatePresence>
+              {kweenAtPhone ? (
+                <div className="absolute hidden lg:block" style={{ right: 'calc(100% + 14px)', top: Math.max(0, coachBox.y + coachBox.h / 2 - 96) }}>
+                  <KweenPerch name="demo" bubble="left" width="96px" />
+                </div>
+              ) : null}
               {/* where the next tap happens: the top (Add, ✦✦) or the bottom (Save, Next) */}
               <div ref={topRef} aria-hidden className="pointer-events-none absolute inset-x-0 top-0" style={{ height: '22%' }} />
               <div ref={bottomRef} aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0" style={{ height: '22%' }} />
               {/* floating props around the phone, per step */}
               <AnimatePresence>
-                {step === 1 && !studio ? <Prop key="p1" text="✦ on your phone, offline" tone="#121317" left="-30%" top="14%" /> : null}
                 {step === 2 ? <Prop key="p2" text="✨ filled by Kween" tone="#F28C38" left="-26%" top="62%" /> : null}
                 {step === 3 ? <Prop key="p3" text={`+ ${n} ${n === 1 ? 'piece' : 'pieces'}`} tone="#4F9D6B" left="-18%" top="18%" /> : null}
                 {step === 4 ? <Prop key="p4" text="♥ 142" tone="#F28C38" left="78%" top="30%" /> : null}
