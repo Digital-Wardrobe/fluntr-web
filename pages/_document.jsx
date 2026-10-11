@@ -8,6 +8,7 @@ export default function Document() {
         <link rel="preload" href="/fonts/inter-latin-800.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         <link rel="preload" href="/fonts/inter-latin-400.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         <link rel="preload" href="/fonts/inter-latin-600.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/instrument-serif-latin-400-italic.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         <meta name="theme-color" content="#121317" />
         <link rel="icon" href="/favicon.ico" sizes="48x48" />
         <link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32.png" />

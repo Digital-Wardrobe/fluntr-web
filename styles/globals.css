@@ -7,6 +7,7 @@
 @font-face { font-family: 'Inter'; font-style: normal; font-weight: 700; font-display: swap; src: url('/fonts/inter-latin-700.woff2') format('woff2'); }
 @font-face { font-family: 'Inter'; font-style: normal; font-weight: 800; font-display: swap; src: url('/fonts/inter-latin-800.woff2') format('woff2'); }
 @font-face { font-family: 'Instrument Serif'; font-style: normal; font-weight: 400; font-display: swap; src: url('/fonts/instrument-serif-latin-400.woff2') format('woff2'); }
+@font-face { font-family: 'Instrument Serif'; font-style: italic; font-weight: 400; font-display: swap; src: url('/fonts/instrument-serif-latin-400-italic.woff2') format('woff2'); }
 @font-face { font-family: 'Inter Fallback'; src: local('Arial'); size-adjust: 107.12%; ascent-override: 90.44%; descent-override: 22.52%; line-gap-override: 0%; }
 
 @tailwind base;
@@ -89,31 +90,44 @@ body {
   color: var(--muted);
 }
 
-/* a word in the headline, lifted into a coloured pill with an icon */
-.pill-word {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.18em;
-  padding: 0.04em 0.34em 0.04em 0.26em;
-  border-radius: 999px;
-  line-height: 1;
-  vertical-align: -0.08em;
-  background: var(--pill-bg);
-  color: var(--pill-fg);
-  box-shadow: 0 14px 34px -14px var(--pill-fg);
-  transform: rotate(-1.5deg);
-  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
-  white-space: nowrap;
+/* The hero headline: one big line framed by two quiet ones. The big line is
+   heavy Inter with its key word in the wordmark's serif, in italic. */
+.hero-title {
+  color: var(--ink);
+  font-family: 'Inter', 'Inter Fallback', system-ui, sans-serif;
 }
-
-.pill-word:hover {
-  transform: rotate(1deg) scale(1.04);
+.hero-frame {
+  display: block;
+  font-size: clamp(19px, 2.1vw, 28px);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  color: #7A7F8A;
 }
-
-.pill-word svg {
-  width: 0.78em;
-  height: 0.78em;
-  flex: none;
+.hero-main {
+  display: block;
+  margin: 0.08em 0 0.14em;
+  /* by width and by height, so a short laptop still shows the buttons below */
+  font-size: clamp(54px, min(9.5vw, 12.5vh), 112px);
+  font-weight: 800;
+  letter-spacing: -0.052em;
+  line-height: 1.04; /* room for the serif p's tail above the next line */
+  text-wrap: balance;
+}
+.hero-accent {
+  font-family: 'Instrument Serif', 'Times New Roman', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.14em;
+  letter-spacing: -0.025em;
+  line-height: 0;
+  padding-right: 0.03em;
+  color: var(--tang);
+}
+.hero-stop {
+  display: inline-block;
+  margin-left: 0.06em;
+  vertical-align: 0.02em;
 }
 
 .typed-cursor {

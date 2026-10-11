@@ -3,7 +3,7 @@ import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 import WaitlistForm from '../components/WaitlistForm'
 import Reveal from '../components/motion/Reveal'
-import Demo, { Glyph } from '../components/motion/Demo'
+import Demo from '../components/motion/Demo'
 import Explainer from '../components/motion/Explainer'
 import Ticker from '../components/motion/Ticker'
 import Stylist from '../components/motion/Stylist'
@@ -14,6 +14,7 @@ import Blobs from '../components/motion/Blobs'
 import Typed from '../components/motion/Typed'
 import KweenRoamer, { KweenPerch } from '../components/motion/KweenRoamer'
 import { useEffect } from 'react'
+import { Mark } from '../components/Logo'
 import { track } from '../lib/analytics'
 
 /*
@@ -54,43 +55,29 @@ const LD = {
   ],
 }
 
-function PillWord({ tone, soft, icon, children }) {
-  return (
-    <span className="pill-word" style={{ '--pill-bg': soft, '--pill-fg': tone }}>
-      <Glyph k={icon} color={tone} size="1em" />
-      {children}
-    </span>
-  )
-}
-
 // ── 1. HERO ─────────────────────────────── headline, then the product ──
 function Hero() {
   return (
-    <section className="relative overflow-hidden px-4 pb-20 pt-32 md:px-6 md:pt-40">
+    <section className="relative overflow-hidden px-4 pb-20 pt-32 md:px-6 md:pt-36">
       <Blobs />
 
       <div className="relative z-10 mx-auto max-w-5xl text-center">
         <Cursors />
         <div className="hero-in">
-          <p className="text-eyebrow mb-7">Your closet on your phone. The most personal AI stylist.</p>
-        </div>
-        <div className="hero-in" style={{ animationDelay: '0.06s' }}>
-          <h1 className="h-display mx-auto" style={{ fontSize: 'clamp(36px,4.4vw,58px)', color: INK, textWrap: 'balance' }}>
-            Your <PillWord tone="#2E8FA3" soft="#E4F3F6" icon="closet">closet</PillWord>{' '}
-            <span style={{ color: '#9AA0A6' }}>on your phone.</span>
-            <br />{' '}
-            The most personal <PillWord tone="#F28C38" soft="#FFF0E3" icon="sparkle">stylist</PillWord>
-            <span style={{ color: '#9AA0A6' }}>.</span>
-            <br />{' '}
-            <span style={{ color: '#9AA0A6' }}>Outfits in</span>{' '}
-            <PillWord tone="#7B6CF6" soft="#EEEBFF" icon="clock">seconds</PillWord>
-            <span style={{ color: '#9AA0A6' }}>.</span>
+          {/* One line carries the page, the other two frame it: a big heavy
+              statement with its key word in the wordmark's serif, between two
+              quiet lines. One accent colour, and the Fluntr sparkle as the full stop. */}
+          <h1 className="hero-title mx-auto">
+            <span className="hero-frame">Your closet on your phone.</span>{' '}
+            <span className="hero-main">The most <em className="hero-accent">personal</em>{' '}<br className="hidden md:inline" />AI&nbsp;stylist<span className="hero-stop"><Mark size="0.34em" color="var(--tang)" /></span></span>{' '}
+            <span className="hero-frame">Outfits in seconds.</span>
           </h1>
         </div>
-        <div className="hero-in" style={{ animationDelay: '0.18s' }}>
+        <div className="hero-in" style={{ animationDelay: '0.12s' }}>
           <p className="mx-auto mt-8 max-w-2xl text-[18px] leading-relaxed md:text-[21px]" style={{ color: MUTED }}>
             <strong style={{ color: INK, fontWeight: 600 }}>Fluntr is an app for your clothes.</strong> Click a photo of each piece once, and Kween, your AI stylist, tells you what to wear every day from what you already own.
-            Dressed for <Typed words={['weddings', 'the office', 'Diwali', 'a first date', 'brunch', 'the airport']} style={{ color: INK, fontWeight: 600 }} />
+            {/* on a line of its own, so the changing word never wraps away from "Dressed for" */}
+            <span className="mt-1 block">Dressed for <Typed words={['weddings', 'the office', 'Diwali', 'a first date', 'brunch', 'the airport']} style={{ color: INK, fontWeight: 600 }} /></span>
           </p>
         </div>
         <div className="hero-in" style={{ animationDelay: '0.28s' }}>
@@ -101,9 +88,10 @@ function Hero() {
             </div>
             {/* she stands just right of the buttons when you arrive, and greets you.
                 Placed outside the row so the buttons stay centred under the headline. */}
-            <KweenPerch name="hero" bubble="right" className="absolute hidden md:block" style={{ left: 'calc(50% + 248px)', bottom: -24 }} width="clamp(84px, 7.5vw, 104px)" />
-            {/* on phones, below the buttons, where she covers nothing */}
-            <KweenPerch name="hero" className="mt-6 md:hidden" style={{ marginLeft: 4 }} width="64px" />
+            <KweenPerch name="hero" bubble="right" className="absolute hidden min-[1100px]:block" style={{ left: 'calc(50% + 248px)', bottom: -24 }} width="clamp(84px, 7.5vw, 104px)" />
+            {/* on phones and tablets, below the buttons, where she covers nothing:
+                beside them there is no room for her bubble until about 1100px */}
+            <KweenPerch name="hero" className="mt-6 min-[1100px]:hidden" style={{ marginLeft: 4 }} width="64px" />
           </div>
         </div>
       </div>

@@ -32,6 +32,7 @@ const RATIO = 278 / 200 // her height per unit width, shadow included
 const SLEEP_AFTER = 18000        // with a mouse: the app's 18 s
 const SLEEP_AFTER_TOUCH = 45000  // on a phone, reading without touching is normal
 const PEEK = 0.32                // on a phone, how much of her shows above the bottom edge between perches
+const BUBBLE_ROOM = 244          // the widest bubble (230) and a margin from the window edge
 const TAP = ['Hi! I live in your closet.', 'Arre, that colour? Obsessed.', 'Socks with sandals? I won’t tell.', 'Your closet called. It misses you.', 'Wheee! Again!', 'Psst… post a fit today?']
 const WAKE = ['I was NOT asleep.', 'Oh! You’re back.']
 const WANDER = ['Just scrolling for inspo, as one does.', 'La la la… feed, fits and chill.', 'Hmm… would that colour work in your closet?']
@@ -307,12 +308,21 @@ export default function KweenRoamer() {
   useEffect(() => { const f = () => setVw(window.innerWidth); f(); window.addEventListener('resize', f); return () => window.removeEventListener('resize', f) }, [])
   // the perch may say which side the bubble goes (the hero's sits beside buttons it must not cover)
   const perchBubble = onPerch && typeof document !== 'undefined' ? [...document.querySelectorAll(`[data-kween-perch="${onPerch}"]`)].find(e => e.getBoundingClientRect().width)?.dataset.kweenBubble : null
-  const onRight = perchBubble ? perchBubble === 'left' : x.get() + size / 2 > vw / 2
+  let onRight = perchBubble ? perchBubble === 'left' : x.get() + size / 2 > vw / 2
+  // ...unless that side has no room: then the other side, rather than a bubble cut off at the edge
+  const left = x.get() - (seated && typeof window !== 'undefined' ? window.scrollX : 0)
+  const roomRight = vw - (left + size * 0.78), roomLeft = left + size * 0.22
+  if (!onRight && roomRight < BUBBLE_ROOM && roomLeft > roomRight) onRight = true
+  else if (onRight && roomLeft < BUBBLE_ROOM && roomRight > roomLeft) onRight = false
 
+  // Seated, she is positioned in the page, so she and her bubble count towards
+  // its width. This layer clips sideways overflow (never vertical), so she can
+  // never make the page scroll sideways. Floating (fixed) she is unaffected.
   return (
+    <div className="pointer-events-none absolute left-0 top-0 z-[45] w-full" style={{ height: 0, overflowX: 'clip' }}>
     <motion.div
       ref={rootRef}
-      className="pointer-events-none left-0 top-0 z-[45]"
+      className="pointer-events-none left-0 top-0"
       data-kween-state={asleep ? 'asleep' : walking ? 'walking' : 'awake'}
       data-kween-on={onPerch || ''}
       style={{ position: seated ? 'absolute' : 'fixed', x, y, opacity: alpha, width: size, touchAction: coarse ? 'auto' : 'none' }}
@@ -348,5 +358,6 @@ export default function KweenRoamer() {
         <Kween size="100%" expression={mood} talking={talking} walking={walking} mirrored={facing < 0} onClick={onTap} />
       </div>
     </motion.div>
+    </div>
   )
 }
