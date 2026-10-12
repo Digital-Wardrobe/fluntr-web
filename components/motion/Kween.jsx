@@ -188,16 +188,28 @@ export default function Kween({ expression = 'idle', talking = false, follow = t
       {/* the app's hop: crouch, leap, land, settle */}
       <motion.div
         key={hop}
-        style={{ transformOrigin: '50% 100%' }}
+        style={{ transformOrigin: '50% 100%', position: 'relative' }}
         animate={hop && !reduce ? { y: [0, 0, '-17%', 0, 0], scaleX: [1, 1.12, 0.89, 1.1, 1], scaleY: [1, 0.86, 1.13, 0.9, 1] } : {}}
         transition={{ duration: 0.79, times: [0, 0.14, 0.44, 0.7, 1], ease: 'easeOut' }}
       >
+        {/* the body: a plain image under the face (the most dependable thing a phone browser draws), falling back to the default fur if a file is missing */}
+        <span aria-hidden className="absolute" style={{ left: '14%', right: '14%', top: `${(216 - 8 + PAD) / (H + 6) * 100}%`, height: `${16 / (H + 6) * 100}%`, borderRadius: '50%', background: 'rgba(30,20,48,0.22)', filter: 'blur(5px)' }} />
+        <img
+          key={`${persona}-${color || PLUSH[persona].color}`}
+          src={`/mascot/${persona}-${color || PLUSH[persona].color}.webp`}
+          alt=""
+          draggable={false}
+          decoding="async"
+          onError={e => { const d = `/mascot/${persona}-${PLUSH[persona].color}.webp`; if (!e.currentTarget.src.endsWith(d)) e.currentTarget.src = d; else e.currentTarget.style.visibility = 'hidden' }}
+          className="absolute left-0"
+          style={{ top: `${(22 + PAD) / (H + 6) * 100}%`, width: '100%', height: `${200 / (H + 6) * 100}%`, objectFit: 'fill', pointerEvents: 'none', userSelect: 'none' }}
+        />
         <motion.svg
           ref={ref}
           viewBox={`0 0 ${W} ${H + 6}`}
           role="img"
           aria-label={`${PLUSH[persona].name}, a Fluntr closet plush`}
-          style={{ display: 'block', width: '100%', height: 'auto', overflow: 'visible', transformOrigin: '50% 100%' }}
+          style={{ display: 'block', width: '100%', height: 'auto', overflow: 'visible', transformOrigin: '50% 100%', position: 'relative' }}
           animate={reduce ? undefined : { scaleX: [1, 1.022, 1], scaleY: [1, 0.978, 1] }}
           transition={{ duration: 3.8, repeat: Infinity, ease: 'easeInOut' }}
         >
@@ -208,8 +220,6 @@ export default function Kween({ expression = 'idle', talking = false, follow = t
             <linearGradient id={`${id}-lid`} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor={lighten(fur, 0.45)} /><stop offset="1" stopColor={fur} /></linearGradient>
           </defs>
           <g transform={`translate(0 ${PAD})`}>
-            <ellipse cx="100" cy="216" rx="62" ry="8" fill="rgba(30,20,48,0.22)" filter={`url(#${id}-b6)`} />
-            <image href={`/mascot/${persona}-${color || PLUSH[persona].color}.webp`} x="0" y="22" width="200" height="200" preserveAspectRatio="none" />
             <motion.g style={{ x: sx, y: sy }}>
               <Face face={expression} blinking={blinking} open={open} id={id} ey={ey} her={persona === 'kween'} />
             </motion.g>

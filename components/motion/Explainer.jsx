@@ -4,7 +4,7 @@ import { motion, AnimatePresence, useReducedMotion, useMotionValue, useTransform
 import Kween from './Kween'
 import { Photo, Cut, Glyph } from './Demo'
 import { Mark } from '../Logo'
-import { FaceArt, SKIN, SUITS, SKIP } from './Colours'
+import { FaceArt, SUITS, SKIP } from './Colours'
 import { useSound } from './Sound'
 import { KweenPerch } from './KweenRoamer'
 import { kweenSay } from './kweenStore'
@@ -88,11 +88,11 @@ function ColoursScene({ play }) {
   useEffect(() => { const t = setTimeout(() => { setRead(true); play('zip', { gain: 0.4 }) }, 1900); return () => clearTimeout(t) }, [play])
   return (
     <div className="absolute inset-0">
-      <motion.div className="absolute overflow-hidden" style={{ left: 26, top: 8, width: 168, height: 224, borderRadius: 26, background: 'radial-gradient(80% 70% at 50% 30%, #FDEEE2 0%, #F6DCC8 100%)', border: '5px solid #fff', boxShadow: '0 20px 44px rgba(18,19,23,0.16)' }} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
+      <motion.div className="absolute overflow-hidden" style={{ left: 26, top: 8, width: 168, height: 224, borderRadius: 26, background: 'linear-gradient(180deg, #FFFFFF 0%, #F1F2F5 100%)', border: '5px solid #fff', boxShadow: '0 20px 44px rgba(18,19,23,0.16)' }} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
         <FaceArt />
         {!read ? <motion.div className="absolute inset-0" initial={{ y: '0%' }} animate={{ y: ['0%', '98%', '0%'] }} transition={{ duration: 1.8, ease: 'linear' }}><div style={{ height: 4, background: '#FFD700', boxShadow: '0 0 14px 3px #FFD700aa' }} /></motion.div> : null}
         {[[50, 38], [38, 50], [50, 69]].map(([x, y], n) => (
-          <motion.span key={n} className="absolute" style={{ left: `${x}%`, top: `${y}%`, width: 12, height: 12, marginLeft: -6, marginTop: -6, borderRadius: 999, border: '2px solid #fff', background: SKIN }} initial={{ scale: 0 }} animate={{ scale: read ? 1 : 0 }} transition={{ ...spring, delay: n * 0.15 }} />
+          <motion.span key={n} className="absolute" style={{ left: `${x}%`, top: `${y}%`, width: 12, height: 12, marginLeft: -6, marginTop: -6, borderRadius: 999, border: '2.5px solid #121317', background: '#fff' }} initial={{ scale: 0 }} animate={{ scale: read ? 1 : 0 }} transition={{ ...spring, delay: n * 0.15 }} />
         ))}
       </motion.div>
       <motion.span {...pop(2.3)} className="absolute flex items-center gap-1" style={{ left: 34, top: 246, fontSize: 12.5, fontWeight: 700, color: '#E0457B' }}>✓ Warm undertone</motion.span>

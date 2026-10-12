@@ -6,27 +6,30 @@ import { KweenPerch } from './KweenRoamer'
 
 /**
  * Your colours: one selfie, matched to the shades that suit your skin. The
- * portrait is a drawing (no face, no real person), scanned once when it comes
- * into view; then the reading and the palette appear.
+ * portrait is a neutral placeholder in the interface's own greys (no face, no
+ * skin tone, no real person), scanned once when it comes into view; then the
+ * reading and the palette appear.
  */
 
 const INK = '#121317'
 const MUTED = '#6B7080'
-const SKIN = '#C68C66'
+const SKIN = '#D6D9E0'   // the placeholder's grey, not a skin tone
+const HAIR = '#C3C7D0'
+const BODY = '#E7E9EE'
 
 const SUITS = [['Olive', '#6E7B3B'], ['Rust', '#B4532A'], ['Mustard', '#D4A13A'], ['Teal', '#2E7D80'], ['Cream', '#EFE3C8'], ['Maroon', '#7A2335']]
 const SKIP = [['Neon green', '#46F05A'], ['Icy grey', '#D9E1EA'], ['Pale lilac', '#DCCBF2']]
 const POINTS = [[100, 96], [76, 126], [100, 172]] // forehead, cheek, neck, in the portrait's 200 x 250 box
 
-/** A drawn head and shoulders, no face: the selfie, without a real person. 200 x 250. */
+/** A neutral head and shoulders, like a profile placeholder: the selfie, without a person. 200 x 250. */
 export function FaceArt({ className = 'absolute inset-0 h-full w-full' }) {
   return (
     <svg viewBox="0 0 200 250" className={className} aria-hidden>
-      <path d="M18 250 C 26 204, 66 188, 100 188 C 134 188, 174 204, 182 250 Z" fill="#E9DFCF" />
+      <path d="M18 250 C 26 204, 66 188, 100 188 C 134 188, 174 204, 182 250 Z" fill={BODY} />
       <rect x="85" y="146" width="30" height="50" rx="13" fill={SKIN} />
       <ellipse cx="100" cy="110" rx="43" ry="53" fill={SKIN} />
-      <path d="M55 116 C 48 62, 78 42, 103 44 C 131 46, 155 66, 146 118 C 144 98, 134 82, 118 76 C 100 88, 78 90, 60 98 C 57 104, 56 110, 55 116 Z" fill="#2A1C16" />
-      <path d="M146 118 C 152 140, 150 168, 140 186 C 146 160, 146 138, 142 120 Z" fill="#2A1C16" />
+      <path d="M55 116 C 48 62, 78 42, 103 44 C 131 46, 155 66, 146 118 C 144 98, 134 82, 118 76 C 100 88, 78 90, 60 98 C 57 104, 56 110, 55 116 Z" fill={HAIR} />
+      <path d="M146 118 C 152 140, 150 168, 140 186 C 146 160, 146 138, 142 120 Z" fill={HAIR} />
     </svg>
   )
 }
@@ -34,8 +37,9 @@ export { SKIN, SUITS, SKIP }
 
 function Portrait({ go, reduce }) {
   return (
-    <div className="relative overflow-hidden" style={{ width: '100%', aspectRatio: '200 / 250', borderRadius: 28, background: 'radial-gradient(80% 70% at 50% 30%, #FDEEE2 0%, #F6DCC8 100%)', boxShadow: '0 30px 60px -30px rgba(18,19,23,0.35)' }}>
+    <div className="relative overflow-hidden" style={{ width: '100%', aspectRatio: '200 / 250', borderRadius: 28, background: 'linear-gradient(180deg, #FFFFFF 0%, #F1F2F5 100%)', border: '1px solid rgba(18,19,23,0.08)', boxShadow: '0 30px 60px -30px rgba(18,19,23,0.25)' }}>
       <FaceArt />
+      <span className="absolute left-3 top-3 flex items-center gap-1.5" style={{ background: '#fff', borderRadius: 999, padding: '5px 10px', fontSize: 12, fontWeight: 700, color: INK, boxShadow: '0 4px 12px rgba(18,19,23,0.08)' }}><Glyph k="camera" size={13} sw={2} />Selfie</span>
       {/* the scan: once, top to bottom */}
       {!reduce ? (
         <motion.div aria-hidden className="absolute inset-0" initial={{ y: '0%', opacity: 0 }} animate={go ? { y: ['0%', '98%'], opacity: [0, 1, 1, 0] } : {}} transition={{ y: { duration: 2.0, ease: 'easeInOut' }, opacity: { duration: 2.0, times: [0, 0.1, 0.9, 1] } }}>
@@ -44,10 +48,10 @@ function Portrait({ go, reduce }) {
       ) : null}
       {/* where she reads the skin */}
       {POINTS.map(([x, y], n) => (
-        <motion.span key={n} aria-hidden className="absolute" style={{ left: `${x / 2}%`, top: `${y / 2.5}%`, width: 14, height: 14, marginLeft: -7, marginTop: -7, borderRadius: 999, border: '2px solid #fff', background: SKIN, boxShadow: '0 0 0 4px rgba(255,255,255,0.35)' }} initial={{ scale: 0, opacity: 0 }} animate={go ? { scale: 1, opacity: 1 } : {}} transition={{ type: 'spring', stiffness: 400, damping: 18, delay: reduce ? 0 : 0.6 + n * 0.45 }} />
+        <motion.span key={n} aria-hidden className="absolute" style={{ left: `${x / 2}%`, top: `${y / 2.5}%`, width: 14, height: 14, marginLeft: -7, marginTop: -7, borderRadius: 999, border: '2.5px solid #121317', background: '#fff', boxShadow: '0 0 0 3px rgba(255,255,255,0.8)' }} initial={{ scale: 0, opacity: 0 }} animate={go ? { scale: 1, opacity: 1 } : {}} transition={{ type: 'spring', stiffness: 400, damping: 18, delay: reduce ? 0 : 0.6 + n * 0.45 }} />
       ))}
       <div className="absolute inset-x-3 bottom-3 flex flex-wrap gap-1.5">
-        {['Medium skin', 'Warm undertone'].map((t, n) => (
+        {['Warm undertone'].map((t, n) => (
           <motion.span key={t} className="flex items-center gap-1" style={{ background: 'rgba(255,255,255,0.92)', borderRadius: 999, padding: '6px 10px', fontSize: 12.5, fontWeight: 700, color: INK, boxShadow: '0 6px 14px rgba(18,19,23,0.10)' }} initial={{ opacity: 0, y: 8 }} animate={go ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.4, delay: reduce ? 0 : 2.1 + n * 0.25 }}>
             <Glyph k="check" color="#2E7D4F" size={12} sw={2.4} />{t}
           </motion.span>
