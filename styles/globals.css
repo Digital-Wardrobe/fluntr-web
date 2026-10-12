@@ -1,14 +1,43 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@200;300;400;500&display=swap');
+/* Fonts are served from our own domain (public/fonts, latin subset, woff2).
+ * The fallback face is Arial resized to Inter's metrics, so text does not
+ * jump when Inter arrives. */
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 400; font-display: swap; src: url('/fonts/inter-latin-400.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 500; font-display: swap; src: url('/fonts/inter-latin-500.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 600; font-display: swap; src: url('/fonts/inter-latin-600.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 700; font-display: swap; src: url('/fonts/inter-latin-700.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 800; font-display: swap; src: url('/fonts/inter-latin-800.woff2') format('woff2'); }
+@font-face { font-family: 'Instrument Serif'; font-style: normal; font-weight: 400; font-display: swap; src: url('/fonts/instrument-serif-latin-400.woff2') format('woff2'); }
+@font-face { font-family: 'Instrument Serif'; font-style: italic; font-weight: 400; font-display: swap; src: url('/fonts/instrument-serif-latin-400-italic.woff2') format('woff2'); }
+@font-face { font-family: 'Inter Fallback'; src: local('Arial'); size-adjust: 107.12%; ascent-override: 90.44%; descent-override: 22.52%; line-gap-override: 0%; }
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/*
+ * White page, confident Inter, black for anything pressable (as in the app),
+ * and a small set of closet colours used as highlights: Kween's tangerine, the
+ * teal of the shirt in the demo, lavender, sage and denim. Colour is for pills,
+ * props, reactions and chat bubbles, not for backgrounds.
+ */
 :root {
-  --gold: #C9A84C;
-  --gold-light: #E2C97E;
-  --muted: rgba(255, 255, 255, 0.55);
-  --muted-soft: rgba(255, 255, 255, 0.42);
+  --bg: #FFFFFF;
+  --surface: #F5F6F8;
+  --ink: #121317;
+  --muted: #6B7080;
+  --muted-soft: #9AA0A6;
+  --line: rgba(18, 19, 23, 0.08);
+  --line-strong: rgba(18, 19, 23, 0.14);
+  --tang: #F28C38;
+  --tang-soft: #FFF0E3;
+  --teal: #2E8FA3;
+  --teal-soft: #E4F3F6;
+  --lav: #7B6CF6;
+  --lav-soft: #EEEBFF;
+  --sage: #4F9D6B;
+  --sage-soft: #E7F4EC;
+  --denim: #3C6DD9;
+  --denim-soft: #E7EEFC;
 }
 
 * {
@@ -19,322 +48,363 @@
 
 html {
   scroll-behavior: smooth;
-  /* Decorative absolutely-positioned elements and the full-bleed marquee
-     extend past the viewport by design. Clipping the root's horizontal
-     axis stops the page scrolling sideways on phones without changing
-     any layout; it must be on <html>, not just <body>, or the initial
-     containing block still widens and fixed elements stretch with it. */
   overflow-x: hidden;
 }
 
 body {
-  background: #09090b;
-  color: #ffffff;
-  font-family: 'Jost', sans-serif;
-  font-weight: 300;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Inter', 'Inter Fallback', system-ui, -apple-system, sans-serif;
+  font-weight: 400;
   font-size: 16px;
-  line-height: 1.7;
-  overflow-x: hidden;
-  cursor: none;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  /* clip, never hidden: hidden makes body a scroll container and kills sticky */
+  overflow-x: clip;
 }
 
-/* ── Headings ─────────────────────────────────────────── */
-h1 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(56px, 7vw, 100px);
-  font-weight: 300;
-  line-height: 1.0;
-  letter-spacing: -1.5px;
-  color: #ffffff;
+::selection {
+  background: var(--tang);
+  color: #fff;
 }
 
-h2 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(40px, 5vw, 68px);
-  font-weight: 300;
-  line-height: 1.1;
-  letter-spacing: -0.5px;
-  color: #ffffff;
+/* ── Type ─────────────────────────────────────────────── */
+.h-display {
+  font-family: 'Inter', 'Inter Fallback', system-ui, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.02;
 }
 
-h3 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(28px, 3vw, 44px);
+.font-serif-display {
+  font-family: 'Instrument Serif', 'Times New Roman', serif !important;
   font-weight: 400;
-  line-height: 1.15;
-  letter-spacing: -0.3px;
-  color: #ffffff;
+  letter-spacing: -0.01em;
 }
 
-h4 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(18px, 2vw, 22px);
-  font-weight: 400;
-  line-height: 1.3;
-  color: #ffffff;
-}
-
-/* ── Body text ────────────────────────────────────────── */
-p {
-  font-size: 15px;
-  line-height: 1.85;
-  color: var(--muted);
-  letter-spacing: 0.015em;
-}
-
-/* Secondary text — descriptions, captions */
-.text-secondary {
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.55);
-  line-height: 1.85;
-  letter-spacing: 0.015em;
-}
-
-/* Muted text — hints, footnotes */
-.text-muted {
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.38);
-  line-height: 1.8;
-  letter-spacing: 0.01em;
-}
-
-/* Eyebrow labels above headings */
 .text-eyebrow {
-  font-family: 'Jost', sans-serif;
-  font-size: 11px;
-  font-weight: 400;
-  letter-spacing: 0.3em;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--muted);
 }
 
-/* Feature bullet points */
-.text-feature {
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.58);
-  line-height: 1.7;
-  letter-spacing: 0.01em;
+/* The hero headline: one big line framed by two quiet ones. The big line is
+   heavy Inter with its key word in the wordmark's serif, in italic. */
+.hero-title {
+  color: var(--ink);
+  font-family: 'Inter', 'Inter Fallback', system-ui, sans-serif;
 }
-
-/* Step descriptions */
-.text-step {
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.45);
-  line-height: 1.85;
-  letter-spacing: 0.01em;
-}
-
-/* Testimonial quotes */
-.text-quote {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 21px;
-  font-style: italic;
-  font-weight: 300;
-  line-height: 1.65;
-  color: rgba(255, 255, 255, 0.75);
-}
-
-/* Nav links */
-.text-nav {
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.45);
-}
-
-/* Stats numbers */
-.text-stat {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 36px;
-  font-weight: 300;
-  color: var(--gold-light);
-  line-height: 1;
-}
-
-.text-stat-label {
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.32);
-  margin-top: 5px;
+.hero-frame {
   display: block;
+  font-size: clamp(19px, 2.1vw, 28px);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  color: #7A7F8A;
+}
+.hero-main {
+  display: block;
+  margin: 0.08em 0 0.14em;
+  /* by width and by height, so a short laptop still shows the buttons below */
+  font-size: clamp(54px, min(9.5vw, 12.5vh), 112px);
+  font-weight: 800;
+  letter-spacing: -0.052em;
+  line-height: 1.04; /* room for the serif p's tail above the next line */
+  text-wrap: balance;
+}
+.hero-accent {
+  font-family: 'Instrument Serif', 'Times New Roman', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.14em;
+  letter-spacing: -0.025em;
+  line-height: 0;
+  padding-right: 0.03em;
+  color: var(--tang);
+}
+.hero-stop {
+  display: inline-block;
+  margin-left: 0.06em;
+  vertical-align: 0.02em;
 }
 
-/* Section numbers (01, 02...) */
-.text-section-num {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 88px;
-  font-weight: 300;
-  color: rgba(201, 168, 76, 0.08);
-  line-height: 1;
-  margin-bottom: -20px;
+.typed-cursor {
+  display: inline-block;
+  width: 0.08em;
+  height: 0.9em;
+  margin-left: 0.06em;
+  vertical-align: -0.08em;
+  background: currentColor;
+  animation: cursorBlink 0.8s steps(1) infinite;
 }
 
-/* Footer text */
-.text-footer {
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.22);
-  letter-spacing: 0.1em;
+@keyframes cursorBlink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
 }
 
-/* ── Custom cursor ────────────────────────────────────── */
-.cursor-dot {
-  position: fixed;
-  width: 8px;
-  height: 8px;
-  background: var(--gold);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9999;
-  transform: translate(-50%, -50%);
+/* ── Chat bubbles ─────────────────────────────────────── */
+.chat-u {
+  background: var(--surface);
+  color: var(--ink);
+  border-radius: 20px 20px 6px 20px;
+  padding: 12px 16px;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.4;
 }
 
-.cursor-ring {
-  position: fixed;
-  width: 32px;
-  height: 32px;
-  border: 1px solid var(--gold);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9998;
-  transform: translate(-50%, -50%);
-  transition: all 0.14s ease;
-  opacity: 0.45;
+.chat-k {
+  position: relative;
+  background: var(--tang);
+  color: #fff;
+  border-radius: 20px 20px 20px 6px;
+  padding: 12px 16px;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.4;
+  box-shadow: 0 14px 34px -14px rgba(242, 140, 56, 0.7);
 }
 
-/* ── Grain overlay ────────────────────────────────────── */
-body::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 1000;
-  opacity: 0.35;
+/* ── Ticker ───────────────────────────────────────────── */
+.ticker-mask {
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
 }
 
-/* ── Hero grid ────────────────────────────────────────── */
-.hero-grid {
-  background-image:
-    linear-gradient(rgba(201, 168, 76, .03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(201, 168, 76, .03) 1px, transparent 1px);
-  background-size: 80px 80px;
-}
-
-/* ── Marquee ──────────────────────────────────────────── */
-.marquee-track {
+.ticker-track {
   display: flex;
   width: max-content;
-  animation: marquee 28s linear infinite;
+  animation: ticker 70s linear infinite;
 }
 
-@keyframes marquee {
-  from {
-    transform: translateX(0);
+.ticker-track--rev {
+  animation: ticker-rev 84s linear infinite;
+}
+
+.ticker-mask:hover .ticker-track {
+  animation-play-state: paused;
+}
+
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(-100% / 3)); }
+}
+
+@keyframes ticker-rev {
+  from { transform: translateX(calc(-100% / 3)); }
+  to { transform: translateX(0); }
+}
+
+@layer components {
+  /* ── Liquid glass ─────────────────────────────────────── */
+  .glass {
+    position: relative;
+    background: rgba(255, 255, 255, 0.55);
+    -webkit-backdrop-filter: blur(22px) saturate(1.7);
+    backdrop-filter: blur(22px) saturate(1.7);
+    border: 1px solid rgba(255, 255, 255, 0.75);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.9),
+      inset 0 -1px 0 rgba(18, 19, 23, 0.05),
+      0 1px 2px rgba(18, 19, 23, 0.04),
+      0 12px 40px rgba(18, 19, 23, 0.09);
+    isolation: isolate;
   }
 
-  to {
-    transform: translateX(-50%);
+  .glass::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background:
+      radial-gradient(120% 90% at 12% 0%, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0) 55%),
+      linear-gradient(160deg, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0) 40%, rgba(255, 255, 255, 0) 70%, rgba(255, 255, 255, 0.18) 100%);
+    pointer-events: none;
+    z-index: -1;
   }
-}
 
-/* ── Buttons ──────────────────────────────────────────── */
-.btn-gold {
-  background: var(--gold);
-  color: #09090b;
-  font-family: 'Jost', sans-serif;
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  padding: 16px 36px;
-  border: none;
-  cursor: none;
-  transition: all 0.3s;
-  display: inline-block;
-  text-decoration: none;
-}
+  .glass-ink {
+    position: relative;
+    background: rgba(18, 19, 23, 0.92);
+    -webkit-backdrop-filter: blur(20px) saturate(1.4);
+    backdrop-filter: blur(20px) saturate(1.4);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.2),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+      0 14px 40px rgba(18, 19, 23, 0.28);
+    color: #fff;
+  }
 
-.btn-gold:hover {
-  background: var(--gold-light);
-  transform: translateY(-2px);
-}
+  /* ── Buttons ──────────────────────────────────────────── */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--ink);
+    color: #fff;
+    font-family: 'Inter', 'Inter Fallback', system-ui, sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+    padding: 16px 28px;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.18),
+      0 1px 2px rgba(18, 19, 23, 0.3),
+      0 12px 30px rgba(18, 19, 23, 0.22);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s, background 0.3s;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
 
-.btn-outline {
-  border: 0.5px solid rgba(255, 255, 255, 0.22);
-  color: rgba(255, 255, 255, 0.65);
-  font-family: 'Jost', sans-serif;
-  font-size: 11px;
-  font-weight: 400;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  padding: 16px 36px;
-  background: transparent;
-  cursor: none;
-  transition: all 0.3s;
-  display: inline-block;
-  text-decoration: none;
-}
+  .btn-primary:hover {
+    background: #000;
+    transform: translateY(-2px);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.18),
+      0 2px 4px rgba(18, 19, 23, 0.3),
+      0 18px 40px rgba(18, 19, 23, 0.28);
+  }
 
-.btn-outline:hover {
-  border-color: var(--gold);
-  color: var(--gold);
-}
+  .btn-primary::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -60%;
+    width: 45%;
+    background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+    transform: skewX(-18deg);
+    pointer-events: none;
+    transition: left 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
 
-/* ── Form inputs ──────────────────────────────────────── */
-.gold-input {
-  width: 100%;
-  background: rgba(255, 255, 255, 0.04);
-  border: 0.5px solid rgba(201, 168, 76, 0.22);
-  color: #ffffff;
-  font-family: 'Jost', sans-serif;
-  font-size: 14px;
-  font-weight: 300;
-  padding: 16px 18px;
-  outline: none;
-  transition: border-color 0.3s, background 0.3s;
-  border-radius: 0;
-  appearance: none;
-  -webkit-appearance: none;
-  letter-spacing: 0.02em;
-}
+  .btn-primary:hover::after {
+    left: 120%;
+  }
 
-.gold-input:focus {
-  border-color: var(--gold);
-  background: rgba(201, 168, 76, 0.04);
-}
+  .btn-glass {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--ink);
+    font-family: 'Inter', 'Inter Fallback', system-ui, sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 16px 28px;
+    border-radius: 999px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s;
+  }
 
-.gold-input::placeholder {
-  color: rgba(255, 255, 255, 0.28);
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-}
+  .btn-glass:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.8);
+  }
 
-.gold-input option {
-  background: #111;
-  color: #fff;
+  /* ── Inputs ───────────────────────────────────────────── */
+  .field {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid var(--line-strong);
+    color: var(--ink);
+    font-family: 'Inter', 'Inter Fallback', system-ui, sans-serif;
+    font-size: 15px;
+    padding: 15px 18px;
+    border-radius: 14px;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    transition: border-color 0.25s, box-shadow 0.25s, background 0.25s;
+  }
+
+  .field:focus {
+    border-color: var(--ink);
+    box-shadow: 0 0 0 4px rgba(18, 19, 23, 0.08);
+    background: #fff;
+  }
+
+  .field::placeholder {
+    color: var(--muted-soft);
+  }
+
+  .field option {
+    background: #fff;
+    color: var(--ink);
+  }
 }
 
 /* ── Scrollbar ────────────────────────────────────────── */
 ::-webkit-scrollbar {
-  width: 4px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #09090b;
+  background: var(--bg);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(201, 168, 76, 0.3);
-  border-radius: 2px;
+  background: rgba(18, 19, 23, 0.18);
+  border-radius: 3px;
 }
 
-/* ── Utility overrides for Tailwind ──────────────────── */
-.font-cormorant {
-  font-family: 'Cormorant Garamond', serif !important;
+@media (prefers-reduced-motion: reduce) {
+  .btn-primary::after,
+  .typed-cursor {
+    animation: none;
+    display: none;
+  }
+
+  .ticker-track {
+    animation: none;
+  }
 }
 
-.font-jost {
-  font-family: 'Jost', sans-serif !important;
+/* Decorative motion runs as CSS transforms on the compositor, so it costs no
+ * JavaScript on a phone's main thread. */
+@keyframes float-y { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+.float-y { animation: float-y 3.2s ease-in-out infinite; }
+@keyframes pulse-soft { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
+.pulse-soft { animation: pulse-soft 1.6s ease-in-out infinite; }
+@keyframes blob-0 { 0%, 100% { transform: translate(-50%, -50%); } 33% { transform: translate(calc(-50% + 40px), calc(-50% - 30px)); } 66% { transform: translate(calc(-50% - 20px), calc(-50% + 20px)); } }
+@keyframes blob-1 { 0%, 100% { transform: translate(-50%, -50%); } 33% { transform: translate(calc(-50% - 50px), calc(-50% + 30px)); } 66% { transform: translate(calc(-50% + 30px), calc(-50% - 20px)); } }
+@keyframes blob-2 { 0%, 100% { transform: translate(-50%, -50%); } 33% { transform: translate(calc(-50% + 30px), calc(-50% - 20px)); } 66% { transform: translate(calc(-50% - 40px), calc(-50% + 30px)); } }
+.blob { position: absolute; border-radius: 9999px; transform: translate(-50%, -50%); }
+@media (prefers-reduced-motion: reduce) {
+  .float-y, .pulse-soft, .blob { animation: none !important; }
+}
+
+/* The hero fades in with CSS, not JavaScript, so the headline is on screen at
+ * first paint instead of waiting for the scripts to load. */
+@keyframes hero-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.hero-in { animation: hero-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+/* Sections below the fold are not laid out or painted until they come near
+ * the screen. Each sets its own estimated height (contain-intrinsic-size). */
+.cv-auto { content-visibility: auto; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-in { animation: none; }
+}
+
+/* The demo's coach: a pulsing ring on the next thing to tap, and a finger
+ * nudging towards it. */
+@keyframes coach-ring { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.12); opacity: 0.85; } }
+.coach-ring { animation: coach-ring 1.3s ease-in-out infinite; }
+@keyframes coach-finger-up { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+.coach-finger-up { animation: coach-finger-up 0.9s ease-in-out infinite; }
+@keyframes coach-finger-down { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(7px); } }
+.coach-finger-down { animation: coach-finger-down 0.9s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .coach-ring, .coach-finger-up, .coach-finger-down { animation: none; }
 }

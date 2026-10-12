@@ -1,18 +1,22 @@
-// Drop into: flauntr-web/pages/_document.jsx
 import { Html, Head, Main, NextScript } from 'next/document'
 
 export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
-        <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet" />
-        <meta name="description" content="Fluntr — Your Wardrobe. Your Runway. The social commerce app that digitises your closet and turns every outfit into a shoppable moment." />
-        <meta property="og:title" content="Fluntr — Your Wardrobe. Your Runway." />
-        <meta property="og:description" content="Digitise your closet, plan every occasion, and never open your wardrobe clueless again." />
-        <meta property="og:type" content="website" />
-        <meta name="theme-color" content="#09090b" />
+        {/* the three weights above the fold, fetched alongside the CSS instead of after it */}
+        <link rel="preload" href="/fonts/inter-latin-800.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/inter-latin-400.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/inter-latin-600.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/instrument-serif-latin-400-italic.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <meta name="theme-color" content="#121317" />
+        <link rel="icon" href="/favicon.ico" sizes="48x48" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32.png" />
+        <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+        <link rel="manifest" href="/manifest.webmanifest" />
+        <meta property="og:site_name" content="Fluntr" />
+        <meta property="og:locale" content="en_IN" />
+        <meta name="twitter:site" content="@fluntr" />
       </Head>
       <body>
         <Main />
