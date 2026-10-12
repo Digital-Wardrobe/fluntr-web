@@ -7,13 +7,13 @@ import { KweenPerch } from './KweenRoamer'
 /**
  * The rest of what Fluntr does, one section each: adding clothes from any
  * photo, how Kween gets to know you, plans and reminders, your closet in
- * numbers, the moments she dresses you for, and what's coming next.
+ * numbers, the moments she dresses you for, and shopping with your yes.
  *
- * Everything outside the "Coming soon" section is in the app today (Scan
- * outfit, Scan many, Share to Fluntr, Find me, taste learning, the stylist
- * profile, day events and the phone calendar, the evening reminders, insights,
- * laundry). Coming-soon items say so on the page and stay out of the
- * structured data, which only states what is true today.
+ * Everything here is in the app (Scan outfit, Scan many, Share to Fluntr,
+ * Find me, taste learning, colours from a selfie, the stylist profile, day
+ * events and the phone calendar, the evening reminders, insights, laundry,
+ * shopping). Shopping copy stays honest about what it can't know: prices
+ * change, and a store map knows where shops are, never what's in stock.
  */
 
 const INK = '#121317'
@@ -49,7 +49,7 @@ function Rows({ rows, cols = 'md:grid-cols-2' }) {
           <div>
             <h3 style={{ fontSize: 17, fontWeight: 700, letterSpacing: '-0.01em', color: INK }}>
               {r.title}
-              {r.tag ? <span className="ml-2 inline-block whitespace-nowrap align-middle" style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: '0.06em', color: r.tag === 'Coming soon' ? TANG : MUTED, background: r.tag === 'Coming soon' ? '#FFF0E3' : FILL, borderRadius: 999, padding: '2px 8px' }}>{r.tag.toUpperCase()}</span> : null}
+              {r.tag ? <span className="ml-2 inline-block whitespace-nowrap align-middle" style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: '0.06em', color: MUTED, background: FILL, borderRadius: 999, padding: '2px 8px' }}>{r.tag.toUpperCase()}</span> : null}
             </h3>
             <p className="mt-1.5 text-[14.5px] leading-relaxed" style={{ color: MUTED }}>{r.body}</p>
           </div>
@@ -188,7 +188,7 @@ export function KnowsYou() {
             { k: 'calendar', tone: '#2E8FA3', title: 'Your week', body: 'Your routine and dress code by day, your city’s weather and the festivals you follow. A minute to set up, then she just knows.' },
             { k: 'lock', tone: '#4F9D6B', title: 'You’re in charge', body: 'See everything she has learned, tap yes or not really, or wipe it all. Only you see it, and it is never used for ads.' },
             { k: 'chat', tone: '#3C6DD9', title: 'Her own voice', body: 'Playful, sassy, caring. She answers in text or out loud, in English or Hindi, and remembers the conversation.' },
-            { k: 'camera', tone: TANG, title: 'Colours that suit you', tag: 'Coming soon', body: 'From a selfie, the shades that flatter you and the ones to skip, used in every pick.' },
+            { k: 'camera', tone: TANG, title: 'Colours that suit you', body: 'One selfie in daylight: the shades that flatter you and the few to skip, used in every pick. The photo isn’t kept.' },
           ]} />
         </div>
       </div>
@@ -307,34 +307,34 @@ export function Moments() {
   )
 }
 
-/* ── Coming soon: shopping, with permission ──────────────────────────────── */
+/* ── Shopping, only with your yes ────────────────────────────────────────── */
 
-const SOON = [
-  { k: 'lock', t: 'Only when you say yes', b: 'Your closet comes first. She looks outside it only when you ask.' },
-  { k: 'search', t: 'The best match, anywhere', b: 'Searches online stores for the piece that fits the gap, your taste and your budget.' },
-  { k: 'tag', t: 'Buy now or wait', b: 'Checks today’s offers and coming sales, then tells you straight.' },
+const SHOP = [
+  { k: 'lock', t: 'Only when you say yes', b: 'Off until you turn it on. Your closet comes first; she looks outside it only when you ask.' },
+  { k: 'search', t: 'The best match, across stores', b: 'One search across Myntra, Amazon, Flipkart, Ajio and brand stores, ranked by your budget, the colours that suit you and the brands you already wear.' },
+  { k: 'tag', t: 'Buy now or wait', b: 'The store’s discount, prices she has seen before and the next big sale, then a straight answer.' },
   { k: 'clock', t: 'Here in time', b: 'Checks delivery against your event date, so the outfit shows up before the wedding does.' },
-  { k: 'shirt', t: 'Complete the look', b: 'Trying a shirt at H&M? She finds bottoms that go with it, from H&M online.' },
-  { k: 'globe', t: 'Nearby stores', b: 'Don’t like those? With your location: “available at a store 1.2 km from you.”' },
-  { k: 'camera', t: 'See it before you buy', b: 'Preview a piece with your own clothes, or on you, before it’s yours.' },
+  { k: 'shirt', t: 'Complete the look', b: 'Trying a shirt at H&M? Snap it. She tells you if the colour suits you, what in your closet goes with it, and H&M pieces online that match.' },
+  { k: 'globe', t: 'Stores nearby', b: 'Ask, and she shows that brand’s stores near you: “1.2 km away”. She knows where stores are, not what’s on their shelves.' },
+  { k: 'camera', t: 'See it before you buy', b: 'See a piece next to your own clothes, or an AI picture of you wearing it. Nothing is kept.' },
 ]
 
-export function ComingSoon() {
+export function Shopping() {
   const reduce = useReducedMotion()
   return (
-    <section id="soon" className="cv-auto relative scroll-mt-20 overflow-hidden px-4 py-20 md:px-6 md:py-28" style={{ containIntrinsicSize: 'auto 1100px' }}>
+    <section id="shop" className="cv-auto relative scroll-mt-20 overflow-hidden px-4 py-20 md:px-6 md:py-28" style={{ containIntrinsicSize: 'auto 1100px' }}>
       <div className="relative mx-auto max-w-6xl">
         <div className="relative overflow-hidden px-6 py-12 md:px-12 md:py-16" style={{ borderRadius: 40, background: '#121317' }}>
           <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: 'radial-gradient(50% 60% at 85% 10%, rgba(242,140,56,0.25), transparent 65%)' }} />
           <div className="relative max-w-3xl">
-            <p className="text-eyebrow mb-5" style={{ color: TANG }}>Coming soon<span className="ml-3 inline-block align-middle" style={{ background: 'rgba(255,255,255,0.12)', color: '#fff', borderRadius: 999, padding: '3px 10px', fontSize: 11, letterSpacing: '0.08em' }}>NOT IN THE APP YET</span></p>
+            <p className="text-eyebrow mb-5" style={{ color: TANG }}>Shopping<span className="ml-3 inline-block align-middle" style={{ background: 'rgba(255,255,255,0.12)', color: '#fff', borderRadius: 999, padding: '3px 10px', fontSize: 11, letterSpacing: '0.08em' }}>OFF UNTIL YOU TURN IT ON</span></p>
             <h2 className="h-display" style={{ fontSize: 'clamp(34px,4.6vw,64px)', color: '#fff' }}>Shopping, <span style={{ color: TANG }}>only when you say yes.</span></h2>
             <p className="mt-6 max-w-2xl text-[18px] leading-relaxed md:text-[20px]" style={{ color: 'rgba(255,255,255,0.7)' }}>
-              Kween wants you to wear what you own. When your closet can’t do the job and you ask, she’ll look further, for you, not for a store.
+              Kween wants you to wear what you own. When your closet can’t do the job and you ask, she looks further, for you, not for a store.
             </p>
           </div>
           <motion.ul className="relative mt-10 grid gap-3 md:grid-cols-2 lg:grid-cols-3" variants={list} initial={reduce ? false : 'hidden'} whileInView="show" viewport={{ once: true, amount: 0.15 }}>
-            {SOON.map(s => (
+            {SHOP.map(s => (
               <motion.li key={s.t} variants={item} className="flex gap-4 p-5" style={{ borderRadius: 24, background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.08)' }}>
                 <span className="flex h-10 w-10 shrink-0 items-center justify-center" style={{ borderRadius: 12, background: 'rgba(242,140,56,0.16)' }}><Glyph k={s.k} color={TANG} size={18} sw={2} /></span>
                 <div>
@@ -344,7 +344,7 @@ export function ComingSoon() {
               </motion.li>
             ))}
           </motion.ul>
-          <p className="relative mt-8 text-[14px]" style={{ color: 'rgba(255,255,255,0.5)' }}>We’ll tell the waitlist first.</p>
+          <p className="relative mt-8 text-[14px]" style={{ color: 'rgba(255,255,255,0.5)' }}>Prices are what stores list and can change. Fluntr doesn’t sell anything: links open the store.</p>
         </div>
       </div>
     </section>

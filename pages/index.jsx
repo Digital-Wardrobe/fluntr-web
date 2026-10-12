@@ -9,7 +9,7 @@ import Ticker from '../components/motion/Ticker'
 import Stylist from '../components/motion/Stylist'
 import Features from '../components/motion/Features'
 import Conversations from '../components/motion/Conversations'
-import { AnyPhoto, KnowsYou, Plans, Insights, Moments, ComingSoon } from '../components/motion/Sections'
+import { AnyPhoto, KnowsYou, Plans, Insights, Moments, Shopping } from '../components/motion/Sections'
 import Cursors from '../components/motion/Cursors'
 import Blobs from '../components/motion/Blobs'
 import Typed from '../components/motion/Typed'
@@ -49,8 +49,8 @@ const LD = {
     {
       '@type': 'SoftwareApplication', '@id': 'https://www.fluntr.com/#app', name: 'Fluntr', applicationCategory: 'LifestyleApplication', operatingSystem: 'iOS, Android',
       url: 'https://www.fluntr.com/', author: { '@id': 'https://www.fluntr.com/#org' },
-      description: 'Photograph the clothes you own, or add them from any photo you already have, screenshots, Instagram posts and group photos included, and Fluntr turns them into a closet you can see and search on your phone. Kween, the most personal AI stylist, learns what you own, your city, your week and your taste (favourite colours, go-to pieces and combos, confirmed with you), and picks your outfit every morning from your own clothes: for the weather, your dress code and your plans. Interviews, meetings, parties, dates, weddings, festivals and trips planned ahead, with a reminder the night before. Fit checks from a mirror selfie, wear history, laundry and wardrobe insights. Post looks and ask friends which to wear.',
-      featureList: ['Digital wardrobe from photos', 'Add clothes from any photo: screenshots, Instagram posts, group photos', 'Scan up to 20 photos at once', 'Share photos to Fluntr from other apps (Android)', 'Finds you in group photos, with your permission', 'Background removed on the device', 'Automatic category, colour and occasion', 'Personal AI stylist that picks an outfit every morning', 'Learns your taste: favourite colours, go-to pieces and combos', 'Fit check from a mirror selfie', 'Calendar for interviews, meetings, parties, dates, weddings, festivals and trips', 'Reminders the night before an event', 'Packing lists for trips', 'Outfit calendar and wear history', 'Laundry, cost per wear and wardrobe insights', 'Post looks and ask friends', 'English and Hindi'],
+      description: 'Photograph the clothes you own, or add them from any photo you already have, screenshots, Instagram posts and group photos included, and Fluntr turns them into a closet you can see and search on your phone. Kween, the most personal AI stylist, learns what you own, your city, your week and your taste (favourite colours, go-to pieces and combos, confirmed with you), and picks your outfit every morning from your own clothes: for the weather, your dress code and your plans. Interviews, meetings, parties, dates, weddings, festivals and trips planned ahead, with a reminder the night before. Colours that suit you from one selfie, fit checks from a mirror selfie, wear history, laundry and wardrobe insights. Shopping only when you say yes: the best match across online stores, buy now or wait, and whether it arrives in time. Post looks and ask friends which to wear.',
+      featureList: ['Digital wardrobe from photos', 'Add clothes from any photo: screenshots, Instagram posts, group photos', 'Scan up to 20 photos at once', 'Share photos to Fluntr from other apps (Android)', 'Finds you in group photos, with your permission', 'Background removed on the device', 'Automatic category, colour and occasion', 'Personal AI stylist that picks an outfit every morning', 'Learns your taste: favourite colours, go-to pieces and combos', 'Colours that suit you, from one selfie', 'Fit check from a mirror selfie', 'Calendar for interviews, meetings, parties, dates, weddings, festivals and trips', 'Reminders the night before an event', 'Packing lists for trips', 'Outfit calendar and wear history', 'Laundry, cost per wear and wardrobe insights', 'Shopping only when you say yes: best match across online stores, buy now or wait, delivery before your event, stores nearby', 'See a piece with your own clothes before you buy', 'Post looks and ask friends', 'English and Hindi'],
       keywords: 'personal AI stylist, AI stylist app, digital wardrobe app, closet organiser app, outfit planner, what to wear today, outfit of the day, fit check app, virtual closet, wardrobe app India, OOTD, capsule wardrobe, what to wear to a wedding',
     },
   ],
@@ -150,7 +150,7 @@ function FloatingBadge() {
   )
 }
 
-const SECTIONS = ['what', 'how', 'stylist', 'app', 'add', 'knows', 'plans', 'insights', 'moments', 'soon', 'features', 'waitlist']
+const SECTIONS = ['what', 'how', 'stylist', 'app', 'add', 'knows', 'plans', 'insights', 'moments', 'shop', 'features', 'waitlist']
 
 export default function Home() {
   // How far down people get: one event per section, the first time it is seen.
@@ -193,7 +193,7 @@ export default function Home() {
         <Plans />
         <Insights />
         <Moments />
-        <ComingSoon />
+        <Shopping />
         <Conversations />
         <Waitlist />
       </main>

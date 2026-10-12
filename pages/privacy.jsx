@@ -40,6 +40,14 @@ const SECTIONS = [
                 text: 'If you turn this on, when you scan a photo with several people in it we compare your profile photo with the faces in that photo, only to work out which person is you so that only your outfit is added to your closet. The comparison happens at the moment you scan and is processed by Amazon Web Services (Amazon Rekognition) on our behalf. We do not create or store a face template, face collection or any other biometric identifier. You can turn it off at any time in Settings → Find me in photos; without it, you simply tap yourself in the photo instead.',
             },
             {
+                sub: 'Colours That Suit You (optional)',
+                text: 'If you take a selfie in Settings → Colours that suit you, the photo is sent to our AI service provider to work out which clothing colours flatter you (undertone and contrast only). The photo is read in memory and never stored; we keep only the resulting palette, as part of your style profile. You can retake it or erase it at any time.',
+            },
+            {
+                sub: 'Shopping (optional, off by default)',
+                text: 'Kween looks in online stores only if you turn on Settings → Shopping and then ask. What you search for (for example “navy chinos under ₹2,000”, never your name) is sent to a shopping search provider (SerpAPI, which searches Google Shopping). We keep the prices we see for products, not linked to you, so Kween can tell whether a price is lower than before. If you ask for stores nearby, your location is used once for that lookup with OpenStreetMap and is not stored. A photo you take in a store, or a photo of you for “See it on me”, is read in memory and never stored; try-on pictures are made by Google’s Gemini model and returned only to you. Fluntr does not sell products; links open the store, and the store’s own terms and privacy policy apply there. Turning shopping off stops all of this.',
+            },
+            {
                 sub: 'Improving the App',
                 text: 'Usage data helps us fix bugs, improve performance, and build better features for our community.',
             },
@@ -63,7 +71,7 @@ const SECTIONS = [
             },
             {
                 sub: 'Service Providers',
-                text: 'We share data only with trusted service providers who help us operate the App — including cloud storage (AWS), payment processing (Razorpay / Stripe), analytics tools, and AI service providers (such as Anthropic, Google and Amazon Web Services) that process the photos and messages you send to power features like recognising clothing items, chatting with Kween and Kween\'s voice. These providers are bound by confidentiality obligations.',
+                text: 'We share data only with trusted service providers who help us operate the App — including cloud storage (AWS), payment processing (Razorpay / Stripe), analytics tools, and AI service providers (such as Anthropic, Google and Amazon Web Services) that process the photos and messages you send to power features like recognising clothing items, chatting with Kween and Kween\'s voice, and, only if you turn shopping on, a shopping search provider (SerpAPI) and OpenStreetMap for stores nearby. These providers are bound by confidentiality obligations.',
             },
             {
                 sub: 'Legal Obligations',
