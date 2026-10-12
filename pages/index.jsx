@@ -9,6 +9,7 @@ import Ticker from '../components/motion/Ticker'
 import Stylist from '../components/motion/Stylist'
 import Features from '../components/motion/Features'
 import Conversations from '../components/motion/Conversations'
+import { AnyPhoto, KnowsYou, Plans, Insights, Moments, ComingSoon } from '../components/motion/Sections'
 import Cursors from '../components/motion/Cursors'
 import Blobs from '../components/motion/Blobs'
 import Typed from '../components/motion/Typed'
@@ -48,8 +49,8 @@ const LD = {
     {
       '@type': 'SoftwareApplication', '@id': 'https://www.fluntr.com/#app', name: 'Fluntr', applicationCategory: 'LifestyleApplication', operatingSystem: 'iOS, Android',
       url: 'https://www.fluntr.com/', author: { '@id': 'https://www.fluntr.com/#org' },
-      description: 'Photograph the clothes you own and Fluntr turns them into a closet you can see and search on your phone. Kween, the most personal AI stylist, learns what you own, your city, your week and your taste, and picks your outfit every morning from your own clothes: for the weather, your dress code and your plans. Fit checks from a mirror selfie, outfits planned for weddings, festivals and trips, wear history, laundry and wardrobe insights. Post looks and ask friends which to wear.',
-      featureList: ['Digital wardrobe from photos', 'Background removed on the device', 'Automatic category, colour and occasion', 'Personal AI stylist that picks an outfit every morning', 'Fit check from a mirror selfie', 'Outfits planned for weddings, festivals and trips', 'Outfit calendar and wear history', 'Laundry and wardrobe insights', 'Post looks and ask friends', 'English and Hindi'],
+      description: 'Photograph the clothes you own, or add them from any photo you already have, screenshots, Instagram posts and group photos included, and Fluntr turns them into a closet you can see and search on your phone. Kween, the most personal AI stylist, learns what you own, your city, your week and your taste (favourite colours, go-to pieces and combos, confirmed with you), and picks your outfit every morning from your own clothes: for the weather, your dress code and your plans. Interviews, meetings, parties, dates, weddings, festivals and trips planned ahead, with a reminder the night before. Fit checks from a mirror selfie, wear history, laundry and wardrobe insights. Post looks and ask friends which to wear.',
+      featureList: ['Digital wardrobe from photos', 'Add clothes from any photo: screenshots, Instagram posts, group photos', 'Scan up to 20 photos at once', 'Share photos to Fluntr from other apps (Android)', 'Finds you in group photos, with your permission', 'Background removed on the device', 'Automatic category, colour and occasion', 'Personal AI stylist that picks an outfit every morning', 'Learns your taste: favourite colours, go-to pieces and combos', 'Fit check from a mirror selfie', 'Calendar for interviews, meetings, parties, dates, weddings, festivals and trips', 'Reminders the night before an event', 'Packing lists for trips', 'Outfit calendar and wear history', 'Laundry, cost per wear and wardrobe insights', 'Post looks and ask friends', 'English and Hindi'],
       keywords: 'personal AI stylist, AI stylist app, digital wardrobe app, closet organiser app, outfit planner, what to wear today, outfit of the day, fit check app, virtual closet, wardrobe app India, OOTD, capsule wardrobe, what to wear to a wedding',
     },
   ],
@@ -77,7 +78,7 @@ function Hero() {
           <p className="mx-auto mt-8 max-w-2xl text-[18px] leading-relaxed md:text-[21px]" style={{ color: MUTED }}>
             <strong style={{ color: INK, fontWeight: 600 }}>Fluntr is an app for your clothes.</strong> Click a photo of each piece once, and Kween, your AI stylist, tells you what to wear every day from what you already own.
             {/* on a line of its own, so the changing word never wraps away from "Dressed for" */}
-            <span className="mt-1 block">Dressed for <Typed words={['weddings', 'the office', 'Diwali', 'a first date', 'brunch', 'the airport']} style={{ color: INK, fontWeight: 600 }} /></span>
+            <span className="mt-1 block">Dressed for <Typed words={['weddings', 'the office', 'Diwali', 'a first date', 'an interview', 'brunch', 'a party', 'the airport', 'a trip']} style={{ color: INK, fontWeight: 600 }} /></span>
           </p>
         </div>
         <div className="hero-in" style={{ animationDelay: '0.28s' }}>
@@ -149,7 +150,7 @@ function FloatingBadge() {
   )
 }
 
-const SECTIONS = ['what', 'how', 'stylist', 'app', 'features', 'waitlist']
+const SECTIONS = ['what', 'how', 'stylist', 'app', 'add', 'knows', 'plans', 'insights', 'moments', 'soon', 'features', 'waitlist']
 
 export default function Home() {
   // How far down people get: one event per section, the first time it is seen.
@@ -167,7 +168,7 @@ export default function Home() {
     <>
       <Head>
         <title>Fluntr - Your closet on your phone. The most personal AI stylist.</title>
-        <meta name="description" content="Photograph your clothes once. Fluntr keeps your whole closet on your phone, and Kween, the most personal AI stylist, picks your outfit every morning from what you actually own: for your weather, your dress code and your plans. Fit checks, wedding and festival outfits, wear history." />
+        <meta name="description" content="Add your clothes from any photo, even screenshots and group photos. Fluntr keeps your whole closet on your phone, and Kween, the most personal AI stylist, learns your taste and picks your outfit every morning from what you actually own: for your weather, your dress code and your plans. Interviews, weddings and trips planned ahead, fit checks, wear history." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="canonical" href="https://www.fluntr.com/" />
         <meta property="og:title" content="Fluntr - Your closet on your phone. The most personal AI stylist." />
@@ -187,6 +188,12 @@ export default function Home() {
         <Stylist />
         <Ticker />
         <Features />
+        <AnyPhoto />
+        <KnowsYou />
+        <Plans />
+        <Insights />
+        <Moments />
+        <ComingSoon />
         <Conversations />
         <Waitlist />
       </main>
