@@ -12,6 +12,8 @@ import Colours from '../components/motion/Colours'
 import Week from '../components/motion/Week'
 import Shop from '../components/motion/Shop'
 import Trust from '../components/motion/Trust'
+import Gang from '../components/motion/Gang'
+import Friends from '../components/motion/Friends'
 import Features from '../components/motion/Features'
 import Conversations from '../components/motion/Conversations'
 import Cursors from '../components/motion/Cursors'
@@ -63,7 +65,7 @@ const LD = {
 // ── 1. HERO ─────────────────────────────── headline, then the product ──
 function Hero() {
   return (
-    <section className="relative overflow-hidden px-4 pb-20 pt-32 md:px-6 md:pt-36">
+    <section className="relative overflow-hidden px-4 pb-14 pt-32 md:px-6 md:pt-36">
       <Blobs />
 
       <div className="relative z-10 mx-auto max-w-5xl text-center">
@@ -112,7 +114,7 @@ function Hero() {
 // ── TRY IT ─────────────────────── the demo, once the story has been told ──
 function TryIt() {
   return (
-    <section className="relative px-4 py-12 md:px-6 md:py-20">
+    <section className="relative px-4 py-14 md:px-6 md:py-24">
       <Demo />
     </section>
   )
@@ -121,7 +123,7 @@ function TryIt() {
 // ── 5. WAITLIST ─────────────────────────────────── glass panel + Kween ──
 function Waitlist() {
   return (
-    <section id="waitlist" className="cv-auto relative overflow-hidden px-6 py-28 md:py-36" style={{ containIntrinsicSize: 'auto 900px' }}>
+    <section id="waitlist" className="cv-auto relative overflow-hidden px-6 py-20 md:py-32" style={{ containIntrinsicSize: 'auto 900px' }}>
       <Blobs tones={['#FFE3CC', '#EEEBFF', '#E4F3F6']} opacity={0.8} />
       <div className="relative z-10 mx-auto grid max-w-5xl items-center gap-12 lg:grid-cols-[1fr_minmax(0,460px)] lg:gap-20">
         <div className="relative hidden lg:flex lg:justify-center">
@@ -160,7 +162,7 @@ function FloatingBadge() {
   )
 }
 
-const SECTIONS = ['what', 'why', 'stylist', 'colours', 'week', 'shop', 'how', 'app', 'features', 'trust', 'waitlist']
+const SECTIONS = ['what', 'why', 'stylist', 'gang', 'colours', 'week', 'shop', 'how', 'app', 'features', 'trust', 'waitlist']
 
 export default function Home() {
   // How far down people get: one event per section, the first time it is seen.
@@ -201,6 +203,7 @@ export default function Home() {
             while the page wakes up, instead of one long block of work. */}
         <Suspense fallback={null}><Why /></Suspense>
         <Suspense fallback={null}><Stylist /></Suspense>
+        <Suspense fallback={null}><Gang /></Suspense>
         <Suspense fallback={null}><Colours /></Suspense>
         <Suspense fallback={null}><Week /></Suspense>
         <Suspense fallback={null}><Shop /></Suspense>
@@ -214,6 +217,7 @@ export default function Home() {
       <Footer />
       <FloatingBadge />
       <KweenRoamer />
+      <Friends />
     </>
   )
 }

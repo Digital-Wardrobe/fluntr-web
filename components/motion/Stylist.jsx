@@ -86,7 +86,7 @@ function TodayScreen() {
 export default function Stylist() {
   const reduce = useReducedMotion()
   return (
-    <section id="stylist" className="cv-auto relative scroll-mt-20 overflow-hidden px-4 py-20 md:px-6 md:py-28" style={{ containIntrinsicSize: 'auto 1900px' }}>
+    <section id="stylist" className="cv-auto relative scroll-mt-20 overflow-hidden px-4 py-14 md:px-6 md:py-24" style={{ containIntrinsicSize: 'auto 1900px' }}>
       <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: 'radial-gradient(50% 45% at 85% 10%, rgba(242,140,56,0.12), transparent 60%), radial-gradient(45% 40% at 10% 90%, rgba(123,108,246,0.10), transparent 60%)' }} />
       <div className="relative mx-auto max-w-6xl">
         <motion.div initial={reduce ? false : { opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.4 }} transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }} className="max-w-3xl">

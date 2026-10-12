@@ -227,7 +227,7 @@ const SCENES = { snap: Snap, colours: ColoursScene, kween: KweenPicks, plans: Pl
  * `progress` a motion value from 0 to 1 within it. Exported so a recorder can
  * drive it frame by frame.
  */
-export function StoryCard({ i, progress, onTap, onReplay, onTry, playing, onToggle, play = () => {} }) {
+export function StoryCard({ i, progress, onTap, onPrev, onNext, onReplay, onTry, playing, onToggle, play = () => {} }) {
   const end = i >= BITES.length
   const b = BITES[Math.min(i, BITES.length - 1)]
   const barWidth = useTransform(progress, v => `${v * 100}%`)
@@ -249,6 +249,21 @@ export function StoryCard({ i, progress, onTap, onReplay, onTry, playing, onTogg
         <span style={{ fontSize: 14, fontWeight: 700, color: INK }}>fluntr</span>
         <span style={{ fontSize: 12, color: MUTED }}>· Fluntr in 30 seconds</span>
       </div>
+      {/* story arrows: back and forward, so it reads as a story and can be paged by hand */}
+      {onNext ? (
+        <>
+          {i > 0 ? (
+            <button type="button" onClick={e => { e.stopPropagation(); onPrev() }} aria-label="Previous" className="absolute z-20 flex items-center justify-center" style={{ left: 10, top: 222, width: 42, height: 42, borderRadius: 999, border: 0, background: 'rgba(255,255,255,0.9)', boxShadow: '0 4px 14px rgba(18,19,23,0.14)', cursor: 'pointer' }}>
+              <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M9 2 4 7l5 5" fill="none" stroke={INK} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+            </button>
+          ) : null}
+          {!end ? (
+            <button type="button" onClick={e => { e.stopPropagation(); onNext() }} aria-label="Next" className="absolute z-20 flex items-center justify-center" style={{ right: 10, top: 222, width: 42, height: 42, borderRadius: 999, border: 0, background: 'rgba(255,255,255,0.9)', boxShadow: '0 4px 14px rgba(18,19,23,0.14)', cursor: 'pointer' }}>
+              <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="m5 2 5 5-5 5" fill="none" stroke={INK} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+            </button>
+          ) : null}
+        </>
+      ) : null}
       {onToggle && !end ? (
         <button type="button" onClick={e => { e.stopPropagation(); onToggle() }} aria-label={playing ? 'Pause' : 'Play'} className="absolute z-20 flex items-center justify-center" style={{ right: 14, top: 28, width: 34, height: 34, borderRadius: 999, border: 0, background: 'rgba(255,255,255,0.85)', boxShadow: '0 2px 8px rgba(18,19,23,0.10)', cursor: 'pointer' }}>
           {playing
@@ -345,6 +360,16 @@ export default function Explainer() {
 
   const go = useCallback(n => { progress.set(0); setI(Math.max(0, Math.min(BITES.length, n))) }, [progress])
   const next = () => { play('pop', { gain: 0.5, rate: 1.2 }); go(i + 1) }
+  const prev = () => { play('pop', { gain: 0.5, rate: 1.0 }); setPaused(false); go(i - 1) }
+  // a swipe on the card pages it like a story; the tap that ends a swipe is not a tap
+  const touch = useRef(null), swiped = useRef(false)
+  const onDown = e => { touch.current = { x: e.clientX, y: e.clientY, t: Date.now() } }
+  const onUp = e => {
+    const s = touch.current; touch.current = null; if (!s) return
+    const dx = e.clientX - s.x, dy = e.clientY - s.y
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5 && Date.now() - s.t < 800) { swiped.current = true; track('explainer_swipe'); if (dx < 0) { if (i < BITES.length) next() } else prev() }
+  }
+  const tap = () => { if (swiped.current) { swiped.current = false; return } next() }
   const replay = () => { track('explainer_replay'); setPaused(false); go(0) }
   // the story goes on below: why it exists, then everything she does, then the demo
   const tryIt = () => { track('explainer_cta', { to: 'why' }); document.getElementById('why')?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }) }
@@ -377,14 +402,14 @@ export default function Explainer() {
 
         {/* the story card */}
         <div className="flex flex-col items-center">
-          <div ref={boxRef} className="relative" style={{ width: 'min(86vw, 360px)', aspectRatio: `${W} / ${H}`, borderRadius: 34 * scale, boxShadow: '0 40px 80px -30px rgba(18,19,23,0.35), 0 0 0 1px rgba(18,19,23,0.06)' }}>
+          <div ref={boxRef} className="relative" onPointerDown={onDown} onPointerUp={onUp} onPointerCancel={() => { touch.current = null }} style={{ width: 'min(86vw, 360px)', aspectRatio: `${W} / ${H}`, borderRadius: 34 * scale, boxShadow: '0 40px 80px -30px rgba(18,19,23,0.35), 0 0 0 1px rgba(18,19,23,0.06)', touchAction: 'pan-y' }}>
             <div className="absolute left-0 top-0" style={{ width: W, height: H, transform: `scale(${scale})`, transformOrigin: '0 0' }}>
-              <StoryCard i={i} progress={progress} playing={playing} onTap={next} onReplay={replay} onTry={tryIt} onToggle={() => { setPaused(p => !p); track('explainer_pause_toggle') }} play={play} />
+              <StoryCard i={i} progress={progress} playing={playing} onTap={tap} onPrev={prev} onNext={next} onReplay={replay} onTry={tryIt} onToggle={() => { setPaused(p => !p); track('explainer_pause_toggle') }} play={play} />
             </div>
           </div>
           {/* on phones Kween sits just below the card: above it she would slide under the navigation while the card fills the screen */}
           <div className="mt-3 flex w-full justify-start lg:hidden" style={{ maxWidth: 'min(86vw, 360px)' }}><KweenPerch name="what" mood="happy" bubble="right" className="ml-2" width="60px" /></div>
-          <p className="mt-2 text-center text-[13px] lg:hidden" style={{ color: MUTED }}>Tap the card to skip ahead · <a href="#how" onClick={() => track('explainer_cta', { to: 'demo', from: 'skip' })} className="font-semibold underline" style={{ color: INK }}>Skip to the demo ↓</a></p>
+          <p className="mt-2 text-center text-[13px] lg:hidden" style={{ color: MUTED }}>Swipe, or use the arrows · <a href="#how" onClick={() => track('explainer_cta', { to: 'demo', from: 'skip' })} className="font-semibold underline" style={{ color: INK }}>Skip to the demo ↓</a></p>
         </div>
       </div>
     </section>

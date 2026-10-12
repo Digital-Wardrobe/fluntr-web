@@ -54,7 +54,7 @@ export default function Week() {
   const pick = n => { setHeld(true); setI(n); play('pop', { gain: 0.4, rate: 1.15 }); track('week_day', { day: DAYS[n].id }) }
 
   return (
-    <section id="week" className="cv-auto relative scroll-mt-20 px-4 py-16 md:px-6 md:py-24" style={{ containIntrinsicSize: 'auto 1100px' }}>
+    <section id="week" className="cv-auto relative scroll-mt-20 px-4 py-14 md:px-6 md:py-24" style={{ containIntrinsicSize: 'auto 1100px' }}>
       <div className="mx-auto max-w-6xl">
         <div className="max-w-3xl">
           <p className="text-eyebrow mb-5">Calendar and reminders</p>

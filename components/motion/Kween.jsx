@@ -3,7 +3,9 @@ import { useEffect, useId, useRef, useState } from 'react'
 import { motion, useMotionValue, useSpring, useReducedMotion } from 'framer-motion'
 
 /**
- * Kween, the Fluntr mascot, as she is in the app.
+ * The Fluntr plushes, as they are in the app: Kween (the bow and lashes),
+ * Teddy (round ears) and Mochi (plain), each in eight fur colours. Same body
+ * images as the app's assets/mascot, same face on top.
  *
  * The app (src/mascot/Tikki.tsx on the Main App branch) draws her in two
  * layers: a pre-rendered plush body with real fur and a velvet bow, and a face
@@ -26,8 +28,16 @@ const MY = EY + 16
 const INK = '#16101A'
 const TONGUE = '#FF7F9A'
 const CHEEK = '#FF4D7E'
-const FUR = '#FB9DB8'
-const FUR_HI = '#FDC4D4'
+/** The app's MASCOT_COLORS (src/mascot/look.ts): fur colour keys and their hex. */
+export const COLORS = [['blush', 'Blush', '#FB9DB8'], ['lilac', 'Lilac', '#BBA8FF'], ['cream', 'Cream', '#F1DCC2'], ['peach', 'Peach', '#FFB48E'], ['butter', 'Butter', '#FFD66B'], ['mint', 'Mint', '#8EDDBE'], ['sky', 'Sky', '#8EC5FF'], ['cocoa', 'Cocoa', '#B98C6E']]
+/** The app's personas, with its own descriptions and default colours. */
+export const PLUSH = {
+  kween: { name: 'Kween', desc: 'Gen-Z fashion girl with a bow. A little extra.', color: 'blush' },
+  teddy: { name: 'Teddy', desc: 'Round ears, cosy vibes, for everyone.', color: 'cream' },
+  plain: { name: 'Mochi', desc: 'Just a soft little plush. Chill, for everyone.', color: 'mint' },
+}
+const furHex = key => (COLORS.find(c => c[0] === key) || COLORS[0])[2]
+const lighten = (hex, k) => '#' + [1, 3, 5].map(i => Math.round(parseInt(hex.slice(i, i + 2), 16) * (1 - k) + 255 * k).toString(16).padStart(2, '0')).join('')
 
 const heart = (x, y, s = 1) => `M${x} ${y + 5.5 * s} l${-6 * s} ${-6 * s} a${3.3 * s} ${3.3 * s} 0 0 1 ${6 * s} ${-3.5 * s} a${3.3 * s} ${3.3 * s} 0 0 1 ${6 * s} ${3.5 * s}z`
 const closed = (x, y) => `M${x - 8} ${y - 1} q8 6.5 16 0`
@@ -68,17 +78,17 @@ function OpenMouth({ y, w = 9, h = 9 }) {
   )
 }
 
-function Face({ face, blinking, open, id }) {
-  const ey = EY, my = MY
+function Face({ face, blinking, open, id, ey = EY, her = true }) {
+  const my = ey + 16
   const beads = blinking ? <Stroke d={`${closed(EL, ey)} ${closed(ER, ey)}`} /> : <><Bead x={EL} y={ey} id={id} /><Bead x={ER} y={ey} id={id} /></>
-  const lashes = !blinking ? <Lashes y={ey} /> : null
+  const lashes = her && !blinking ? <Lashes y={ey} /> : null // only Kween wears lashes
   // While she talks the mouth opens and closes over whatever the expression's resting mouth is.
   const mouth = open ? <OpenMouth y={my - 1} w={8} h={7.5} /> : null
   switch (face) {
     case 'happy':
       return <>{beads}{lashes}{mouth || <OpenMouth y={my - 1} />}<Cheeks y={ey} o={0.38} id={id} /></>
     case 'wink':
-      return <>{blinking ? <Stroke d={closed(EL, ey)} /> : <Bead x={EL} y={ey} id={id} />}<Stroke d={arcUp(ER, ey)} w={3.4} />{!blinking && <Lashes y={ey} only="L" />}{mouth || <OpenMouth y={my} w={7.5} h={7} />}<Cheeks y={ey} o={0.4} id={id} /></>
+      return <>{blinking ? <Stroke d={closed(EL, ey)} /> : <Bead x={EL} y={ey} id={id} />}<Stroke d={arcUp(ER, ey)} w={3.4} />{her && !blinking && <Lashes y={ey} only="L" />}{mouth || <OpenMouth y={my} w={7.5} h={7} />}<Cheeks y={ey} o={0.4} id={id} /></>
     case 'smug':
       return (
         <>
@@ -89,7 +99,7 @@ function Face({ face, blinking, open, id }) {
               <Stroke d={`M${EL - 10} ${ey - 1} q10 3 20 0 M${ER - 10} ${ey - 1} q10 3 20 0`} w={2.6} />
             </>
           )}
-          {!blinking && <Lashes y={ey + 3} />}
+          {her && !blinking && <Lashes y={ey + 3} />}
           {mouth || <Stroke d={`M${100 - 7} ${my + 2} q9 4 15 -3`} />}
         </>
       )
@@ -112,12 +122,16 @@ function Face({ face, blinking, open, id }) {
   }
 }
 
-export default function Kween({ expression = 'idle', talking = false, follow = true, walking = false, mirrored = false, size = 180, className = '', style, onClick }) {
+export default function Kween({ expression = 'idle', talking = false, follow = true, walking = false, mirrored = false, size = 180, className = '', style, onClick, persona = 'kween', color, hopKey = 0 }) {
+  const fur = furHex(color || PLUSH[persona].color)
+  const ey = persona === 'teddy' ? EY + 2.5 : EY // Teddy's face sits a touch lower, as in the app
   const reduce = useReducedMotion()
   const id = useId().replace(/:/g, '')
   const [open, setOpen] = useState(false)
   const [blink, setBlink] = useState(false)
   const [hop, setHop] = useState(0)
+  // a section can make a plush hop without a click (the hanger game)
+  useEffect(() => { if (hopKey) setHop(h => h + 1) }, [hopKey])
 
   useEffect(() => {
     if (!talking || reduce) { setOpen(false); return }
@@ -182,7 +196,7 @@ export default function Kween({ expression = 'idle', talking = false, follow = t
           ref={ref}
           viewBox={`0 0 ${W} ${H + 6}`}
           role="img"
-          aria-label="Kween, Fluntr's closet plush"
+          aria-label={`${PLUSH[persona].name}, a Fluntr closet plush`}
           style={{ display: 'block', width: '100%', height: 'auto', overflow: 'visible', transformOrigin: '50% 100%' }}
           animate={reduce ? undefined : { scaleX: [1, 1.022, 1], scaleY: [1, 0.978, 1] }}
           transition={{ duration: 3.8, repeat: Infinity, ease: 'easeInOut' }}
@@ -191,13 +205,13 @@ export default function Kween({ expression = 'idle', talking = false, follow = t
             <filter id={`${id}-b4`} x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.4" /></filter>
             <filter id={`${id}-b6`} x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3.5" /></filter>
             <radialGradient id={`${id}-bead`} cx="38%" cy="30%" r="80%"><stop offset="0" stopColor="#3B2C34" /><stop offset=".55" stopColor="#140E12" /><stop offset="1" stopColor="#0E090C" /></radialGradient>
-            <linearGradient id={`${id}-lid`} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor={FUR_HI} /><stop offset="1" stopColor={FUR} /></linearGradient>
+            <linearGradient id={`${id}-lid`} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor={lighten(fur, 0.45)} /><stop offset="1" stopColor={fur} /></linearGradient>
           </defs>
           <g transform={`translate(0 ${PAD})`}>
             <ellipse cx="100" cy="216" rx="62" ry="8" fill="rgba(30,20,48,0.22)" filter={`url(#${id}-b6)`} />
-            <image href="/mascot/kween-blush.webp" x="0" y="22" width="200" height="200" preserveAspectRatio="none" />
+            <image href={`/mascot/${persona}-${color || PLUSH[persona].color}.webp`} x="0" y="22" width="200" height="200" preserveAspectRatio="none" />
             <motion.g style={{ x: sx, y: sy }}>
-              <Face face={expression} blinking={blinking} open={open} id={id} />
+              <Face face={expression} blinking={blinking} open={open} id={id} ey={ey} her={persona === 'kween'} />
             </motion.g>
           </g>
         </motion.svg>

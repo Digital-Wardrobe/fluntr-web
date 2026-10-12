@@ -94,7 +94,7 @@ function Thread({ t, i }) {
 
 export default function Conversations() {
   return (
-    <section id="features" className="cv-auto relative overflow-hidden px-6 py-24 md:px-12 md:py-32 lg:px-16" style={{ background: '#fff', containIntrinsicSize: 'auto 1500px' }}>
+    <section id="features" className="cv-auto relative overflow-hidden px-6 py-14 md:px-12 md:py-24 lg:px-16" style={{ background: '#fff', containIntrinsicSize: 'auto 1500px' }}>
       <div className="mx-auto max-w-6xl">
         <div className="mx-auto mb-14 max-w-2xl text-center">
           <p className="text-eyebrow mb-4">Early conversations</p>

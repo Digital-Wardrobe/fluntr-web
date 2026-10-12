@@ -53,7 +53,7 @@ function Card({ children, flip = false, tone, title, body, props = [], perch }) 
 
 export default function Features() {
   return (
-    <section id="app" className="cv-auto px-4 py-10 md:px-6 md:py-16" style={{ containIntrinsicSize: 'auto 1750px' }}>
+    <section id="app" className="cv-auto px-4 py-14 md:px-6 md:py-24" style={{ containIntrinsicSize: 'auto 1750px' }}>
       <div className="mx-auto flex max-w-6xl flex-col gap-6">
         <Card
           tone="#2E8FA3"

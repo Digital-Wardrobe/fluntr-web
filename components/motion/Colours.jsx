@@ -80,7 +80,7 @@ export default function Colours() {
   const ref = useRef(null)
   const go = useInView(ref, { once: true, amount: 0.45 }) || !!reduce
   return (
-    <section id="colours" className="cv-auto relative scroll-mt-20 px-4 py-16 md:px-6 md:py-24" style={{ containIntrinsicSize: 'auto 1000px' }}>
+    <section id="colours" className="cv-auto relative scroll-mt-20 px-4 py-14 md:px-6 md:py-24" style={{ containIntrinsicSize: 'auto 1000px' }}>
       <div className="relative mx-auto max-w-6xl overflow-hidden" style={{ borderRadius: 40, background: 'linear-gradient(135deg, #FFF4EC 0%, #FDF0F4 55%, #F5F6F8 100%)', border: '1px solid rgba(18,19,23,0.06)' }}>
         <div ref={ref} className="grid items-center gap-10 px-6 py-12 md:px-12 md:py-16 lg:grid-cols-[minmax(0,330px)_1fr] lg:gap-16">
           <div className="mx-auto w-full" style={{ maxWidth: 330 }}><Portrait go={go} reduce={reduce} /></div>

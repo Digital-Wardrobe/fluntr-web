@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { AnimatePresence, animate, motion, useMotionValue, useReducedMotion } from 'framer-motion'
 import Kween, { Bubble } from './Kween'
-import { useKween, kweenSay, kweenState } from './kweenStore'
+import { useKween, kweenSay, kweenState, useLooks, kweenTapped } from './kweenStore'
 import { useSound } from './Sound'
 
 /**
@@ -75,6 +75,7 @@ function measurePerches() {
 export default function KweenRoamer() {
   const reduce = useReducedMotion()
   const guide = useKween()
+  const looks = useLooks()
   const { play } = useSound()
   const x = useMotionValue(-200)
   const y = useMotionValue(0)
@@ -306,6 +307,7 @@ export default function KweenRoamer() {
   const draggedAt = useRef(0)
   function onTap() {
     if (asleep || Date.now() - draggedAt.current < 400) return // a drop is not a tap
+    kweenTapped()
     play('pop', { rate: 1.1 })
     flash('happy', 1300)
     setTapLine(pick(TAP)); setTimeout(() => setTapLine(null), 2800)
@@ -362,7 +364,7 @@ export default function KweenRoamer() {
         ) : null}
       </AnimatePresence>
       <div className={!peeking && (!compact || onPerch) ? 'pointer-events-auto' : ''} style={{ cursor: coarse ? 'pointer' : 'grab' }}>
-        <Kween size="100%" expression={mood} talking={talking} walking={walking} mirrored={facing < 0} onClick={onTap} />
+        <Kween size="100%" color={looks.kween} expression={mood} talking={talking} walking={walking} mirrored={facing < 0} onClick={onTap} />
       </div>
     </motion.div>
     </div>

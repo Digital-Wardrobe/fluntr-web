@@ -22,7 +22,7 @@ const ASKS = [
 export default function Trust() {
   const reduce = useReducedMotion()
   return (
-    <section id="trust" className="cv-auto relative scroll-mt-20 px-4 py-16 md:px-6 md:py-24" style={{ containIntrinsicSize: 'auto 700px' }}>
+    <section id="trust" className="cv-auto relative scroll-mt-20 px-4 py-14 md:px-6 md:py-24" style={{ containIntrinsicSize: 'auto 700px' }}>
       <div className="mx-auto max-w-6xl">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div className="max-w-2xl">

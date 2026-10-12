@@ -203,7 +203,7 @@ export default function Shop() {
   const pick = n => { setHeld(true); setI(n); play('pop', { gain: 0.45, rate: 1.1 }); track('shop_step', { step: STEPS[n].k }) }
 
   return (
-    <section id="shop" className="cv-auto relative scroll-mt-20 px-4 py-16 md:px-6 md:py-24" style={{ containIntrinsicSize: 'auto 1300px' }}>
+    <section id="shop" className="cv-auto relative scroll-mt-20 px-4 py-14 md:px-6 md:py-24" style={{ containIntrinsicSize: 'auto 1300px' }}>
       <div className="mx-auto max-w-6xl">
         <div className="flex items-end justify-between gap-8">
         <div className="max-w-3xl">

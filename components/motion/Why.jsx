@@ -22,7 +22,7 @@ export default function Why() {
   const reduce = useReducedMotion()
   const rise = (delay = 0) => ({ initial: reduce ? false : { opacity: 0, y: 22 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true, amount: 0.4 }, transition: { duration: 0.6, ease, delay } })
   return (
-    <section id="why" className="cv-auto relative scroll-mt-20 px-4 py-20 md:px-6 md:py-32" style={{ containIntrinsicSize: 'auto 1300px' }}>
+    <section id="why" className="cv-auto relative scroll-mt-20 px-4 py-14 md:px-6 md:py-24" style={{ containIntrinsicSize: 'auto 1300px' }}>
       <div className="relative mx-auto max-w-6xl">
         {/* what people said, in their words */}
         <motion.p {...rise()} className="text-eyebrow mb-6">You told us</motion.p>
