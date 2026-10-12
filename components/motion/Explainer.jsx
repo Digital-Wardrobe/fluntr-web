@@ -4,6 +4,7 @@ import { motion, AnimatePresence, useReducedMotion, useMotionValue, useTransform
 import Kween from './Kween'
 import { Photo, Cut, Glyph } from './Demo'
 import { Mark } from '../Logo'
+import { FaceArt, SKIN, SUITS, SKIP } from './Colours'
 import { useSound } from './Sound'
 import { KweenPerch } from './KweenRoamer'
 import { kweenSay } from './kweenStore'
@@ -29,19 +30,19 @@ const SOFT = '#F5F5F7'
 export const BITES = [
   { k: 'snap', tone: '#F28C38', bg: 'linear-gradient(180deg,#FFF3E8 0%,#FFFFFF 70%)', ms: 6000,
     say: 'Step one: show me your clothes.', mood: 'happy',
-    tag: 'Snap', title: 'Click a photo of your clothes.', sub: 'Just once. A mirror selfie or a pile on the bed works.' },
-  { k: 'sort', tone: '#2E8FA3', bg: 'linear-gradient(180deg,#E6F4F7 0%,#FFFFFF 70%)', ms: 6200,
-    say: 'I cut them out. Neatly.', mood: 'smug',
-    tag: 'Sorted', title: 'Fluntr cuts them out and sorts them.', sub: 'Type, colour and occasion, filled in for you.' },
-  { k: 'closet', tone: '#4F9D6B', bg: 'linear-gradient(180deg,#E9F5EE 0%,#FFFFFF 70%)', ms: 5600,
-    say: 'Look! Your whole closet.', mood: 'love',
-    tag: 'Your closet', title: 'Your whole wardrobe, on your phone.', sub: 'See everything you own. No more digging through the almirah.' },
-  { k: 'kween', tone: '#E0457B', bg: 'linear-gradient(180deg,#FFEAF1 0%,#FFFFFF 70%)', ms: 6600,
+    tag: 'Your closet', title: 'Your clothes, on your phone.', sub: 'Click a photo once. Fluntr cuts it out and sorts it for you.' },
+  { k: 'colours', tone: '#E0457B', bg: 'linear-gradient(180deg,#FFEAF1 0%,#FFFFFF 70%)', ms: 6200,
+    say: 'Ooh. Olive is SO your colour.', mood: 'love',
+    tag: 'Your colours', title: 'Kween learns your colours.', sub: 'One selfie, and she knows the shades that suit your skin.' },
+  { k: 'kween', tone: '#2E8FA3', bg: 'linear-gradient(180deg,#E6F4F7 0%,#FFFFFF 70%)', ms: 6200,
     say: 'That’s me. I pick your outfits.', mood: 'smug',
-    tag: 'Kween', title: 'Every morning, Kween picks your outfit.', sub: 'Your AI stylist. From your own clothes, for your weather and your day.' },
-  { k: 'plans', tone: '#7B6CF6', bg: 'linear-gradient(180deg,#EFEDFF 0%,#FFFFFF 70%)', ms: 6200,
-    say: 'Shaadi on Saturday? Sorted.', mood: 'happy',
-    tag: 'Plans', title: 'Weddings, festivals, trips: planned.', sub: 'Outfits ready days ahead, and a packing list for every trip.' },
+    tag: 'Every day', title: 'Every morning, your outfit.', sub: 'From your own clothes, in your colours, for your weather and your day.' },
+  { k: 'plans', tone: '#7B6CF6', bg: 'linear-gradient(180deg,#EFEDFF 0%,#FFFFFF 70%)', ms: 6000,
+    say: 'Interview on Monday? Sorted.', mood: 'happy',
+    tag: 'Plans', title: 'Every plan, planned.', sub: 'Interviews, parties, weddings, trips. Ready days ahead, with a reminder on time.' },
+  { k: 'shop', tone: '#4F9D6B', bg: 'linear-gradient(180deg,#E9F5EE 0%,#FFFFFF 70%)', ms: 6600,
+    say: 'Missing something? I’ll find it.', mood: 'smug',
+    tag: 'Shopping', title: 'Missing something? She shops.', sub: 'Only if you say yes. The best price, delivered in time, or in a store near you.' },
 ]
 
 const spring = { type: 'spring', stiffness: 320, damping: 24 }
@@ -52,14 +53,6 @@ function Tile({ id, size = 84, delay = 0, style }) {
     <motion.div {...pop(delay)} className="relative overflow-hidden" style={{ width: size, height: size, borderRadius: 16, background: SOFT, boxShadow: '0 6px 16px rgba(18,19,23,0.08)', ...style }}>
       <div className="absolute inset-[10%]"><Cut id={id} /></div>
     </motion.div>
-  )
-}
-
-function Chip({ children, tone, delay }) {
-  return (
-    <motion.span {...pop(delay)} className="flex items-center gap-1.5 whitespace-nowrap" style={{ background: '#fff', color: INK, border: `1.5px solid ${tone}55`, borderRadius: 999, padding: '7px 12px', fontSize: 13, fontWeight: 700, boxShadow: '0 6px 14px rgba(18,19,23,0.06)' }}>
-      <span style={{ color: tone }}>✦</span>{children}
-    </motion.span>
   )
 }
 
@@ -90,49 +83,35 @@ function Snap({ play }) {
   )
 }
 
-function Sort({ play }) {
-  const [cut, setCut] = useState(false)
-  useEffect(() => { const t = setTimeout(() => { setCut(true); play('zip', { gain: 0.5 }) }, 1900); return () => clearTimeout(t) }, [play])
+function ColoursScene({ play }) {
+  const [read, setRead] = useState(false)
+  useEffect(() => { const t = setTimeout(() => { setRead(true); play('zip', { gain: 0.4 }) }, 1900); return () => clearTimeout(t) }, [play])
   return (
     <div className="absolute inset-0">
-      <motion.div className="absolute overflow-hidden" style={{ left: 22, top: 20, width: 178, height: 250, borderRadius: 22, background: cut ? SOFT : '#ddd', boxShadow: '0 20px 44px rgba(18,19,23,0.16)', transition: 'background .4s' }} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.4 }}>
-        <motion.div className="absolute inset-0" animate={{ opacity: cut ? 0 : 1 }} transition={{ duration: 0.5 }}><Photo src="juttis" sizes="180px" /></motion.div>
-        <motion.div className="absolute inset-[8%]" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: cut ? 1 : 0, scale: cut ? 1 : 0.9 }} transition={spring}><Cut id="juttis" style={{ filter: 'drop-shadow(0 14px 16px rgba(18,19,23,0.2))' }} /></motion.div>
-        {!cut ? <motion.div className="absolute inset-0" initial={{ y: '0%' }} animate={{ y: ['0%', '98%', '0%'] }} transition={{ duration: 1.8, ease: 'linear' }}><div style={{ height: 4, background: '#FFD700', boxShadow: '0 0 14px 3px #FFD700aa' }} /></motion.div> : null}
-        {cut ? [0, 1, 2, 3, 4, 5].map(n => (
-          <motion.span key={n} className="absolute left-1/2 top-1/2" style={{ width: 7, height: 7, borderRadius: 999, background: '#FFD700' }} initial={{ x: 0, y: 0, opacity: 1 }} animate={{ x: Math.cos(n / 6 * Math.PI * 2) * 90, y: Math.sin(n / 6 * Math.PI * 2) * 90, opacity: 0 }} transition={{ duration: 0.7 }} />
-        )) : null}
+      <motion.div className="absolute overflow-hidden" style={{ left: 26, top: 8, width: 168, height: 224, borderRadius: 26, background: 'radial-gradient(80% 70% at 50% 30%, #FDEEE2 0%, #F6DCC8 100%)', border: '5px solid #fff', boxShadow: '0 20px 44px rgba(18,19,23,0.16)' }} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
+        <FaceArt />
+        {!read ? <motion.div className="absolute inset-0" initial={{ y: '0%' }} animate={{ y: ['0%', '98%', '0%'] }} transition={{ duration: 1.8, ease: 'linear' }}><div style={{ height: 4, background: '#FFD700', boxShadow: '0 0 14px 3px #FFD700aa' }} /></motion.div> : null}
+        {[[50, 38], [38, 50], [50, 69]].map(([x, y], n) => (
+          <motion.span key={n} className="absolute" style={{ left: `${x}%`, top: `${y}%`, width: 12, height: 12, marginLeft: -6, marginTop: -6, borderRadius: 999, border: '2px solid #fff', background: SKIN }} initial={{ scale: 0 }} animate={{ scale: read ? 1 : 0 }} transition={{ ...spring, delay: n * 0.15 }} />
+        ))}
       </motion.div>
-      <motion.span {...pop(2.1)} className="absolute" style={{ left: 32, top: 280, fontSize: 12, fontWeight: 700, color: '#2E8FA3' }}>✓ Background removed</motion.span>
-      <div className="absolute flex flex-col items-start gap-2.5" style={{ left: 212, top: 46 }}>
-        <Chip tone="#2E8FA3" delay={2.5}>Juttis</Chip>
-        <Chip tone="#2E8FA3" delay={3.0}>Maroon · Gold</Chip>
-        <Chip tone="#2E8FA3" delay={3.5}>Wedding</Chip>
-        <Chip tone="#2E8FA3" delay={4.0}>Festive</Chip>
+      <motion.span {...pop(2.3)} className="absolute flex items-center gap-1" style={{ left: 34, top: 246, fontSize: 12.5, fontWeight: 700, color: '#E0457B' }}>✓ Warm undertone</motion.span>
+      <div className="absolute" style={{ left: 210, top: 14, width: 130 }}>
+        <motion.span {...pop(2.5)} className="block" style={{ fontSize: 12, fontWeight: 800, color: INK }}>Suits you</motion.span>
+        <div className="mt-2 grid grid-cols-3 gap-2">
+          {SUITS.map(([name, hex], n) => (
+            <motion.span key={name} {...pop(2.7 + n * 0.16)} title={name} className="block" style={{ width: 36, height: 36, borderRadius: 999, background: hex, boxShadow: '0 6px 14px rgba(18,19,23,0.14), inset 0 0 0 1px rgba(18,19,23,0.1)' }} />
+          ))}
+        </div>
+        <motion.span {...pop(3.9)} className="mt-4 block" style={{ fontSize: 12, fontWeight: 800, color: '#9AA0A6' }}>Skip</motion.span>
+        <div className="mt-2 flex gap-2">
+          {SKIP.map(([name, hex], n) => (
+            <motion.span key={name} {...pop(4.1 + n * 0.16)} title={name} className="relative block" style={{ width: 30, height: 30, borderRadius: 999, background: hex, boxShadow: 'inset 0 0 0 1px rgba(18,19,23,0.12)' }}>
+              <span className="absolute left-1/2 top-1/2 block" style={{ width: 34, height: 2, marginLeft: -17, marginTop: -1, background: '#9AA0A6', transform: 'rotate(-45deg)' }} />
+            </motion.span>
+          ))}
+        </div>
       </div>
-    </div>
-  )
-}
-
-function Closet({ play }) {
-  const ids = ['kurta-look', 'lehenga', 'denim-jacket', 'saree', 'sneakers', 'kurta-set', 'jeans', 'sherwani', 'juttis']
-  const [n, setN] = useState(0)
-  useEffect(() => {
-    const ts = ids.map((_, i) => setTimeout(() => { setN(i + 1); play('tick', { gain: 0.35, rate: 1 + i * 0.05 }) }, 450 + i * 230))
-    return () => ts.forEach(clearTimeout)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [play])
-  return (
-    <div className="absolute inset-0">
-      <motion.div className="absolute" style={{ left: 26, top: 0, width: 308, height: 328, borderRadius: 26, background: '#fff', boxShadow: '0 20px 44px rgba(18,19,23,0.14)', padding: 14 }} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-        <div className="flex items-center justify-between" style={{ marginBottom: 10 }}>
-          <span style={{ fontSize: 18, fontWeight: 800, color: INK, letterSpacing: '-0.02em' }}>My Closet</span>
-          <span style={{ fontSize: 12, fontWeight: 700, color: '#4F9D6B', background: '#E9F5EE', borderRadius: 999, padding: '4px 10px' }}>{n} {n === 1 ? 'piece' : 'pieces'}</span>
-        </div>
-        <div className="grid grid-cols-3 gap-2">
-          {ids.map((id, i) => <Tile key={id} id={id} size={84} delay={0.4 + i * 0.23} />)}
-        </div>
-      </motion.div>
     </div>
   )
 }
@@ -166,9 +145,9 @@ function KweenPicks({ play }) {
 
 function Plans({ play }) {
   const rows = [
-    { day: 'Friday', what: 'Office', tone: '#2E8FA3', ids: ['white-tee', 'jeans'] },
-    { day: 'Saturday', what: 'Wedding', tone: '#E0457B', ids: ['lehenga', 'juttis'] },
-    { day: 'Next week', what: 'Diwali', tone: '#F28C38', ids: ['kurta-look', 'sherwani'] },
+    { day: 'Monday · reminder set', what: 'Interview', tone: '#2E8FA3', ids: ['kurta-set', 'juttis'] },
+    { day: 'Friday', what: 'Party', tone: '#E0457B', ids: ['saree'] },
+    { day: 'Saturday', what: 'Sangeet', tone: '#F28C38', ids: ['lehenga', 'juttis'] },
   ]
   const packing = ['2 bottoms', '4 tops', 'Sandals', 'Rain jacket']
   const [ticked, setTicked] = useState(0)
@@ -206,7 +185,40 @@ function Plans({ play }) {
   )
 }
 
-const SCENES = { snap: Snap, sort: Sort, closet: Closet, kween: KweenPicks, plans: Plans }
+function ShopScene({ play }) {
+  const [yes, setYes] = useState(false)
+  useEffect(() => { const t = setTimeout(() => { setYes(true); play('pop', { gain: 0.5, rate: 1.2 }) }, 2000); return () => clearTimeout(t) }, [play])
+  const rows = [
+    ['tag', '#F28C38', '3 that go with it, same store online'],
+    ['clock', '#2E7D4F', 'Sale in 9 days: wait, save ₹800'],
+    ['calendar', '#3C6DD9', 'Arrives Thursday, before your party'],
+    ['globe', '#7B6CF6', 'In your size, 1.2 km away'],
+  ]
+  return (
+    <div className="absolute inset-0" style={{ padding: '0 20px' }}>
+      <motion.div {...pop(0.2)} className="ml-auto flex w-max items-center gap-2" style={{ background: INK, color: '#fff', borderRadius: '18px 18px 6px 18px', padding: 6, paddingRight: 14, fontSize: 13.5, fontWeight: 600 }}>
+        <span className="relative block overflow-hidden" style={{ width: 44, height: 44, borderRadius: 12, background: '#fff' }}><span className="absolute inset-[8%]"><Cut id="denim-jacket" /></span></span>
+        Trying this on. Pants?
+      </motion.div>
+      <motion.div {...pop(0.9)} className="mt-2.5 w-max" style={{ background: '#fff', borderRadius: '18px 18px 18px 6px', padding: '9px 13px', fontSize: 13.5, fontWeight: 600, color: INK, boxShadow: '0 8px 18px rgba(18,19,23,0.08)' }}>
+        Can I look outside your closet?
+      </motion.div>
+      <motion.span {...pop(1.5)} className="mt-2 flex w-max items-center gap-1.5" style={{ borderRadius: 999, padding: '7px 12px', background: yes ? '#2E7D4F' : '#fff', color: yes ? '#fff' : INK, fontSize: 12.5, fontWeight: 700, border: '1px solid rgba(18,19,23,0.1)', transition: 'background .25s, color .25s' }}>
+        <Glyph k="check" color={yes ? '#fff' : INK} size={12} sw={2.4} />Yes, look
+      </motion.span>
+      <div className="mt-3 flex flex-col gap-1.5">
+        {rows.map(([k, tone, text], n) => (
+          <motion.div key={text} className="flex items-center gap-2.5" style={{ background: '#fff', borderRadius: 14, padding: '7px 10px', boxShadow: '0 6px 14px rgba(18,19,23,0.06)' }} initial={{ opacity: 0, x: -24 }} animate={{ opacity: 1, x: 0 }} transition={{ ...spring, delay: 2.5 + n * 0.55 }}>
+            <span className="flex h-7 w-7 shrink-0 items-center justify-center" style={{ borderRadius: 9, background: `${tone}18` }}><Glyph k={k} color={tone} size={14} sw={2} /></span>
+            <span style={{ fontSize: 12.5, fontWeight: 700, color: INK }}>{text}</span>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+const SCENES = { snap: Snap, colours: ColoursScene, kween: KweenPicks, plans: Plans, shop: ShopScene }
 
 /* ── the player ──────────────────────────────────────────────────────────── */
 
@@ -250,10 +262,10 @@ export function StoryCard({ i, progress, onTap, onReplay, onTry, playing, onTogg
           <motion.div key="end" className="absolute inset-0 flex flex-col items-center justify-center px-8 text-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
             <div style={{ width: 150 }}><Kween expression="love" size="100%" follow={false} /></div>
             <h3 className="h-display mt-2" style={{ fontSize: 34, color: INK }}>That’s Fluntr.</h3>
-            <p className="mt-3" style={{ fontSize: 16, lineHeight: 1.45, color: MUTED }}>Your clothes on your phone, and an AI stylist who tells you what to wear.</p>
+            <p className="mt-3" style={{ fontSize: 16, lineHeight: 1.45, color: MUTED }}>One app for everything you wear, buy or plan, with an AI stylist who knows you.</p>
             {onTry ? (
               <div className="mt-7 flex flex-col items-center gap-3">
-                <button type="button" onClick={onTry} className="btn-primary" style={{ fontSize: 15 }}>Now try it yourself <span aria-hidden>↓</span></button>
+                <button type="button" onClick={onTry} className="btn-primary" style={{ fontSize: 15 }}>See why it’s different <span aria-hidden>↓</span></button>
                 <button type="button" onClick={onReplay} style={{ background: 'none', border: 0, fontSize: 13.5, fontWeight: 600, color: MUTED, cursor: 'pointer', textDecoration: 'underline' }}>Watch again</button>
               </div>
             ) : <p className="mt-6" style={{ fontSize: 15, fontWeight: 700, color: INK }}>fluntr.com</p>}
@@ -309,7 +321,7 @@ export default function Explainer() {
   useEffect(() => {
     if (!inView) return
     if (i < BITES.length) kweenSay(BITES[i].say, BITES[i].mood, { talkMs: reduce ? 0 : 1000, perch: 'what' })
-    else kweenSay('Your turn. Try it below!', 'love', { talkMs: reduce ? 0 : 900, perch: 'what' })
+    else kweenSay('Scroll on. I’ll show you everything.', 'love', { talkMs: reduce ? 0 : 900, perch: 'what' })
   }, [i, inView, reduce])
   useEffect(() => {
     if (i < BITES.length && !seen.current.has(i)) { seen.current.add(i); if (i > 0) track('explainer_bite', { bite: i + 1, name: BITES[i].k }) }
@@ -334,7 +346,8 @@ export default function Explainer() {
   const go = useCallback(n => { progress.set(0); setI(Math.max(0, Math.min(BITES.length, n))) }, [progress])
   const next = () => { play('pop', { gain: 0.5, rate: 1.2 }); go(i + 1) }
   const replay = () => { track('explainer_replay'); setPaused(false); go(0) }
-  const tryIt = () => { track('explainer_cta', { to: 'demo' }); document.getElementById('how')?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }) }
+  // the story goes on below: why it exists, then everything she does, then the demo
+  const tryIt = () => { track('explainer_cta', { to: 'why' }); document.getElementById('why')?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }) }
 
   return (
     <section id="what" ref={rootRef} className="relative mx-auto w-full max-w-6xl scroll-mt-24" aria-label="What is Fluntr">
@@ -343,7 +356,7 @@ export default function Explainer() {
         <div className="text-center lg:text-left">
           <p className="text-eyebrow mb-3">What is Fluntr?</p>
           <h2 className="h-display" style={{ fontSize: 'clamp(30px,3.8vw,50px)', color: INK }}>Fluntr in 30 seconds.</h2>
-          <p className="mx-auto mt-4 max-w-md text-[17px] leading-relaxed lg:mx-0" style={{ color: MUTED }}>Five quick bites, then try it yourself.</p>
+          <p className="mx-auto mt-4 max-w-md text-[17px] leading-relaxed lg:mx-0" style={{ color: MUTED }}>Five quick bites: your closet, your colours, every day, every plan, and shopping.</p>
           <ol className="mx-auto mt-7 hidden max-w-md flex-col gap-1 text-left lg:mx-0 lg:flex">
             {BITES.map((b, n) => (
               <li key={b.k}>

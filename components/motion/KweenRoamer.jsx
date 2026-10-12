@@ -173,16 +173,20 @@ export default function KweenRoamer() {
     mounted.current = true
     const vw = () => window.innerWidth, vh = () => window.innerHeight
     const narrow = () => vw() < 768
+    // the page's content is at most 1152px wide (max-w-6xl), centred: what is left either side is free
+    const margin = () => (vw() - 1152) / 2
+    // nowhere to roam without standing on the content: tuck in at the bottom edge instead
+    const tucks = () => narrow() || margin() < wanderSize() + 24
     const wanderSize = () => (narrow() ? 64 : 84)
     const floorY = (s) => vh() - s * RATIO - (narrow() ? 70 : 6) // above the floating badge on desktop, the thumb zone on phones
     let raf = 0, lastPerch = null, settled = false
 
     function wander() {
       clearTimeout(wanderTimer.current); wanderTimer.current = null
-      if (draggingRef.current || freeRef.current || perchRef.current || narrow()) return
+      if (draggingRef.current || freeRef.current || perchRef.current || tucks()) return
       const s = wanderSize(); setSize(s)
-      // between the left edge and about a fifth of the way in: out of the copy's way
-      const tx = 10 + Math.random() * Math.max(40, (narrow() ? vw() * 0.35 : vw() * 0.2) - s)
+      // only in the empty margin left of the content, out of the copy's way
+      const tx = 8 + Math.random() * Math.max(0, margin() - s - 16)
       travelTo(tx, floorY(s), { onArrive: () => { if (Math.random() < 0.3) { setTapLine(pick(WANDER)); setTimeout(() => setTapLine(null), 3200) } } })
       wanderTimer.current = setTimeout(wander, 7000 + Math.random() * 6000)
     }
@@ -213,6 +217,7 @@ export default function KweenRoamer() {
           unseat()
           const sameSection = perchRef.current === target.name
           perchRef.current = target.name; perchEl.current = target.el; lastPerch = target.name; settled = false
+          setOnPerch(null) // quiet on the way: the last spot's line would trail off the screen with her
           setSize(target.w)
           move(target.x, target.y, { onArrive: () => {
             // arriving on a perch drops any leftover wander or greeting line, so she says the section's line
@@ -235,12 +240,14 @@ export default function KweenRoamer() {
           perchRef.current = null; perchEl.current = null; settled = false; setOnPerch(null)
           if (travelRef.current) { stopTravel(); setWalking(false) }
         }
-        if (narrow()) {
-          // phones: no wandering over the content; she peeks up from the bottom-left edge
+        if (freeRef.current) {
+          // dropped somewhere by hand: she stays there
+        } else if (tucks()) {
+          // phones, and screens without a free margin: no wandering over the content; she peeks up from the bottom-left edge
           const ps = wanderSize(), py = vh() - ps * RATIO * PEEK
           if (!peekRef.current && !travelRef.current) { peekRef.current = true; setPeeking(true); setSize(ps); hopTo(10, py) }
           else if (peekRef.current && !travelRef.current) { x.set(10); y.set(py); if (alpha.get() < 1) alpha.set(1) } // the toolbar can change the window height
-        } else if (!freeRef.current && !travelRef.current && !wanderTimer.current) {
+        } else if (!travelRef.current && !wanderTimer.current) {
           wanderTimer.current = setTimeout(wander, 300)
         }
       }
@@ -354,7 +361,7 @@ export default function KweenRoamer() {
           </motion.div>
         ) : null}
       </AnimatePresence>
-      <div className={!compact || (onPerch && !peeking) ? 'pointer-events-auto' : ''} style={{ cursor: coarse ? 'pointer' : 'grab' }}>
+      <div className={!peeking && (!compact || onPerch) ? 'pointer-events-auto' : ''} style={{ cursor: coarse ? 'pointer' : 'grab' }}>
         <Kween size="100%" expression={mood} talking={talking} walking={walking} mirrored={facing < 0} onClick={onTap} />
       </div>
     </motion.div>

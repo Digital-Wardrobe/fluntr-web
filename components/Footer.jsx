@@ -14,7 +14,9 @@ const GUIDES = [
   ['Men’s outfit ideas', '/questions/topic/mens-outfit-ideas'],
   ['Monsoon, summer, winter, travel', '/questions/topic/outfits-for-weather-and-travel'],
   ['Trends and personal style', '/questions/topic/fashion-trends-and-personal-style'],
+  ['Which colours suit me', '/questions/topic/which-colours-suit-me'],
   ['What to buy', '/questions/topic/what-to-buy'],
+  ['When to buy, and will it arrive', '/questions/topic/when-to-buy-and-shopping-assistant'],
   ['AI stylist app', '/questions/topic/ai-stylist'],
 ]
 

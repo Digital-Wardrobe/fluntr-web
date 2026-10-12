@@ -67,7 +67,7 @@ const STEPS = [
   { k: 'details', title: 'Kween fills in the details.', body: 'Category, colours, fabric, occasion. Check them, fix anything, save.', line: 'I filled it in. Fix anything I got wrong.' },
   { k: 'closet', title: 'It lands in your closet.', body: 'Every piece you own, cut out and in one grid you can actually look through.', line: 'That’s your closet. Finally.' },
   { k: 'feed', title: 'Post it, or ask first.', body: 'Put a look up and see what people think while you still have time to change.', line: 'Now post it. Or ask me.' },
-  { k: 'kween', title: 'Ask your stylist.', body: 'Short answers, from the clothes you actually own. Kween only knows your closet, which is what makes her the most personal stylist there is.', line: 'Go on. Ask me something.' },
+  { k: 'kween', title: 'Ask your stylist.', body: 'Short answers, from the clothes you actually own, in your colours. Your closet comes first, which is what makes her the most personal stylist there is.', line: 'Go on. Ask me something.' },
 ]
 
 const COLLECTIONS = ['My Closet', 'Office wear', 'Festive']

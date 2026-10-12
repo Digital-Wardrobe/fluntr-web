@@ -7,13 +7,18 @@ import Demo from '../components/motion/Demo'
 import Explainer from '../components/motion/Explainer'
 import Ticker from '../components/motion/Ticker'
 import Stylist from '../components/motion/Stylist'
+import Why from '../components/motion/Why'
+import Colours from '../components/motion/Colours'
+import Week from '../components/motion/Week'
+import Shop from '../components/motion/Shop'
+import Trust from '../components/motion/Trust'
 import Features from '../components/motion/Features'
 import Conversations from '../components/motion/Conversations'
 import Cursors from '../components/motion/Cursors'
 import Blobs from '../components/motion/Blobs'
 import Typed from '../components/motion/Typed'
 import KweenRoamer, { KweenPerch } from '../components/motion/KweenRoamer'
-import { useEffect } from 'react'
+import { Suspense, useEffect } from 'react'
 import { Mark } from '../components/Logo'
 import { track } from '../lib/analytics'
 
@@ -38,9 +43,9 @@ const LD = {
   '@graph': [
     {
       '@type': 'Organization', '@id': 'https://www.fluntr.com/#org', name: 'Fluntr', legalName: 'Melchizedek Technologies Private Limited', url: 'https://www.fluntr.com/',
-      email: 'support@fluntr.com', areaServed: 'IN', slogan: 'Your closet on your phone. The most personal AI stylist.',
-      logo: 'https://www.fluntr.com/icons/icon-512.png', description: 'Fluntr is a digital wardrobe and personal AI stylist app from India.',
-      knowsAbout: ['What to wear', 'Indian wedding guest outfits', 'Festival outfits', 'Capsule wardrobes', 'Closet organisation', 'Personal styling'],
+      email: 'support@fluntr.com', areaServed: 'IN', slogan: 'The most personal AI stylist. For everything you wear, buy or plan.',
+      logo: 'https://www.fluntr.com/icons/icon-512.png', description: 'Fluntr is one app for everything you wear, buy or plan, with the most personal AI stylist, from India.',
+      knowsAbout: ['What to wear', 'Indian wedding guest outfits', 'Festival outfits', 'Colour analysis', 'When to buy clothes', 'Capsule wardrobes', 'Closet organisation', 'Personal styling'],
     },
     {
       '@type': 'WebSite', '@id': 'https://www.fluntr.com/#site', url: 'https://www.fluntr.com/', name: 'Fluntr', inLanguage: 'en-IN', publisher: { '@id': 'https://www.fluntr.com/#org' },
@@ -48,9 +53,9 @@ const LD = {
     {
       '@type': 'SoftwareApplication', '@id': 'https://www.fluntr.com/#app', name: 'Fluntr', applicationCategory: 'LifestyleApplication', operatingSystem: 'iOS, Android',
       url: 'https://www.fluntr.com/', author: { '@id': 'https://www.fluntr.com/#org' },
-      description: 'Photograph the clothes you own and Fluntr turns them into a closet you can see and search on your phone. Kween, the most personal AI stylist, learns what you own, your city, your week and your taste, and picks your outfit every morning from your own clothes: for the weather, your dress code and your plans. Fit checks from a mirror selfie, outfits planned for weddings, festivals and trips, wear history, laundry and wardrobe insights. Post looks and ask friends which to wear.',
-      featureList: ['Digital wardrobe from photos', 'Background removed on the device', 'Automatic category, colour and occasion', 'Personal AI stylist that picks an outfit every morning', 'Fit check from a mirror selfie', 'Outfits planned for weddings, festivals and trips', 'Outfit calendar and wear history', 'Laundry and wardrobe insights', 'Post looks and ask friends', 'English and Hindi'],
-      keywords: 'personal AI stylist, AI stylist app, digital wardrobe app, closet organiser app, outfit planner, what to wear today, outfit of the day, fit check app, virtual closet, wardrobe app India, OOTD, capsule wardrobe, what to wear to a wedding',
+      description: 'Fluntr is one app for everything you wear, buy or plan. Photograph the clothes you own and Fluntr turns them into a closet you can see and search on your phone. Kween, the most personal AI stylist, learns your clothes, the colours that suit your skin, your calendar, your city’s weather, your fit and your budget. She picks your outfit every morning from your own clothes, plans and reminds you before interviews, parties, weddings, festivals and trips, and does fit checks from a mirror selfie. When something is missing, and only if you say yes, she shops with you: what goes with the piece you are trying on, a store near you that has it in your size, whether to buy now or wait for a sale, and whether it will arrive before your date. Try it without wearing it. Post looks and ask friends which to wear.',
+      featureList: ['Digital wardrobe from photos', 'Background removed on the device', 'Automatic category, colour and occasion', 'Personal AI stylist that picks an outfit every morning', 'Your colours from one selfie', 'Calendar and reminders for every plan', 'Outfits planned for interviews, parties, weddings, festivals and trips', 'Fit check from a mirror selfie', 'Shopping only with your permission', 'Complete the look from the store you are in', 'Find it in your size at a store near you', 'Buy now or wait: current offers and upcoming sales', 'Delivery checked against your event date', 'Try it without wearing it', 'Wear history, laundry and wardrobe insights', 'Post looks and ask friends', 'English and Hindi'],
+      keywords: 'personal AI stylist, AI stylist app, digital wardrobe app, what to wear today, outfit planner, outfit reminder app, colour analysis app, which colours suit me, when to buy clothes India, buy now or wait for sale, virtual try on, shopping assistant app, fit check app, virtual closet, wardrobe app India, OOTD, what to wear to a wedding',
     },
   ],
 }
@@ -68,16 +73,16 @@ function Hero() {
               statement with its key word in the wordmark's serif, between two
               quiet lines. One accent colour, and the Fluntr sparkle as the full stop. */}
           <h1 className="hero-title mx-auto">
-            <span className="hero-frame">Your closet on your phone.</span>{' '}
+            <span className="hero-frame">Your clothes. Your colours. Your plans.</span>{' '}
             <span className="hero-main">The most <em className="hero-accent">personal</em>{' '}<br className="hidden md:inline" />AI&nbsp;stylist<span className="hero-stop"><Mark size="0.34em" color="var(--tang)" /></span></span>{' '}
-            <span className="hero-frame">Outfits in seconds.</span>
+            <span className="hero-frame">For everything you wear, buy or plan.</span>
           </h1>
         </div>
         <div className="hero-in" style={{ animationDelay: '0.12s' }}>
           <p className="mx-auto mt-8 max-w-2xl text-[18px] leading-relaxed md:text-[21px]" style={{ color: MUTED }}>
-            <strong style={{ color: INK, fontWeight: 600 }}>Fluntr is an app for your clothes.</strong> Click a photo of each piece once, and Kween, your AI stylist, tells you what to wear every day from what you already own.
+            <strong style={{ color: INK, fontWeight: 600 }}>Fluntr is one app for everything you wear.</strong> Kween, your AI stylist, knows your clothes, your colours and your plans. She picks your outfit every day and, when something is missing, shops with you.
             {/* on a line of its own, so the changing word never wraps away from "Dressed for" */}
-            <span className="mt-1 block">Dressed for <Typed words={['weddings', 'the office', 'Diwali', 'a first date', 'brunch', 'the airport']} style={{ color: INK, fontWeight: 600 }} /></span>
+            <span className="mt-1 block">Dressed for <Typed words={['weddings', 'interviews', 'the office', 'Diwali', 'a first date', 'parties', 'the airport']} style={{ color: INK, fontWeight: 600 }} /></span>
           </p>
         </div>
         <div className="hero-in" style={{ animationDelay: '0.28s' }}>
@@ -96,13 +101,19 @@ function Hero() {
         </div>
       </div>
 
-      {/* first what it is, in five short bites; then the demo to try it */}
+      {/* what it is, in five short bites, before anything else */}
       <div className="relative z-10 mt-16 md:mt-24">
         <Explainer />
       </div>
-      <div className="relative z-10 mt-20 md:mt-28">
-        <Demo />
-      </div>
+    </section>
+  )
+}
+
+// ── TRY IT ─────────────────────── the demo, once the story has been told ──
+function TryIt() {
+  return (
+    <section className="relative px-4 py-12 md:px-6 md:py-20">
+      <Demo />
     </section>
   )
 }
@@ -149,7 +160,7 @@ function FloatingBadge() {
   )
 }
 
-const SECTIONS = ['what', 'how', 'stylist', 'app', 'features', 'waitlist']
+const SECTIONS = ['what', 'why', 'stylist', 'colours', 'week', 'shop', 'how', 'app', 'features', 'trust', 'waitlist']
 
 export default function Home() {
   // How far down people get: one event per section, the first time it is seen.
@@ -166,12 +177,12 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Fluntr - Your closet on your phone. The most personal AI stylist.</title>
-        <meta name="description" content="Photograph your clothes once. Fluntr keeps your whole closet on your phone, and Kween, the most personal AI stylist, picks your outfit every morning from what you actually own: for your weather, your dress code and your plans. Fit checks, wedding and festival outfits, wear history." />
+        <title>Fluntr - The most personal AI stylist for everything you wear</title>
+        <meta name="description" content="Fluntr is one app for everything you wear, buy or plan. Kween, the most personal AI stylist, knows your clothes, your colours and your plans: she picks your outfit every morning, gets you ready for every event, and when something is missing, shops with you at the best price, in time, or in a store near you." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="canonical" href="https://www.fluntr.com/" />
-        <meta property="og:title" content="Fluntr - Your closet on your phone. The most personal AI stylist." />
-        <meta property="og:description" content="Kween learns what you own, your week and your weather, then picks what you wear every morning. From your cupboard, never a cart." />
+        <meta property="og:title" content="Fluntr - The most personal AI stylist for everything you wear" />
+        <meta property="og:description" content="Kween knows your clothes, your colours and your plans. She picks your outfit every day and, when something is missing, shops with you." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://www.fluntr.com/" />
         <meta property="og:image" content="https://www.fluntr.com/og/default.jpg" />
@@ -183,12 +194,22 @@ export default function Home() {
 
       <Nav />
       <main>
+        {/* the story: what it is, why it exists, who she is, what she does, then try it */}
         <Hero />
-        <Stylist />
-        <Ticker />
-        <Features />
-        <Conversations />
-        <Waitlist />
+        {/* Each section below the first screen is its own Suspense boundary, so
+            React hydrates them one at a time and the phone stays responsive
+            while the page wakes up, instead of one long block of work. */}
+        <Suspense fallback={null}><Why /></Suspense>
+        <Suspense fallback={null}><Stylist /></Suspense>
+        <Suspense fallback={null}><Colours /></Suspense>
+        <Suspense fallback={null}><Week /></Suspense>
+        <Suspense fallback={null}><Shop /></Suspense>
+        <Suspense fallback={null}><TryIt /></Suspense>
+        <Suspense fallback={null}><Ticker /></Suspense>
+        <Suspense fallback={null}><Features /></Suspense>
+        <Suspense fallback={null}><Conversations /></Suspense>
+        <Suspense fallback={null}><Trust /></Suspense>
+        <Suspense fallback={null}><Waitlist /></Suspense>
       </main>
       <Footer />
       <FloatingBadge />

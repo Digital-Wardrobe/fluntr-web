@@ -11,7 +11,7 @@ import { Mark } from '../Logo'
  * what is in them. Fluntr has not launched, so there are no reviews to quote
  * and none are invented. The user side of each thread is a real line: four are
  * the struggles people pick on the waitlist form, the rest are the questions
- * the demo answers. Kween's side is what the app says back.
+ * the demo and the site's sections answer. Kween's side is what the app says back.
  *
  * When real testimonials exist they drop into THREADS with the same shape;
  * nothing else changes.
@@ -26,6 +26,10 @@ const THREADS = [
   { u: 'My partner and I never agree on my fits.', k: 'Post both. Let the people decide.', mood: '🙄', who: 'Waitlist', where: 'Hyderabad', r: ['😂', '❤️', '🗳️'] },
   { u: "What haven't I worn lately?", k: 'That denim jacket hasn’t seen daylight in 3 weeks.', mood: '😳', who: 'Demo', where: 'Question 4', r: ['🧶', '😭', '🔥'] },
   { u: 'What goes with the kurta?', k: 'The maroon juttis. That’s it, you’re done.', mood: '☕', who: 'Demo', where: 'Question 1', r: ['👟', '✨', '💯'] },
+  { u: 'Which colours actually suit me?', k: 'Olive, rust and cream. Keep neon away from your face.', mood: '🎨', who: 'Ask Kween', where: 'Your colours', r: ['🎨', '✨'] },
+  { u: 'Trying this jacket at H&M. Pants?', k: 'Their straight dark jeans. Or walk 1.2 km, the store there has your size.', mood: '🛍️', who: 'Ask Kween', where: 'Shopping', r: ['🛍️', '🔥', '💯'] },
+  { u: 'Is it cheaper next week?', k: 'Sale starts in 9 days. Wait, and save ₹800.', mood: '🤑', who: 'Ask Kween', where: 'Shopping', r: ['💸', '👏'] },
+  { u: 'Will it arrive before Saturday?', k: 'Thursday. Two days to spare.', mood: '😮‍💨', who: 'Ask Kween', where: 'Shopping', r: ['📦', '❤️'] },
   { u: 'Is this too much for brunch?', k: 'Nothing is too much for brunch. Wear the earrings.', mood: '💅', who: 'Kween', where: 'Running bit', r: ['💅', '🔥'] },
 ]
 

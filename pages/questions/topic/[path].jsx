@@ -100,7 +100,7 @@ export default function Topic({ topic, items, others }) {
           <div className="mt-16 flex flex-wrap items-end gap-6">
             <div className="glass flex-1 px-6 py-6" style={{ borderRadius: 24, minWidth: 260 }}>
               <p className="text-eyebrow mb-2">Fluntr</p>
-              <p className="text-[15px] leading-relaxed" style={{ color: MUTED }}>Your closet on your phone, and Kween, the most personal AI stylist, who answers these from the clothes you actually own. Pre-launch, waitlist open.</p>
+              <p className="text-[15px] leading-relaxed" style={{ color: MUTED }}>One app for everything you wear, buy or plan, with Kween, the most personal AI stylist: she answers these from the clothes you own, in your colours, and shops with you when you ask. Pre-launch, waitlist open.</p>
               <div className="mt-4 flex flex-wrap gap-3">
                 <Link href="/#waitlist" className="btn-primary" style={{ padding: '12px 20px', fontSize: 14 }}>Join the waitlist →</Link>
                 <Link href="/#how" className="btn-glass glass" style={{ padding: '12px 20px', fontSize: 14 }}>Try the demo</Link>

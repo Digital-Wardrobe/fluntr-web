@@ -1,15 +1,14 @@
 'use client'
-import { useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import TiltCard from './TiltCard'
-import { Device, ClosetScreen, FeedScreen, KweenScreen, byId } from './Demo'
+import { Device, ClosetScreen, FeedScreen, byId } from './Demo'
 import { KweenPerch } from './KweenRoamer'
 
 /**
- * Three big cards, alternating sides, each with a real screen in a device and
+ * Two big cards, alternating sides, each with a real screen in a device and
  * a headline that says the one thing that screen is for. The screens are the
- * demo's own components at rest, not screenshots, so hovering a question in
- * the Kween card actually asks it.
+ * demo's own components at rest, not screenshots. (Kween's own chat is the
+ * last step of the demo, so it is not repeated here.)
  */
 
 const INK = '#121317'
@@ -53,10 +52,8 @@ function Card({ children, flip = false, tone, title, body, props = [], perch }) 
 }
 
 export default function Features() {
-  const [mood, setMood] = useState('smug')
-  const [talking, setTalking] = useState(false)
   return (
-    <section id="app" className="cv-auto px-4 py-10 md:px-6 md:py-16" style={{ containIntrinsicSize: 'auto 2600px' }}>
+    <section id="app" className="cv-auto px-4 py-10 md:px-6 md:py-16" style={{ containIntrinsicSize: 'auto 1750px' }}>
       <div className="mx-auto flex max-w-6xl flex-col gap-6">
         <Card
           tone="#2E8FA3"
@@ -79,14 +76,6 @@ export default function Features() {
           <FeedScreen item={byId['kurta-look']} />
         </Card>
 
-        <Card
-          tone="#7B6CF6"
-          title="Kween knows your closet."
-          body="Ask about Saturday, about the office, about what you have been ignoring. Short answers from the clothes you actually own, which is what makes her the most personal stylist there is."
-          props={[{ text: 'Saturday · Wedding', left: '-28%', top: '20%' }, { text: '3 picks', left: '80%', top: '66%', tone: '#F28C38' }]}
-        >
-          <KweenScreen preset={1} mood={mood} talking={talking} setMood={setMood} setTalking={setTalking} />
-        </Card>
       </div>
     </section>
   )
