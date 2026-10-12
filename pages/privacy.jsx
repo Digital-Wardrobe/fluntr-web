@@ -32,6 +32,14 @@ const SECTIONS = [
                 text: 'We use your data to organise and display your digital wardrobe, store your uploaded images securely via trusted cloud infrastructure (AWS S3), and deliver all features of the Fluntr platform.',
             },
             {
+                sub: 'Style Personalisation (optional)',
+                text: 'If you switch on your style profile, Kween, your in-app stylist, learns your taste from what you log, how outfits felt and what you save: favourite colours, go-to pieces and combinations. Kween may ask you to confirm what it has learned. This is used only to suggest outfits for you, is never shown to anyone else and is never used for advertising. You can see, correct or erase it at any time in Settings → What Kween knows about you, and turning off your style profile erases it.',
+            },
+            {
+                sub: 'Find Me in Photos (optional, off by default)',
+                text: 'If you turn this on, when you scan a photo with several people in it we compare your profile photo with the faces in that photo, only to work out which person is you so that only your outfit is added to your closet. The comparison happens at the moment you scan and is processed by Amazon Web Services (Amazon Rekognition) on our behalf. We do not create or store a face template, face collection or any other biometric identifier. You can turn it off at any time in Settings → Find me in photos; without it, you simply tap yourself in the photo instead.',
+            },
+            {
                 sub: 'Improving the App',
                 text: 'Usage data helps us fix bugs, improve performance, and build better features for our community.',
             },
@@ -51,7 +59,7 @@ const SECTIONS = [
             },
             {
                 sub: 'Service Providers',
-                text: 'We share data only with trusted service providers who help us operate the App — including cloud storage (AWS), payment processing (Razorpay / Stripe), and analytics tools. These providers are bound by confidentiality obligations.',
+                text: 'We share data only with trusted service providers who help us operate the App — including cloud storage (AWS), payment processing (Razorpay / Stripe), analytics tools, and AI service providers (such as Anthropic, Google and Amazon Web Services) that process the photos and messages you send to power features like recognising clothing items, chatting with Kween and Kween\'s voice. These providers are bound by confidentiality obligations.',
             },
             {
                 sub: 'Legal Obligations',
@@ -200,7 +208,7 @@ export default function PrivacyPolicy() {
                         Privacy Policy
                     </h1>
                     <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.45)', lineHeight: 1.8 }}>
-                        Effective Date: <strong style={{ color: 'rgba(255,255,255,0.7)' }}>June 3, 2026</strong>
+                        Effective Date: <strong style={{ color: 'rgba(255,255,255,0.7)' }}>October 12, 2026</strong>
                     </p>
                     <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.45)', lineHeight: 1.8, marginTop: '8px' }}>
                         Melchizedek Technologies Private Limited ("MTPL", "we", "us", or "our") operates the Fluntr mobile application (the "App"). This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our digital wardrobe and social commerce platform.
