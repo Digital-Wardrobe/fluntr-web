@@ -30,19 +30,19 @@ const SOFT = '#F5F5F7'
 export const BITES = [
   { k: 'snap', tone: '#F28C38', bg: 'linear-gradient(180deg,#FFF3E8 0%,#FFFFFF 70%)', ms: 6000,
     say: 'Step one: show me your clothes.', mood: 'happy',
-    tag: 'Your closet', title: 'Your clothes, on your phone.', sub: 'Click a photo once. Fluntr cuts it out and sorts it for you.' },
+    tag: 'Your closet', title: 'Your clothes, on your phone.', sub: 'Click a photo once. Sorted for you.' },
   { k: 'colours', tone: '#E0457B', bg: 'linear-gradient(180deg,#FFEAF1 0%,#FFFFFF 70%)', ms: 6200,
     say: 'Ooh. Olive is SO your colour.', mood: 'love',
-    tag: 'Your colours', title: 'Kween learns your colours.', sub: 'One selfie, and she knows the shades that suit your skin.' },
+    tag: 'Your colours', title: 'Kween learns your colours.', sub: 'One selfie. The shades that suit you.' },
   { k: 'kween', tone: '#2E8FA3', bg: 'linear-gradient(180deg,#E6F4F7 0%,#FFFFFF 70%)', ms: 6200,
     say: 'That’s me. I pick your outfits.', mood: 'smug',
-    tag: 'Every day', title: 'Every morning, your outfit.', sub: 'From your own clothes, in your colours, for your weather and your day.' },
+    tag: 'Every day', title: 'Every morning, your outfit.', sub: 'Your clothes. Your colours. Your weather.' },
   { k: 'plans', tone: '#7B6CF6', bg: 'linear-gradient(180deg,#EFEDFF 0%,#FFFFFF 70%)', ms: 6000,
     say: 'Interview on Monday? Sorted.', mood: 'happy',
-    tag: 'Plans', title: 'Every plan, planned.', sub: 'Interviews, parties, weddings, trips. Ready days ahead, with a reminder on time.' },
+    tag: 'Plans', title: 'Every plan, planned.', sub: 'Interviews, parties, weddings, trips. Ready days ahead.' },
   { k: 'shop', tone: '#4F9D6B', bg: 'linear-gradient(180deg,#E9F5EE 0%,#FFFFFF 70%)', ms: 6600,
     say: 'Missing something? I’ll find it.', mood: 'smug',
-    tag: 'Shopping', title: 'Missing something? She shops.', sub: 'Only if you say yes. The best price, delivered in time, or in a store near you.' },
+    tag: 'Shopping', title: 'Missing something? She shops.', sub: 'Only if you say yes. Best price, in time, or nearby.' },
 ]
 
 const spring = { type: 'spring', stiffness: 320, damping: 24 }
@@ -262,7 +262,7 @@ export function StoryCard({ i, progress, onTap, onReplay, onTry, playing, onTogg
           <motion.div key="end" className="absolute inset-0 flex flex-col items-center justify-center px-8 text-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
             <div style={{ width: 150 }}><Kween expression="love" size="100%" follow={false} /></div>
             <h3 className="h-display mt-2" style={{ fontSize: 34, color: INK }}>That’s Fluntr.</h3>
-            <p className="mt-3" style={{ fontSize: 16, lineHeight: 1.45, color: MUTED }}>One app for everything you wear, buy or plan, with an AI stylist who knows you.</p>
+            <p className="mt-3" style={{ fontSize: 16, lineHeight: 1.45, color: MUTED }}>One app for everything you wear.</p>
             {onTry ? (
               <div className="mt-7 flex flex-col items-center gap-3">
                 <button type="button" onClick={onTry} className="btn-primary" style={{ fontSize: 15 }}>See why it’s different <span aria-hidden>↓</span></button>
@@ -356,7 +356,7 @@ export default function Explainer() {
         <div className="text-center lg:text-left">
           <p className="text-eyebrow mb-3">What is Fluntr?</p>
           <h2 className="h-display" style={{ fontSize: 'clamp(30px,3.8vw,50px)', color: INK }}>Fluntr in 30 seconds.</h2>
-          <p className="mx-auto mt-4 max-w-md text-[17px] leading-relaxed lg:mx-0" style={{ color: MUTED }}>Five quick bites: your closet, your colours, every day, every plan, and shopping.</p>
+          <p className="mx-auto mt-4 max-w-md text-[17px] leading-relaxed lg:mx-0" style={{ color: MUTED }}>Five quick bites.</p>
           <ol className="mx-auto mt-7 hidden max-w-md flex-col gap-1 text-left lg:mx-0 lg:flex">
             {BITES.map((b, n) => (
               <li key={b.k}>

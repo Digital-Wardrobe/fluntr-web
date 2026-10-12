@@ -18,16 +18,13 @@ const FILL = 'rgba(118,118,128,0.10)'
 const SOFT = '#F5F5F7'
 
 const ROWS = [
-  { k: 'sun', tone: '#F28C38', title: 'Today’s outfit, every morning', body: 'For your weather, your dress code and your plans, in your colours. Two alternatives a tap away, each with the reason it was picked. One tap logs it as worn.' },
-  { k: 'sparkle', tone: '#E0457B', title: 'Your colours', body: 'One selfie and she knows the shades that suit your skin, and the ones to skip. Every pick, and everything she shops for, uses them.' },
-  { k: 'camera', tone: '#7B6CF6', title: 'Fit check', body: 'A mirror selfie: what works, the one change that would help most, and a score. Clothes only, never your body. The photo is deleted straight after.' },
-  { k: 'clock', tone: '#4F9D6B', title: 'Wear history', body: 'Plan a day, mark it worn. She knows what has not been out in 60 days, and stops you repeating a look at the same event.' },
-  { k: 'stats', tone: '#3C6DD9', title: 'Insights', body: 'How much of your closet actually gets worn, cost per wear, your go-to pieces, and the gaps worth filling within your budget.' },
-  { k: 'water', tone: '#2E8FA3', title: 'Laundry', body: 'Put pieces in the wash from the Today card. She will not suggest them again until they are clean.' },
+  { k: 'sun', tone: '#F28C38', title: 'Today’s outfit, every morning', body: 'Weather, dress code, plans. Two alternatives, one tap.' },
+  { k: 'sparkle', tone: '#E0457B', title: 'Your colours', body: 'One selfie. Every pick in your shades.' },
+  { k: 'camera', tone: '#7B6CF6', title: 'Fit check', body: 'Mirror selfie. Clothes only. Photo deleted after.' },
+  { k: 'clock', tone: '#4F9D6B', title: 'Wear history', body: 'No repeats at the same event.' },
+  { k: 'stats', tone: '#3C6DD9', title: 'Insights', body: 'Cost per wear. Gaps worth filling.' },
+  { k: 'water', tone: '#2E8FA3', title: 'Laundry', body: 'In the wash? She won’t suggest it.' },
 ]
-
-// what she learns, in the order she learns it
-const KNOWS = [['closet', 'Your clothes', '#2E8FA3'], ['sparkle', 'Your colours', '#E0457B'], ['calendar', 'Your plans', '#7B6CF6'], ['sun', 'Your weather', '#F28C38'], ['body', 'Your fit', '#4F9D6B'], ['stats', 'Your budget', '#3C6DD9']]
 
 const list = { hidden: {}, show: { transition: { staggerChildren: 0.09, delayChildren: 0.1 } } }
 const item = { hidden: { opacity: 0, y: 18 }, show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] } } }
@@ -98,15 +95,8 @@ export default function Stylist() {
             The more she knows you, the better you <span className="serif-accent">look</span>.
           </h2>
           <p className="mt-6 max-w-2xl text-[18px] leading-relaxed md:text-[20px]" style={{ color: MUTED }}>
-            Kween starts with the clothes you own and the colours that suit you, then learns your week, your city’s weather, your fit and your budget. Every morning she picks from that, in English or Hindi. Closet first, always: a shop’s stylist wants you to buy, Kween wants you to wear what you love.
+            Your closet first, always. In English or Hindi.
           </p>
-          <ul className="m-0 mt-7 flex list-none flex-wrap gap-2 p-0">
-            {KNOWS.map(([k, label, tone]) => (
-              <li key={label} className="glass flex items-center gap-1.5" style={{ borderRadius: 999, padding: '7px 13px', fontSize: 13.5, fontWeight: 600, color: INK }}>
-                <Glyph k={k} color={tone} size={14} sw={2} />{label}
-              </li>
-            ))}
-          </ul>
         </motion.div>
 
         <div className="mt-14 grid items-start gap-12 lg:grid-cols-[minmax(0,360px)_1fr] lg:gap-16">

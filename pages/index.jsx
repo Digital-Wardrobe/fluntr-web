@@ -80,7 +80,7 @@ function Hero() {
         </div>
         <div className="hero-in" style={{ animationDelay: '0.12s' }}>
           <p className="mx-auto mt-8 max-w-2xl text-[18px] leading-relaxed md:text-[21px]" style={{ color: MUTED }}>
-            <strong style={{ color: INK, fontWeight: 600 }}>Fluntr is one app for everything you wear.</strong> Kween, your AI stylist, knows your clothes, your colours and your plans. She picks your outfit every day and, when something is missing, shops with you.
+            <strong style={{ color: INK, fontWeight: 600 }}>Kween picks what you wear.</strong> From your own clothes, every day.
             {/* on a line of its own, so the changing word never wraps away from "Dressed for" */}
             <span className="mt-1 block">Dressed for <Typed words={['weddings', 'interviews', 'the office', 'Diwali', 'a first date', 'parties', 'the airport']} style={{ color: INK, fontWeight: 600 }} /></span>
           </p>

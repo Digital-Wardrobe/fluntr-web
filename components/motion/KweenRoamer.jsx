@@ -19,8 +19,8 @@ import { useSound } from './Sound'
  * On a phone the page is narrow and every corner is content, so she behaves
  * differently: no wandering and no dragging (a swipe that starts on her must
  * scroll the page). She hops between perches instead of walking across the
- * screen, and between perches she only peeks up from the bottom edge, silent
- * and untouchable. People read a phone without touching it, so she waits
+ * screen, and between perches she tucks away under the bottom edge, out of
+ * the way of the text. People read a phone without touching it, so she waits
  * longer before dozing off and wakes quietly.
  *
  * Behaviour and lines are the app's (src/mascot/MascotOverlay.tsx, rules.ts,
@@ -31,7 +31,7 @@ import { useSound } from './Sound'
 const RATIO = 278 / 200 // her height per unit width, shadow included
 const SLEEP_AFTER = 18000        // with a mouse: the app's 18 s
 const SLEEP_AFTER_TOUCH = 45000  // on a phone, reading without touching is normal
-const PEEK = 0.32                // on a phone, how much of her shows above the bottom edge between perches
+const PEEK = 0                   // on a phone, how much of her shows above the bottom edge between perches: none, she tucks fully away so she never covers text
 const BUBBLE_ROOM = 244          // the widest bubble (230) and a margin from the window edge
 const TAP = ['Hi! I live in your closet.', 'Arre, that colour? Obsessed.', 'Socks with sandals? I won’t tell.', 'Your closet called. It misses you.', 'Wheee! Again!', 'Psst… post a fit today?']
 const WAKE = ['I was NOT asleep.', 'Oh! You’re back.']
@@ -243,8 +243,8 @@ export default function KweenRoamer() {
         if (freeRef.current) {
           // dropped somewhere by hand: she stays there
         } else if (tucks()) {
-          // phones, and screens without a free margin: no wandering over the content; she peeks up from the bottom-left edge
-          const ps = wanderSize(), py = vh() - ps * RATIO * PEEK
+          // phones, and screens without a free margin: no wandering over the content; she tucks away under the bottom edge
+          const ps = wanderSize(), py = vh() - ps * RATIO * PEEK + 8
           if (!peekRef.current && !travelRef.current) { peekRef.current = true; setPeeking(true); setSize(ps); hopTo(10, py) }
           else if (peekRef.current && !travelRef.current) { x.set(10); y.set(py); if (alpha.get() < 1) alpha.set(1) } // the toolbar can change the window height
         } else if (!travelRef.current && !wanderTimer.current) {

@@ -61,8 +61,8 @@ export default function Week() {
           <h2 className="h-display" style={{ fontSize: 'clamp(32px,4.4vw,60px)', color: INK }}>
             Every plan, <span className="serif-accent">planned</span>.
           </h2>
-          <p className="mt-5 max-w-2xl text-[18px] leading-relaxed md:text-[19px]" style={{ color: MUTED }}>
-            Interviews, meetings, parties, a sangeet, a trip next month. Add it once. Kween plans the outfit from your closet and in your colours, checks the laundry and what this crowd has already seen, and reminds you at the right moment.
+          <p className="mt-5 max-w-2xl text-[18px] leading-relaxed md:text-[20px]" style={{ color: MUTED }}>
+            Add the plan once. Kween picks the outfit and reminds you in time.
           </p>
         </div>
 

@@ -22,15 +22,15 @@ const SOFT = '#F5F5F7'
 const STEP_MS = 5200
 
 const STEPS = [
-  { k: 'ask', title: 'She asks first.', body: 'Nothing in your closet works? Kween asks before she looks anywhere else. Your closet always comes first.',
+  { k: 'ask', title: 'She asks first.', body: 'Your closet always comes first.',
     say: 'Closet first. I only shop if you say yes.', mood: 'happy' },
-  { k: 'store', title: 'Trying something on? She completes the look.', body: 'In H&M with a jacket in your hands? She finds the pants that suit it from H&M’s own range online, in your size and your colours.',
+  { k: 'store', title: 'In H&M? She completes the look.', body: 'The pants that suit it, from H&M online, in your size.',
     say: 'Same store, online, in your size.', mood: 'smug' },
-  { k: 'near', title: 'Not loving those? A store near you.', body: 'Share your location for that one search, and she finds a match in your size at a store close by.',
+  { k: 'near', title: 'Or a store near you.', body: 'In your size, 1.2 km away.',
     say: 'Or walk 1.2 km. It’s right there.', mood: 'happy' },
-  { k: 'when', title: 'Buy now, or wait?', body: 'She checks today’s offers and the sales coming up across thousands of online stores, and tells you the best day to buy.',
+  { k: 'when', title: 'Buy now, or wait?', body: 'She knows when the sale is.',
     say: 'Wait 9 days. Save ₹800.', mood: 'smug' },
-  { k: 'arrive', title: 'Will it arrive in time?', body: 'Ordering online? She checks the delivery date against your event before you pay.',
+  { k: 'arrive', title: 'Will it arrive in time?', body: 'Checked against your date, before you pay.',
     say: 'Arrives Thursday. Party’s Saturday. Safe.', mood: 'love' },
   { k: 'try', title: 'Try it without wearing it.', body: '',
     say: 'Try it on. No trial-room queue.', mood: 'love' },
@@ -211,8 +211,8 @@ export default function Shop() {
           <h2 className="h-display" style={{ fontSize: 'clamp(34px,4.6vw,64px)', color: INK }}>
             Closet first. Then she <span className="serif-accent">shops</span>.
           </h2>
-          <p className="mt-5 max-w-2xl text-[18px] leading-relaxed md:text-[19px]" style={{ color: MUTED }}>
-            When nothing you own works, Kween looks across thousands of online stores for what suits you, in your colours and your size, and takes care of the rest: the best day to buy, delivery before your date, or a store near you.
+          <p className="mt-5 max-w-2xl text-[18px] leading-relaxed md:text-[20px]" style={{ color: MUTED }}>
+            Nothing you own works? She finds what does.
           </p>
         </div>
         <KweenPerch name="shop" bubble="left" className="mb-2 hidden shrink-0 lg:block" width="clamp(84px, 7vw, 100px)" />

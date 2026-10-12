@@ -13,10 +13,10 @@ const INK = '#121317'
 const MUTED = '#6B7080'
 
 const ASKS = [
-  { k: 'camera', tone: '#E0457B', title: 'Your selfie', body: 'Used for your colours, and only after you say yes.' },
-  { k: 'globe', tone: '#3C6DD9', title: 'Your location', body: 'Only when you ask for a store near you, for that one search.' },
-  { k: 'tag', tone: '#F28C38', title: 'Shopping', body: 'She looks outside your closet only when you tell her to.' },
-  { k: 'lock', tone: '#4F9D6B', title: 'Fit checks', body: 'Clothes only, never your body. The photo is deleted straight after.' },
+  { k: 'camera', tone: '#E0457B', title: 'Your selfie', body: 'Only after you say yes.' },
+  { k: 'globe', tone: '#3C6DD9', title: 'Your location', body: 'Only for a store search you ask for.' },
+  { k: 'tag', tone: '#F28C38', title: 'Shopping', body: 'Only when you tell her to.' },
+  { k: 'lock', tone: '#4F9D6B', title: 'Fit checks', body: 'Clothes only. Photo deleted after.' },
 ]
 
 export default function Trust() {
@@ -28,7 +28,7 @@ export default function Trust() {
           <div className="max-w-2xl">
             <p className="text-eyebrow mb-5">Your permission</p>
             <h2 className="h-display" style={{ fontSize: 'clamp(32px,4.2vw,56px)', color: INK }}>
-              Personal, never pushy. She always <span className="serif-accent">asks</span> first.
+              She always <span className="serif-accent">asks</span> first.
             </h2>
           </div>
           <KweenPerch name="trust" line="I always ask first. Manners." mood="happy" width="clamp(60px, 6vw, 88px)" />

@@ -89,8 +89,8 @@ export default function Colours() {
             <h2 className="h-display" style={{ fontSize: 'clamp(32px,4.2vw,58px)', color: INK }}>
               Colours that suit <span className="serif-accent">your</span> face.
             </h2>
-            <p className="mt-5 max-w-xl text-[18px] leading-relaxed md:text-[19px]" style={{ color: MUTED }}>
-              One selfie, and Kween matches your skin tone and undertone to the shades that make you glow, and the ones that wash you out. From then on, every outfit she picks and everything she shops for is in your colours.
+            <p className="mt-5 max-w-xl text-[18px] leading-relaxed md:text-[20px]" style={{ color: MUTED }}>
+              One selfie. Your colours, in every outfit she picks.
             </p>
             <div className="mt-7 flex flex-col gap-5">
               <Swatches title="Suits you" items={SUITS} go={go} delay={reduce ? 0 : 2.4} />

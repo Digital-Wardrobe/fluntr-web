@@ -58,7 +58,7 @@ export default function Features() {
         <Card
           tone="#2E8FA3"
           title="See everything you own. Finally."
-          body="Every piece, in a grid you can actually look through. Grouped by colour, type and occasion, and searchable the way your memory is not."
+          body="Every piece. One grid. Searchable."
           props={[{ text: '+ 6 added', left: '-22%', top: '16%', tone: '#4F9D6B' }, { text: 'Ethnic wear · 4', left: '78%', top: '42%' }]}
           perch={{ name: 'closet', line: 'Your tops and bottoms make 24 combos. Lots to wear!', mood: 'happy' }}
         >
@@ -69,7 +69,7 @@ export default function Features() {
           flip
           tone="#F28C38"
           title="Ask before you commit."
-          body="Put a look up and see what people think while you still have time to change. Every post says which pieces made it."
+          body="Post two looks. Let people pick."
           props={[{ text: '♥ 142', left: '-16%', top: '26%' }, { text: 'that’s the one', left: '76%', top: '58%', tone: '#121317' }]}
           perch={{ name: 'feed', line: 'I saw that like. Good taste.', mood: 'love' }}
         >
