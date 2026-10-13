@@ -36,6 +36,9 @@ export const PLUSH = {
   teddy: { name: 'Teddy', desc: 'Round ears, cosy vibes, for everyone.', color: 'cream' },
   plain: { name: 'Mochi', desc: 'Just a soft little plush. Chill, for everyone.', color: 'mint' },
 }
+/** Bumped whenever the body files change, so no browser or edge keeps an old answer for the same URL. */
+const BODY_V = 2
+export const bodyUrl = (persona, color) => `/mascot/${persona}-${color || PLUSH[persona].color}.webp?v=${BODY_V}`
 const furHex = key => (COLORS.find(c => c[0] === key) || COLORS[0])[2]
 const lighten = (hex, k) => '#' + [1, 3, 5].map(i => Math.round(parseInt(hex.slice(i, i + 2), 16) * (1 - k) + 255 * k).toString(16).padStart(2, '0')).join('')
 
@@ -124,6 +127,12 @@ function Face({ face, blinking, open, id, ey = EY, her = true }) {
 
 export default function Kween({ expression = 'idle', talking = false, follow = true, walking = false, mirrored = false, size = 180, className = '', style, onClick, persona = 'kween', color, hopKey = 0 }) {
   const fur = furHex(color || PLUSH[persona].color)
+  // If a body file fails, try the blush one, then Kween's; never leave a broken picture.
+  const fallback = el => { const tries = [bodyUrl(persona, 'blush'), bodyUrl('kween', 'blush')]; const next = tries.find(u => !el.src.endsWith(u)); if (next && !el.dataset.retried) { el.dataset.retried = '1'; el.src = next } else el.style.visibility = 'hidden' }
+  // A failure during the first paint happens before React is listening, so check once after mount too.
+  const bodyRef = useRef(null)
+  const src = bodyUrl(persona, color)
+  useEffect(() => { const el = bodyRef.current; if (el && el.complete && el.naturalWidth === 0) fallback(el) }, [src]) // eslint-disable-line react-hooks/exhaustive-deps
   const ey = persona === 'teddy' ? EY + 2.5 : EY // Teddy's face sits a touch lower, as in the app
   const reduce = useReducedMotion()
   const id = useId().replace(/:/g, '')
@@ -196,11 +205,12 @@ export default function Kween({ expression = 'idle', talking = false, follow = t
         <span aria-hidden className="absolute" style={{ left: '14%', right: '14%', top: `${(216 - 8 + PAD) / (H + 6) * 100}%`, height: `${16 / (H + 6) * 100}%`, borderRadius: '50%', background: 'rgba(30,20,48,0.22)', filter: 'blur(5px)' }} />
         <img
           key={`${persona}-${color || PLUSH[persona].color}`}
-          src={`/mascot/${persona}-${color || PLUSH[persona].color}.webp`}
+          src={bodyUrl(persona, color)}
           alt=""
           draggable={false}
           decoding="async"
-          onError={e => { const d = `/mascot/${persona}-${PLUSH[persona].color}.webp`; if (!e.currentTarget.src.endsWith(d)) e.currentTarget.src = d; else e.currentTarget.style.visibility = 'hidden' }}
+          ref={bodyRef}
+          onError={e => fallback(e.currentTarget)}
           className="absolute left-0"
           style={{ top: `${(22 + PAD) / (H + 6) * 100}%`, width: '100%', height: `${200 / (H + 6) * 100}%`, objectFit: 'fill', pointerEvents: 'none', userSelect: 'none' }}
         />
