@@ -6,22 +6,22 @@ import { KweenPerch } from './KweenRoamer'
 
 /**
  * Your colours: one selfie, matched to the shades that suit your skin. The
- * portrait is a neutral placeholder in the interface's own greys (no face, no
- * skin tone, no real person), scanned once when it comes into view; then the
+ * portrait is a simple drawing of a fair-skinned person (no face, no real
+ * person), scanned once when it comes into view; then the
  * reading and the palette appear.
  */
 
 const INK = '#121317'
 const MUTED = '#6B7080'
-const SKIN = '#D6D9E0'   // the placeholder's grey, not a skin tone
-const HAIR = '#C3C7D0'
-const BODY = '#E7E9EE'
+const SKIN = '#F4DECB'   // a fair, neutral complexion
+const HAIR = '#5A4036'
+const BODY = '#E9ECF1'
 
 const SUITS = [['Olive', '#6E7B3B'], ['Rust', '#B4532A'], ['Mustard', '#D4A13A'], ['Teal', '#2E7D80'], ['Cream', '#EFE3C8'], ['Maroon', '#7A2335']]
 const SKIP = [['Neon green', '#46F05A'], ['Icy grey', '#D9E1EA'], ['Pale lilac', '#DCCBF2']]
 const POINTS = [[100, 96], [76, 126], [100, 172]] // forehead, cheek, neck, in the portrait's 200 x 250 box
 
-/** A neutral head and shoulders, like a profile placeholder: the selfie, without a person. 200 x 250. */
+/** A drawn head and shoulders, fair-skinned, no face: the selfie, without a real person. 200 x 250. */
 export function FaceArt({ className = 'absolute inset-0 h-full w-full' }) {
   return (
     <svg viewBox="0 0 200 250" className={className} aria-hidden>
