@@ -41,11 +41,11 @@ const SECTIONS = [
             },
             {
                 sub: 'Colours That Suit You (optional)',
-                text: 'If you take a selfie in Settings → Colours that suit you, the photo is sent to our AI service provider to work out which clothing colours flatter you (undertone and contrast only). The photo is read in memory and never stored; we keep only the resulting palette, as part of your style profile. You can retake it or erase it at any time.',
+                text: 'If you take a selfie in Settings → Colours that suit you, the photo is read on your phone to work out which clothing colours flatter you (warm or cool, light or deep, bright or soft), and you can compare colours on your own face in the drape test. The photo never leaves your phone and is never uploaded; we keep only the resulting palette (your season, its colours and whether gold or silver suits you), as part of your style profile. You can retake it or erase it at any time.',
             },
             {
                 sub: 'Shopping (optional, off by default)',
-                text: 'Kween looks in online stores only if you turn on Settings → Shopping and then ask. What you search for (for example “navy chinos under ₹2,000”, never your name) is sent to a shopping search provider (SerpAPI, which searches Google Shopping). We keep the prices we see for products, not linked to you, so Kween can tell whether a price is lower than before. If you ask for stores nearby, your location is used once for that lookup with OpenStreetMap and is not stored. A photo you take in a store, or a photo of you for “See it on me”, is read in memory and never stored; try-on pictures are made by Google’s Gemini model and returned only to you. Fluntr does not sell products; links open the store, and the store’s own terms and privacy policy apply there. Turning shopping off stops all of this.',
+                text: 'Kween looks in online stores only if you turn on Settings → Shopping and then ask. What you search for (for example “navy chinos under ₹2,000”, never your name) is sent to a shopping search provider (SerpAPI, which searches Google Shopping). We keep the prices we see for products, not linked to you, so Kween can tell whether a price is lower than before. If you ask for stores nearby, your location is used once for that lookup with OpenStreetMap and is not stored. A photo you take in a store, or a photo of you for “See it on me”, is read in memory and never stored; try-on pictures are made by our own image model running on Modal (a GPU cloud provider) or, if that is unavailable, by Google’s Gemini model, and are returned only to you. Fluntr does not sell products; links open the store, and the store’s own terms and privacy policy apply there. Turning shopping off stops all of this.',
             },
             {
                 sub: 'Improving the App',
@@ -71,7 +71,11 @@ const SECTIONS = [
             },
             {
                 sub: 'Service Providers',
-                text: 'We share data only with trusted service providers who help us operate the App — including cloud storage (AWS), payment processing (Razorpay / Stripe), analytics tools, and AI service providers (such as Anthropic, Google and Amazon Web Services) that process the photos and messages you send to power features like recognising clothing items, chatting with Kween and Kween\'s voice, and, only if you turn shopping on, a shopping search provider (SerpAPI) and OpenStreetMap for stores nearby. These providers are bound by confidentiality obligations.',
+                text: 'We share data only with trusted service providers who help us operate the App — including hosting and cloud storage (Amazon Web Services and Cloudflare), payment processing (Razorpay / Stripe), analytics tools, and AI service providers that process the photos and messages you send to power features like recognising clothing items, cleaning up photos of your pieces, try-on pictures and chatting with Kween: NVIDIA, Anthropic, Google, Amazon Web Services, Modal (which runs our own image models) and Hugging Face (which runs our own clothing-recognition service); and, only if you turn shopping on, a shopping search provider (SerpAPI) and OpenStreetMap for stores nearby. These providers process data only to provide the service to us and are bound by confidentiality obligations.',
+            },
+            {
+                sub: 'Stickers and GIFs (GIPHY)',
+                text: 'Stickers and GIFs in messages, mirror replies and mirrors come from GIPHY. When you search for one, your search words are sent to GIPHY through our servers, without your name or account. The stickers you see are loaded from GIPHY’s servers, which, like any website, receive your device’s IP address; GIPHY’s own privacy policy applies to that. A sticker you send or place on a mirror is stored with us as a link to GIPHY.',
             },
             {
                 sub: 'Legal Obligations',
@@ -221,7 +225,7 @@ export default function PrivacyPolicy() {
                         Privacy Policy
                     </h1>
                     <p style={{ fontSize: '14px', color: 'rgba(21,23,27,0.75)', lineHeight: 1.8 }}>
-                        Effective Date: <strong style={{ color: 'rgba(21,23,27,1)' }}>June 3, 2026</strong> · Last updated: <strong style={{ color: 'rgba(21,23,27,1)' }}>October 12, 2026</strong>
+                        Effective Date: <strong style={{ color: 'rgba(21,23,27,1)' }}>June 3, 2026</strong> · Last updated: <strong style={{ color: 'rgba(21,23,27,1)' }}>October 14, 2026</strong>
                     </p>
                     <p style={{ fontSize: '14px', color: 'rgba(21,23,27,0.75)', lineHeight: 1.8, marginTop: '8px' }}>
                         Melchizedek Technologies Private Limited ("MTPL", "we", "us", or "our") operates the Fluntr mobile application (the "App"). This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our digital wardrobe and social commerce platform.
