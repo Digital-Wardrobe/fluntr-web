@@ -6,6 +6,8 @@ import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 import { PLANS, PERIOD_DAYS, fromApi } from '../content/plans'
 import { track } from '../lib/analytics'
+import KweenRoamer, { KweenPerch } from '../components/motion/KweenRoamer'
+import Friends from '../components/motion/Friends'
 
 /*
  * Pricing. The point of the page: what you pay is tiny next to what you get
@@ -268,9 +270,12 @@ export default function Pricing({ plans }) {
           <div className="mx-auto grid max-w-6xl gap-5 md:grid-cols-2 lg:grid-cols-4" style={{ alignItems: 'stretch' }}>
             {plans.map((p, i) => <Rise key={p.plan} delay={0.06 * i} style={{ height: '100%' }}><PlanCard p={p} period={period} onPick={pick} /></Rise>)}
           </div>
-          <p className="mx-auto mt-8 max-w-2xl text-center" style={{ fontSize: 14, color: MUTED }}>
-            Prices include GST. Change or cancel any time. Nothing you add is ever deleted or locked if you change plans.
-          </p>
+          <div className="mx-auto mt-8 flex max-w-2xl flex-col items-center gap-4 text-center sm:flex-row sm:items-end sm:justify-center sm:text-left">
+            <KweenPerch name="pricing" line="₹2.5 a day. I cost less than your chai." mood="smug" bubble="right" className="shrink-0" width="clamp(64px, 7vw, 92px)" />
+            <p className="m-0 max-w-md" style={{ fontSize: 14, color: MUTED }}>
+              Prices include GST. Change or cancel any time. Nothing you add is ever deleted or locked if you change plans.
+            </p>
+          </div>
         </section>
 
         {/* ── What ₹2.5 sits next to ── */}
@@ -397,13 +402,16 @@ export default function Pricing({ plans }) {
             <h2 className="h-display" style={{ fontSize: 'clamp(40px,6vw,84px)', margin: 0 }}>
               Your mornings are worth <span className="serif-accent">₹2.5</span>.
             </h2>
-            <div className="mt-10 flex justify-center gap-3">
+            <div className="mt-10 flex flex-col-reverse items-center gap-5 sm:flex-row sm:items-end sm:justify-center sm:gap-4">
               <Link href="/#waitlist" className="btn-primary" onClick={() => track('pricing_cta', { plan: 'waitlist', period })}>Join the waitlist</Link>
+              <KweenPerch name="pricing-end" line="Go on. I’ll keep your spot." mood="love" bubble="left" width="clamp(64px, 7vw, 96px)" />
             </div>
           </Rise>
         </section>
       </main>
       <Footer />
+      <KweenRoamer />
+      <Friends />
     </>
   )
 }
