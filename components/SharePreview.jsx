@@ -1,9 +1,16 @@
 import Head from 'next/head'
+import { useEffect, useState } from 'react'
+import { playStoreUrl, sharedRef } from '../lib/storeLinks'
 
 export const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://api.fluntr.com'
 
-// Opens the installed app via its URL scheme; falls back to the home page
+// Opens the installed app via its URL scheme. Without the app: the Play Store on Android (carrying
+// who shared the link, so the install counts as their invite), the home page elsewhere.
 export function OpenInApp({ path }) {
+  const [getApp, setGetApp] = useState('/')
+  useEffect(() => {
+    if (/Android/.test(navigator.userAgent || '')) setGetApp(playStoreUrl(path.split('/')[0] || 'home', sharedRef()))
+  }, [path])
   return (
     <div className="flex flex-col items-center gap-3 mt-8">
       <a
@@ -12,7 +19,7 @@ export function OpenInApp({ path }) {
       >
         Open in Fluntr
       </a>
-      <a href="/" className="text-sm text-neutral-400 underline">Don’t have the app? Get Fluntr</a>
+      <a href={getApp} className="text-sm text-neutral-400 underline">Don’t have the app? Get Fluntr</a>
     </div>
   )
 }

@@ -1,28 +1,17 @@
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
+import { APP_STORE_URL, playStoreUrl, sharedRef } from '../lib/storeLinks'
 
-const APP_STORE_URL = 'https://apps.apple.com/app/fluntr/id000000000'
-const PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=com.mtpl.fluntr'
-
-/**
- * Landing page shown when someone opens a Fluntr share link on the web.
- *
- * On iOS and Android the OS normally intercepts these URLs and opens the app
- * directly (see the /.well-known association files). This page is the fallback
- * for everyone else: desktop, browsers where the claim failed, and people who
- * do not have the app installed yet.
- *
- * It tries the custom scheme once on mount, then settles into a store prompt
- * if nothing took over the page.
- */
 export default function DeepLinkLanding({ kind, id, title, subtitle }) {
   const [platform, setPlatform] = useState('other')
+  const [ref, setRef] = useState(null)
 
   useEffect(() => {
     const ua = navigator.userAgent || ''
     const isIOS = /iPad|iPhone|iPod/.test(ua)
     const isAndroid = /Android/.test(ua)
     setPlatform(isIOS ? 'ios' : isAndroid ? 'android' : 'other')
+    setRef(sharedRef())
 
     if (!isIOS && !isAndroid) return
 
@@ -36,7 +25,7 @@ export default function DeepLinkLanding({ kind, id, title, subtitle }) {
     return () => clearTimeout(timer)
   }, [kind, id])
 
-  const storeUrl = platform === 'android' ? PLAY_STORE_URL : APP_STORE_URL
+  const storeUrl = platform === 'android' ? playStoreUrl(kind, ref) : APP_STORE_URL
 
   return (
     <>
