@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import Nav from '../components/Nav'
 import Footer from '../components/Footer'
-import { PLANS, PERIOD_DAYS, fromApi } from '../content/plans'
+import { PLANS, PERIOD_DAYS, PERIOD_MONTHS, fromApi } from '../content/plans'
 import { track } from '../lib/analytics'
 import KweenRoamer, { KweenPerch } from '../components/motion/KweenRoamer'
 import Friends from '../components/motion/Friends'
@@ -14,64 +14,80 @@ import Friends from '../components/motion/Friends'
  * back. Every price is shown per day first (the number people compare with a
  * chai), then what it gives back in time, money and mornings without a fight.
  * Prices and limits come from the API at build time (same numbers the app
- * enforces), with content/plans.js as the fallback.
+ * enforces), with content/plans.js as the fallback. Kween and the Planner lead.
  */
 
 const INK = '#121317'
 const MUTED = '#6B7080'
 const ease = [0.16, 1, 0.3, 1]
-const PERIODS = [['MONTHLY', 'Monthly'], ['QUARTERLY', '3 months'], ['ANNUAL', 'Yearly']]
-const PERIOD_WORD = { MONTHLY: 'a month', QUARTERLY: 'every 3 months', ANNUAL: 'a year' }
+const PERIODS = [['MONTHLY', 'Monthly'], ['QUARTERLY', '3 months'], ['HALF_YEARLY', '6 months'], ['ANNUAL', 'Yearly']]
+const PERIOD_WORD = { MONTHLY: 'a month', QUARTERLY: 'every 3 months', HALF_YEARLY: 'every 6 months', ANNUAL: 'a year' }
 
 const inr = n => `₹${Number(n).toLocaleString('en-IN', { maximumFractionDigits: 1 })}`
 const perDay = (p, period) => Math.round((p.prices[period].inr / PERIOD_DAYS[period]) * 10) / 10
-const perMonth = (p, period) => Math.round(p.prices[period].inr / (PERIOD_DAYS[period] / 30))
+const perMonth = (p, period) => Math.round(p.prices[period].inr / PERIOD_MONTHS[period])
 const save = (p, period) => {
-  if (!p.prices || period === 'MONTHLY') return 0
-  const m = p.prices.MONTHLY.inr * (period === 'ANNUAL' ? 12 : 3)
-  return Math.round(((m - p.prices[period].inr) / m) * 100)
+  if (!p.prices?.[period] || period === 'MONTHLY') return 0
+  const m = p.prices.MONTHLY.inr * PERIOD_MONTHS[period]
+  return Math.max(0, Math.round(((m - p.prices[period].inr) / m) * 100))
 }
+const proDay = pro => (pro?.prices?.ANNUAL ? perDay(pro, 'ANNUAL') : 2.7)
 
+// Kween and the Planner first: they're what people pay for
 const ROWS = [
-  ['items', 'Wardrobe pieces', 'limit'],
+  ['kween', 'Ask Kween anything', 'limit', 'Your stylist, for anything outfits, occasions and shopping'],
+  ['reroll', '“Show me another” outfit', 'limit', 'Kween’s daily pick, and another, and another'],
+  ['plannerDays', 'Plan outfits ahead', 'setting', 'Your week, a trip, the wedding: planned around your events and the weather'],
+  ['fitcheck', 'Fit checks', 'limit', 'A mirror selfie, an honest score, one change to make'],
+  ['scan', 'Smart Scans', 'limit', 'One outfit photo, every piece found, cropped and tagged'],
+  ['pieces', 'New pieces, one by one', 'limit', 'A photo of one piece, background removed', 'piecesDaily'],
+  ['items', 'Wardrobe size', 'limit'],
   ['collections', 'Collections', 'limit'],
-  ['scan', 'Smart Scans a month', 'limit', 'One photo, every piece found, cut out and tagged'],
-  ['beautify', 'Studio shots a month', 'limit', 'Your piece as a clean product photo'],
-  ['beautifyPro', 'Beautify Pro a month', 'limit', 'Our best image model, for the pieces you love most'],
-  ['tryon', 'Try-ons a month', 'limit', 'See a piece on you before you wear it'],
-  ['fitcheck', 'Fit checks a day', 'limit', 'A mirror selfie, an honest score, one change to make'],
-  ['kween', 'Questions to Kween a day', 'limit', 'Your stylist, for anything outfits and occasions'],
-  ['plannerDays', 'Plan ahead', 'setting'],
+  ['beautify', 'Studio shots', 'limit', 'Your piece as a clean product photo'],
+  ['beautifyPro', 'Beautify Pro', 'limit', 'Our best image model, for the pieces you love most'],
+  ['tryon', 'Virtual try-ons', 'limit', 'See a piece on you before you wear it'],
   ['historyDays', 'Outfit history (what you wore, where)', 'setting'],
 ]
-const cell = (p, [key, , kind]) => {
-  const v = kind === 'setting' ? p.settings[key] : p.limits[key]
-  if (v === null || v === undefined) return kind === 'setting' ? 'Forever' : 'Unlimited'
-  if (v === 0) return '—'
-  return kind === 'setting' ? `${v} days` : Number(v).toLocaleString('en-IN')
+const PER = { day: 'a day', week: 'a week', month: 'a month', life: 'to try', total: '' }
+const cell = (p, [key, , kind, , daily]) => {
+  if (kind === 'setting') {
+    const v = p.settings[key]
+    return v === null || v === undefined ? 'Forever' : `${v} days`
+  }
+  const l = p.limits[key]
+  if (!l) return '—'
+  if (l.value === null || l.value === undefined) return 'Unlimited'
+  if (l.value === 0) return '—'
+  let text = `${Number(l.value).toLocaleString('en-IN')} ${PER[l.window] || ''}`.trim()
+  const d = daily ? p.limits[daily]?.value : null
+  if (d && l.window !== 'day') text += ` · ${d} a day`
+  if (l.bonus) text += ` +${l.bonus} to start`
+  return text
 }
 
-// What ₹2.5 a day sits next to (everyday Indian prices, rounded)
-const SCALE = [
-  ['Fluntr Pro, a day', 2.5, true],
+// What Pro a day sits next to (everyday Indian prices, rounded)
+const scaleOf = day => [
+  ['Fluntr Pro, a day', day, true],
   ['Cutting chai', 10],
   ['Metro ride', 30],
   ['Cold coffee', 120],
   ['A burger', 180],
 ]
 
-const BACK = [
+const backOf = (day, proMonth) => [
   ['91 hours', 'back every year', '15 minutes saved each morning, deciding in seconds instead of standing at the wardrobe. That works out to about ₹10 an hour for your mornings.'],
-  ['₹1,200', 'one skipped impulse buy', 'You see everything you own, so you stop buying the black top you already have twice. One skipped buy pays for 16 months of Pro.'],
-  ['1 less', '“what should I wear?” fight', 'With your partner before dinner, your mum before the wedding, your roommate at 8:55 before class. Priceless. Also ₹2.5.'],
+  ['₹1,200', 'one skipped impulse buy', `You see everything you own, so you stop buying the black top you already have twice. One skipped buy pays for ${Math.floor(1200 / proMonth)} months of Pro.`],
+  ['1 less', '“what should I wear?” fight', `With your partner before dinner, your mum before the wedding, your roommate at 8:55 before class. Priceless. Also ${inr(day)}.`],
   ['1 lehenga', 'three weddings', 'Fluntr remembers who saw it where and restyles it, so the outfit you already own feels new. Studio for wedding season costs less than one dupatta.'],
 ]
 
 const FAQ = [
-  ['Is Free really free?', 'Yes, forever. Your closet, daily outfit picks, wear log and the social side are free. You only pay for more AI: more scans, studio shots, try-ons and questions to Kween.'],
-  ['What happens if I hit a limit?', 'Nothing you added is ever deleted or locked. You just can’t add more of that thing until next month, or until you upgrade.'],
-  ['What’s a Smart Scan?', 'One photo, even a mirror selfie, and Fluntr finds every piece in it, cuts each one out and tags it (type, colour, fabric, occasion). Lots of pieces from one tap.'],
-  ['Beautify vs Beautify Pro?', 'Beautify turns your photo into a clean studio shot, included in every plan. Beautify Pro uses our most detailed image model for the pieces you love most, on Pro and Studio.'],
+  ['Is Free really free?', 'Yes, forever. Your closet (up to 50 pieces), Kween’s outfit pick every morning, 2 days of planning, the wear log and the social side are free. You pay for more Kween: more questions, more outfit ideas, planning weeks ahead, fit checks, scans and studio shots.'],
+  ['Is there a free trial?', 'Yes. Pro starts with 7 days free. Cancel before the trial ends and you pay nothing.'],
+  ['What does “unlimited” mean?', 'Fair use: everything one person does in a day, however much they love Kween. It just isn’t for automated use.'],
+  ['What happens if I hit a limit?', 'Nothing you added is ever deleted or locked. You just can’t add more of that thing until tomorrow, next week or next month (it says which), or until you upgrade.'],
+  ['What’s a Smart Scan?', 'One photo of an outfit, even a mirror selfie, and Fluntr finds every piece in it, crops each one and tags it (type, colour, fabric, occasion). Lots of pieces from one tap. Free starts with 10, then 5 a month.'],
+  ['Beautify vs Beautify Pro?', 'Beautify turns your photo into a clean studio shot: 1 a month on Free, 30 on Pro, 150 on Studio. Beautify Pro uses our most detailed image model for the pieces you love most, on Pro and Studio.'],
   ['Can I cancel?', 'Any time, from the Play Store. Your plan runs to the end of what you paid for, then you’re back on Free with everything still there.'],
   ['Do you train AI on my photos?', 'No. Your photos are used to run your closet, not to train models. Try-on photos of you are deleted as soon as the picture is made.'],
   ['How do I pay?', 'Through Google Play (UPI, cards, wallets) when the app launches. Prices include GST.'],
@@ -86,7 +102,8 @@ export async function getStaticProps() {
     clearTimeout(timer)
     if (res.ok) {
       const data = await res.json()
-      if (Array.isArray(data?.plans) && data.plans.length) return { props: { plans: fromApi(data.plans) }, revalidate: 3600 }
+      // Only trust a catalogue with the final pricing (6-month plans); an older API falls back to the bundled copy
+      if (Array.isArray(data?.plans) && data.plans.some(p => p.prices?.HALF_YEARLY)) return { props: { plans: fromApi(data.plans) }, revalidate: 3600 }
     }
   } catch { /* fall back to the bundled copy */ }
   return { props: { plans: PLANS }, revalidate: 3600 }
@@ -109,12 +126,15 @@ function PlanCard({ p, period, onPick }) {
   const s = save(p, period)
   const fg = dark ? '#fff' : INK
   const sub = dark ? 'rgba(255,255,255,0.66)' : MUTED
+  const row = key => ROWS.find(r => r[0] === key)
+  const n = key => cell(p, row(key))
   const highlights = [
-    ['items', `${cell(p, ROWS[0])} pieces`],
-    ['scan', `${cell(p, ROWS[2])} Smart Scans a month`],
-    ['beautify', `${cell(p, ROWS[3])} studio shots a month`],
-    ...(p.limits.tryon ? [['tryon', `${cell(p, ROWS[5])} try-ons a month`]] : []),
-    ['kween', `${cell(p, ROWS[7])} questions to Kween a day`],
+    ['kween', p.limits.kween?.value === null ? 'Ask Kween anything, unlimited' : `Ask Kween ${n('kween')}`],
+    ['reroll', p.limits.reroll?.value === null ? 'Unlimited outfit ideas' : `${p.limits.reroll.value} more outfit ideas ${PER[p.limits.reroll.window] || ''}`.trim()],
+    ['plannerDays', `Plan ${p.settings.plannerDays} days ahead`],
+    ['fitcheck', `Fit checks: ${n('fitcheck')}`],
+    ['scan', `Smart Scans: ${n('scan')}`],
+    ['beautify', `Studio shots: ${n('beautify')}`],
     ['historyDays', p.settings.historyDays === null ? 'Outfit history forever' : `${p.settings.historyDays} days of outfit history`],
   ]
   return (
@@ -164,7 +184,7 @@ function PlanCard({ p, period, onPick }) {
         border: 'none', cursor: 'pointer', borderRadius: 999, padding: '16px 24px', fontSize: 15, fontWeight: 700,
         background: '#fff', color: INK, justifyContent: 'center', display: 'flex',
       } : { justifyContent: 'center' }}>
-        {p.prices ? `Get ${p.name}` : 'Start free'}
+        {p.prices ? (p.trialDays ? `Try ${p.name} free for ${p.trialDays} days` : `Get ${p.name}`) : 'Start free'}
       </button>
     </div>
   )
@@ -188,7 +208,7 @@ function Calculator({ pro }) {
   const [price, setPrice] = useState(1200)
   const hours = Math.round((minutes * 365) / 60)
   const saved = buys * 12 * price
-  const proYear = pro?.prices?.ANNUAL?.inr || 899
+  const proYear = pro?.prices?.ANNUAL?.inr || 999
   const times = Math.max(0, Math.round((saved / proYear) * 10) / 10)
   return (
     <div className="grid gap-8 md:grid-cols-2" style={{ alignItems: 'center' }}>
@@ -204,7 +224,7 @@ function Calculator({ pro }) {
         <p style={{ marginTop: 22, fontSize: 18, fontWeight: 600, color: INK, maxWidth: 440 }}>
           {saved > 0
             ? <>Pro costs {inr(proYear)} a year. That’s <span className="serif-accent">{times}×</span> back, before counting the mornings.</>
-            : <>Pro costs {inr(proYear)} a year: about ₹2.5 for every calmer morning.</>}
+            : <>Pro costs {inr(proYear)} a year: about {inr(proDay(pro))} for every calmer morning.</>}
         </p>
       </div>
     </div>
@@ -214,6 +234,10 @@ function Calculator({ pro }) {
 export default function Pricing({ plans }) {
   const [period, setPeriod] = useState('ANNUAL')
   const pro = useMemo(() => plans.find(p => p.plan === 'PRO'), [plans])
+  const day = proDay(pro)
+  const proMonth = pro?.prices?.ANNUAL ? perMonth(pro, 'ANNUAL') : 83
+  const SCALE = scaleOf(day)
+  const BACK = backOf(day, proMonth)
   const max = SCALE[SCALE.length - 1][1]
   const maxSave = Math.max(...plans.map(p => save(p, 'ANNUAL')))
 
@@ -224,7 +248,7 @@ export default function Pricing({ plans }) {
 
   const ld = {
     '@context': 'https://schema.org', '@type': 'Product', name: 'Fluntr', brand: { '@type': 'Brand', name: 'Fluntr' },
-    description: 'Fluntr is a digital wardrobe and personal AI stylist. Free forever, with Plus, Pro and Studio plans for more AI.',
+    description: 'Fluntr is a digital wardrobe and personal AI stylist. Free forever, with Pro and Studio plans for more Kween.',
     offers: plans.filter(p => p.prices).flatMap(p => Object.entries(p.prices).map(([k, v]) => ({
       '@type': 'Offer', name: `Fluntr ${p.name} (${k.toLowerCase()})`, price: v.inr, priceCurrency: 'INR', url: 'https://www.fluntr.com/pricing',
     }))),
@@ -234,10 +258,10 @@ export default function Pricing({ plans }) {
     <>
       <Head>
         <title>Pricing · Fluntr: less than a chai a day</title>
-        <meta name="description" content="Fluntr is free forever. Pro is ₹899 a year, about ₹2.5 a day: less than a cutting chai, for mornings without “I have nothing to wear”." />
+        <meta name="description" content={`Fluntr is free forever. Pro is ${inr(pro?.prices?.ANNUAL?.inr || 999)} a year, about ${inr(day)} a day: less than a cutting chai, for mornings without “I have nothing to wear”.`} />
         <link rel="canonical" href="https://www.fluntr.com/pricing" />
         <meta property="og:title" content="Fluntr pricing: less than a chai a day" />
-        <meta property="og:description" content="Free forever. Pro is about ₹2.5 a day. Get back 90 hours a year." />
+        <meta property="og:description" content={`Free forever. Pro is about ${inr(day)} a day, with 7 days free. Get back 90 hours a year.`} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
       </Head>
       <Nav />
@@ -254,8 +278,8 @@ export default function Pricing({ plans }) {
           <Rise delay={0.1} className="mt-10 flex justify-center">
             <div className="glass inline-flex" style={{ borderRadius: 999, padding: 5 }} role="tablist" aria-label="Billing period">
               {PERIODS.map(([k, label]) => (
-                <button key={k} role="tab" aria-selected={period === k} onClick={() => setPeriod(k)} style={{
-                  border: 'none', cursor: 'pointer', borderRadius: 999, padding: '10px 15px', fontSize: 14, fontWeight: 600, whiteSpace: 'nowrap',
+                <button key={k} role="tab" aria-selected={period === k} onClick={() => setPeriod(k)} className="px-[8px] py-[10px] text-[12.5px] sm:px-[15px] sm:text-[14px]" style={{
+                  border: 'none', cursor: 'pointer', borderRadius: 999, fontWeight: 600, whiteSpace: 'nowrap',
                   background: period === k ? INK : 'transparent', color: period === k ? '#fff' : '#3A3D45', transition: 'all 0.3s',
                 }}>
                   {label}{k === 'ANNUAL' && maxSave > 0 && <span style={{ marginLeft: 6, color: period === k ? '#9BE7B5' : 'var(--sage)' }}><span className="hidden sm:inline">up to </span>−{maxSave}%</span>}
@@ -267,25 +291,25 @@ export default function Pricing({ plans }) {
 
         {/* ── Plans ── */}
         <section className="px-4 pb-24 md:px-6">
-          <div className="mx-auto grid max-w-6xl gap-5 md:grid-cols-2 lg:grid-cols-4" style={{ alignItems: 'stretch' }}>
+          <div className="mx-auto grid max-w-5xl gap-5 md:grid-cols-3" style={{ alignItems: 'stretch' }}>
             {plans.map((p, i) => <Rise key={p.plan} delay={0.06 * i} style={{ height: '100%' }}><PlanCard p={p} period={period} onPick={pick} /></Rise>)}
           </div>
           <div className="mx-auto mt-8 flex max-w-2xl flex-col items-center gap-4 text-center sm:flex-row sm:items-end sm:justify-center sm:text-left">
-            <KweenPerch name="pricing" line="₹2.5 a day. I cost less than your chai." mood="smug" bubble="right" className="shrink-0" width="clamp(64px, 7vw, 92px)" />
+            <KweenPerch name="pricing" line={`${inr(day)} a day. I cost less than your chai.`} mood="smug" bubble="right" className="shrink-0" width="clamp(64px, 7vw, 92px)" />
             <p className="m-0 max-w-md" style={{ fontSize: 14, color: MUTED }}>
-              Prices include GST. Change or cancel any time. Nothing you add is ever deleted or locked if you change plans.
+              Prices include GST. Change or cancel any time. Nothing you add is ever deleted or locked if you change plans. “Unlimited” means fair use.
             </p>
           </div>
         </section>
 
-        {/* ── What ₹2.5 sits next to ── */}
+        {/* ── What Pro a day sits next to ── */}
         <section className="px-4 py-20 md:px-6 md:py-28" style={{ background: 'var(--surface)' }}>
           <div className="mx-auto max-w-5xl">
             <Rise>
               <h2 className="h-display" style={{ fontSize: 'clamp(36px,5vw,64px)', margin: 0 }}>
-                ₹2.5 a day, next to <span className="serif-accent">everything</span> else.
+                {inr(day)} a day, next to <span className="serif-accent">everything</span> else.
               </h2>
-              <p style={{ marginTop: 14, fontSize: 18, color: MUTED, maxWidth: 620 }}>Pro billed yearly is {inr(pro ? perDay(pro, 'ANNUAL') : 2.5)} a day. Here’s what that is, next to what you already buy without thinking.</p>
+              <p style={{ marginTop: 14, fontSize: 18, color: MUTED, maxWidth: 620 }}>Pro billed yearly is {inr(day)} a day. Here’s what that is, next to what you already buy without thinking.</p>
             </Rise>
             <div style={{ marginTop: 40, display: 'grid', gap: 14 }}>
               {SCALE.map(([label, amount, ours], i) => (
@@ -301,7 +325,7 @@ export default function Pricing({ plans }) {
                 </Rise>
               ))}
             </div>
-            <Rise delay={0.3}><p style={{ marginTop: 28, fontSize: 17, fontWeight: 600 }}>A whole month of Pro ({inr(pro ? perMonth(pro, 'ANNUAL') : 74)}) costs less than half a burger.</p></Rise>
+            <Rise delay={0.3}><p style={{ marginTop: 28, fontSize: 17, fontWeight: 600 }}>A whole month of Pro ({inr(proMonth)}) costs less than half a burger.</p></Rise>
           </div>
         </section>
 
@@ -346,7 +370,7 @@ export default function Pricing({ plans }) {
             <Rise><h2 className="h-display" style={{ fontSize: 'clamp(32px,4vw,52px)', margin: '0 0 32px' }}>Every plan, side by side.</h2></Rise>
             <Rise delay={0.1}>
               <div style={{ overflowX: 'auto' }}>
-                <table style={{ width: '100%', minWidth: 720, borderCollapse: 'collapse', fontSize: 15 }}>
+                <table style={{ width: '100%', minWidth: 640, borderCollapse: 'collapse', fontSize: 15 }}>
                   <thead>
                     <tr>
                       <th style={{ textAlign: 'left', padding: '14px 12px', fontSize: 13, color: MUTED, fontWeight: 600 }} />
@@ -400,7 +424,7 @@ export default function Pricing({ plans }) {
         <section className="px-4 pb-28 text-center md:px-6">
           <Rise>
             <h2 className="h-display" style={{ fontSize: 'clamp(40px,6vw,84px)', margin: 0 }}>
-              Your mornings are worth <span className="serif-accent">₹2.5</span>.
+              Your mornings are worth <span className="serif-accent">{inr(day)}</span>.
             </h2>
             <div className="mt-10 flex flex-col-reverse items-center gap-5 sm:flex-row sm:items-end sm:justify-center sm:gap-4">
               <Link href="/#waitlist" className="btn-primary" onClick={() => track('pricing_cta', { plan: 'waitlist', period })}>Join the waitlist</Link>
